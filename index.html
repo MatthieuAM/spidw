@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SPIDY — Play Free. Win Real.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{background:#0A0A0C;color:#fff;font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input{font-family:inherit}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+/* ── VARIABLES ── */
+:root{
+  --gold:#FFD700;--gold2:#D4A017;--gold3:#A67C00;--gold4:#7A5A00;
+  --glow:rgba(255,215,0,0.3);--gpale:rgba(255,215,0,0.08);--gmid:rgba(255,215,0,0.16);
+  --d1:#0A0A0C;--d2:#141418;--d3:#1E1E24;--d4:#28282F;--d5:#38383F;
+  --ash:#8A8A95;--w8:rgba(255,255,255,0.08);--w15:rgba(255,255,255,0.15);
+  --green:#30D158;--red:#FF453A;--blue:#0A84FF;
+  --sidebar:220px;--tabh:72px;
+}
+
+/* ═══════════════════════════════
+   LAYOUT
+═══════════════════════════════ */
+#app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sidebar{
+  width:var(--sidebar);position:fixed;left:0;top:0;bottom:0;
+  background:rgba(14,14,18,0.97);border-right:1px solid rgba(255,215,0,0.1);
+  display:flex;flex-direction:column;padding:20px 12px 20px;
+  z-index:100;backdrop-filter:blur(20px);
+}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:4px 8px;margin-bottom:24px}
+.sb-logomark{width:38px;height:38px;background:linear-gradient(135deg,var(--gold3),var(--gold));
+  border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow:0 0 18px var(--glow)}
+.sb-logotext{font-size:22px;font-weight:900;letter-spacing:-0.5px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.sb-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--ash);padding:0 10px;margin:12px 0 4px}
+
+.sb-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;
+  border-radius:12px;background:none;color:rgba(255,255,255,0.55);
+  font-size:13px;font-weight:600;transition:all .15s;text-align:left;margin-bottom:2px}
+.sb-btn:hover{background:var(--w8);color:#fff}
+.sb-btn.active{background:var(--gmid);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
+.sb-btn .sb-ic{width:28px;height:28px;border-radius:8px;background:var(--w8);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sb-btn.active .sb-ic{background:rgba(255,215,0,0.15)}
+
+.sb-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.sb-balance{background:var(--gmid);border:1px solid rgba(255,215,0,0.22);
+  border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px}
+.sbb-val{font-size:18px;font-weight:900;color:var(--gold);letter-spacing:-0.5px}
+.sbb-lbl{font-size:10px;color:var(--ash);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.sb-profile{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;cursor:pointer;transition:background .15s}
+.sb-profile:hover{background:var(--w8)}
+.sp-ava{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#000;
+  box-shadow:0 0 10px var(--glow);flex-shrink:0}
+.sp-name{font-size:13px;font-weight:700}
+.sp-lvl{font-size:11px;color:var(--gold2)}
+
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;min-height:100vh}
+
+/* MOBILE TOP */
+#mobTop{display:none;position:sticky;top:0;z-index:50;
+  background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--w8);padding:10px 16px;
+  align-items:center;justify-content:space-between}
+.mt-logo{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mt-right{display:flex;align-items:center;gap:8px}
+.mt-bal{display:flex;align-items:center;gap:4px;background:var(--gmid);
+  border:1px solid rgba(255,215,0,0.22);border-radius:99px;padding:5px 11px;
+  font-size:13px;font-weight:700;color:var(--gold)}
+.mt-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;cursor:pointer}
+
+/* MOBILE BOTTOM TAB */
+#mobTab{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--tabh);
+  background:rgba(14,14,18,0.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--w8);z-index:100;align-items:flex-start;padding-top:8px}
+.tb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;padding:0;transition:transform .12s}
+.tb-btn:active{transform:scale(.88)}
+.tb-ic{font-size:22px;transition:transform .2s}
+.tb-lbl{font-size:9px;font-weight:600;color:var(--ash);transition:color .2s}
+.tb-btn.active .tb-lbl{color:var(--gold)}
+.tb-btn.active .tb-ic{transform:scale(1.12);filter:drop-shadow(0 0 6px var(--gold))}
+
+/* MORE POPUP */
+#morePopup{display:none;position:fixed;bottom:var(--tabh);left:0;right:0;z-index:99;
+  background:rgba(14,14,18,0.98);backdrop-filter:blur(20px);
+  border-top:1px solid var(--w8);padding:14px 16px}
+.mp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:400px;margin:0 auto}
+.mp-item{background:var(--d3);border:1px solid var(--w8);border-radius:12px;
+  padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .15s}
+.mp-item:active{transform:scale(.94);background:var(--d4)}
+.mp-item-ic{font-size:22px}
+.mp-item-lbl{font-size:11px;color:var(--ash);font-weight:600}
+
+/* ═══════════════════════════════
+   SCREENS
+═══════════════════════════════ */
+.screen{display:none;padding:28px;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.pg-title{font-size:32px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+.pg-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pg-sub{font-size:14px;color:var(--ash);margin-bottom:22px}
+
+/* SPIDY CARD */
+.spidy-bar{background:linear-gradient(135deg,rgba(212,160,23,.13),var(--gpale));
+  border:1px solid rgba(255,215,0,.2);border-radius:18px;padding:16px 18px;
+  display:flex;align-items:flex-start;gap:12px;margin-bottom:22px;position:relative;overflow:hidden}
+.spidy-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.5),transparent)}
+.spidy-dog{font-size:40px;flex-shrink:0;animation:dogFloat 3s ease-in-out infinite}
+@keyframes dogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.spidy-text{}
+.spidy-name{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;
+  color:var(--gold2);display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.spidy-name::before{content:'●';font-size:6px;color:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.spidy-msg{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
+
+/* ═══════════════════════════════
+   HOME
+═══════════════════════════════ */
+.hero{background:linear-gradient(135deg,#1A1000,#2A1A00,#1A1000);
+  border-radius:24px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden;
+  border:1px solid rgba(255,215,0,.2);box-shadow:0 8px 50px rgba(0,0,0,.5)}
+.hero::after{content:'';position:absolute;top:-40px;right:-30px;width:250px;height:250px;
+  background:radial-gradient(circle,rgba(255,215,0,.18),transparent 65%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);
+  border-radius:99px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--gold);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.hero-tag::before{content:'●';font-size:7px;color:var(--green);animation:blink 2s infinite}
+.hero-h{font-size:46px;font-weight:900;letter-spacing:-2px;line-height:.95;margin-bottom:12px;
+  background:linear-gradient(160deg,#fff 0%,var(--gold) 60%,var(--gold2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:relative;z-index:1}
+.hero-p{font-size:14px;color:rgba(255,255,255,.6);max-width:300px;line-height:1.5;margin-bottom:20px;z-index:1;position:relative}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-dog{position:absolute;right:16px;bottom:0;font-size:80px;line-height:1;
+  filter:drop-shadow(0 0 24px rgba(255,215,0,.4));animation:dogFloat 4s ease-in-out infinite}
+
+.btn-gold{display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#000;padding:13px 22px;border-radius:99px;font-size:14px;font-weight:800;
+  transition:all .2s;box-shadow:0 4px 20px rgba(255,215,0,.4)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,.5)}
+.btn-gold:active{transform:scale(.97)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;
+  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.8);
+  padding:13px 22px;border-radius:99px;font-size:14px;font-weight:700;transition:all .2s}
+.btn-ghost:hover{background:var(--w15)}
+
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.hg-tile{border-radius:18px;padding:18px 14px;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;border:1px solid transparent;aspect-ratio:.9;
+  display:flex;flex-direction:column;justify-content:space-between}
+.hg-tile:hover{transform:translateY(-4px)}
+.hg-tile:active{transform:scale(.97)}
+.hg-tile.blue{background:linear-gradient(160deg,#0D1B3E,#172B60);border-color:rgba(0,122,255,.2)}
+.hg-tile.purple{background:linear-gradient(160deg,#1E0D2E,#301545);border-color:rgba(175,82,222,.2)}
+.hg-tile.teal{background:linear-gradient(160deg,#0D2A1A,#154028);border-color:rgba(48,209,88,.2)}
+.hg-ic{font-size:34px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.4))}
+.hg-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)}
+.hg-title{font-size:16px;font-weight:800;letter-spacing:-.2px}
+.hg-prize{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
+.hg-badge{position:absolute;top:10px;right:10px;background:rgba(255,215,0,.2);
+  border:1px solid rgba(255,215,0,.3);border-radius:99px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--gold)}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-box{background:var(--d2);border:1px solid var(--w8);border-radius:14px;padding:14px;text-align:center;
+  position:relative;overflow:hidden}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
+.sb-val{font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
+.sb-lbl{font-size:11px;color:var(--ash);margin-top:2px}
+
+/* ═══════════════════════════════
+   WHEEL
+═══════════════════════════════ */
+.wheel-wrap{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+.wheel-panel{background:var(--d2);border:1px solid var(--w8);border-radius:22px;
+  padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.wheel-canvas-wrap{position:relative;width:280px;height:280px}
+#wheelCanvas{border-radius:50%;display:block;
+  box-shadow:0 0 40px rgba(255,215,0,.3),0 0 80px rgba(255,215,0,.1)}
+.wheel-pointer{position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  font-size:28px;filter:drop-shadow(0 2px 6px rgba(255,215,0,.6));z-index:5}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  border:3px solid var(--d1);display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;z-index:10;
+  box-shadow:0 0 20px rgba(255,215,0,.6);transition:transform .15s}
+.wheel-center:active{transform:translate(-50%,-50%) scale(.9)}
+
+#spinBtn{width:100%;padding:15px;border-radius:99px;font-size:16px;font-weight:800;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
+  box-shadow:0 4px 28px rgba(255,215,0,.4);transition:all .2s}
+#spinBtn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,215,0,.5)}
+#spinBtn:active:not([disabled]){transform:scale(.97)}
+#spinBtn[disabled]{opacity:.35;cursor:not-allowed;transform:none !important;box-shadow:none}
+#spinMsg{font-size:12px;color:var(--ash);text-align:center;min-height:18px}
+
+.prize-panel{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
+.prize-panel h3{font-size:17px;font-weight:800;margin-bottom:14px;letter-spacing:-.3px}
+.prize-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--w8)}
+.prize-row:last-child{border-bottom:none}
+.pr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pr-name{flex:1;font-size:13px;font-weight:600}
+.pr-val{font-size:13px;font-weight:800;color:var(--gold)}
+
+.streak-panel{background:linear-gradient(135deg,rgba(255,215,0,.1),var(--gpale));
+  border:1px solid rgba(255,215,0,.2);border-radius:22px;padding:20px;margin-top:14px}
+.streak-days{display:flex;gap:6px;margin-top:10px}
+.sd-item{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;background:var(--d3);border:1px solid var(--w8);color:var(--ash)}
+.sd-item.done{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
+  border-color:var(--gold);box-shadow:0 0 8px rgba(255,215,0,.3)}
+.sd-item.today{background:rgba(255,215,0,.15);border-color:var(--gold);color:var(--gold);animation:pulseG 2s infinite}
+@keyframes pulseG{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,.4)}50%{box-shadow:0 0 0 5px rgba(255,215,0,0)}}
+
+/* ═══════════════════════════════
+   LOTTERY
+═══════════════════════════════ */
+.lottery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.lot-card{border-radius:22px;padding:24px 22px;cursor:pointer;transition:all .22s;
+  position:relative;overflow:hidden;border:1px solid rgba(255,215,0,.15)}
+.lot-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.lot-card:active{transform:scale(.98)}
+.lot-c1{background:linear-gradient(160deg,#0D1B3E,#1A2E60)}
+.lot-c2{background:linear-gradient(160deg,#1E0D2E,#311550)}
+.lot-c3{background:linear-gradient(160deg,#0D2A1A,#174530)}
+.lot-badge{display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,215,0,.18);border:1px solid rgba(255,215,0,.3);
+  border-radius:99px;padding:3px 10px;font-size:10px;font-weight:800;
+  color:var(--gold);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.lot-name{font-size:24px;font-weight:900;letter-spacing:-.5px}
+.lot-prize{font-size:32px;font-weight:900;color:var(--gold);letter-spacing:-1px}
+.lot-meta{font-size:13px;color:rgba(255,255,255,.5);margin-top:6px}
+.lot-bg{position:absolute;right:-10px;bottom:-20px;font-size:120px;opacity:.06;font-weight:900}
+.lot-arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:var(--gold);opacity:.5}
+
+/* PICKER */
+#lotteryPicker{display:none}
+#lotteryPicker.show{display:block}
+#lotteryListView.hidden{display:none}
+.back-btn{display:inline-flex;align-items:center;gap:5px;background:none;
+  color:var(--gold);font-size:15px;font-weight:600;cursor:pointer;padding:6px 0;margin-bottom:18px;transition:opacity .15s}
+.back-btn:hover{opacity:.7}
+.picker-layout{display:grid;grid-template-columns:1fr 260px;gap:22px;align-items:start}
+.numbers-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
+.numbers-title{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.numbers-sub{font-size:13px;color:var(--ash);margin:4px 0 16px}
+.nums-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:14px}
+.num-btn{aspect-ratio:1;border-radius:50%;background:var(--d3);border:1.5px solid var(--d5);
+  color:rgba(255,255,255,.5);font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .14s}
+.num-btn:hover{background:var(--d4);color:#fff}
+.num-btn.picked{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
+  border-color:var(--gold);font-weight:900;
+  box-shadow:0 0 14px rgba(255,215,0,.4);transform:scale(1.08)}
+.sel-track{background:var(--d3);border:1px solid var(--w8);border-radius:12px;padding:12px 14px;min-height:50px}
+.sel-track-lbl{font-size:10px;color:var(--ash);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px}
+.sel-balls{display:flex;gap:7px;flex-wrap:wrap;min-height:28px;align-items:center}
+.sel-ball{width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#000;
+  animation:pop .2s cubic-bezier(.22,1,.36,1)}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+.picker-side{display:flex;flex-direction:column;gap:12px}
+.prize-card-sm{background:linear-gradient(160deg,#1C1200,#2A1A00);
+  border:1px solid rgba(255,215,0,.22);border-radius:18px;padding:18px}
+.pcs-lbl{font-size:11px;color:var(--gold2);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.pcs-amount{font-size:32px;font-weight:900;color:var(--gold);letter-spacing:-1px;margin:4px 0}
+.pcs-desc{font-size:12px;color:rgba(255,255,255,.4)}
+#validateBtn{width:100%;padding:15px;border-radius:99px;font-size:15px;font-weight:800;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
+  box-shadow:0 4px 22px rgba(255,215,0,.35);transition:all .2s}
+#validateBtn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,.5)}
+#validateBtn:active:not([disabled]){transform:scale(.97)}
+#validateBtn[disabled]{opacity:.3;cursor:not-allowed;transform:none !important;box-shadow:none}
+.qpick-btn{width:100%;padding:12px;border-radius:99px;font-size:14px;font-weight:700;
+  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.8);transition:all .2s}
+.qpick-btn:hover{background:var(--w15)}
+.vhint{font-size:12px;color:var(--ash);text-align:center;margin-top:6px}
+
+/* ═══════════════════════════════
+   SCRATCH
+═══════════════════════════════ */
+.scratch-grid-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+#scratchGame{display:none}
+#scratchGame.show{display:block}
+#scratchListView.hidden{display:none}
+.sc-tile{background:var(--d2);border:1px solid var(--w8);border-radius:20px;
+  overflow:hidden;cursor:pointer;transition:all .22s}
+.sc-tile:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.25);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+.sc-tile:active{transform:scale(.97)}
+.sc-cover{height:120px;display:flex;align-items:center;justify-content:center;font-size:50px;
+  border-bottom:1px solid var(--w8)}
+.sc-cover.sg1{background:linear-gradient(160deg,#1C1000,#2E1A00)}
+.sc-cover.sg2{background:linear-gradient(160deg,#0A0A2A,#12124A)}
+.sc-cover.sg3{background:linear-gradient(160deg,#0A1A0A,#123012)}
+.sc-cover.sg4{background:linear-gradient(160deg,#1A0A10,#30101A)}
+.sc-info{padding:14px}
+.sc-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.sc-prize{font-size:20px;font-weight:900;color:var(--gold)}
+.sc-sub{font-size:11px;color:var(--ash);margin-top:1px}
+.sc-badge{display:inline-block;background:var(--gmid);border:1px solid rgba(255,215,0,.25);
+  border-radius:99px;padding:2px 8px;margin-top:8px;font-size:9px;font-weight:800;color:var(--gold);text-transform:uppercase}
+
+.scratch-arena{display:grid;grid-template-columns:1fr 280px;gap:22px;align-items:start}
+.scratch-main-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
+.scratch-canvas-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--w8)}
+.scratch-under{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)}
+.su-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.04);gap:2px}
+.su-icon{font-size:26px}
+.su-val{font-size:12px;font-weight:800;color:var(--gold)}
+#scratchCanvas{position:relative;z-index:2;display:block;cursor:crosshair;border-radius:14px}
+.scratch-hint{font-size:12px;color:var(--ash);text-align:center;margin-top:8px}
+.reveal-btn{width:100%;margin-top:10px;padding:11px;border-radius:99px;
+  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.7);
+  font-size:13px;font-weight:700;transition:all .15s}
+.reveal-btn:hover{background:var(--w15)}
+
+.scratch-side{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:20px}
+.ss-legend{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.ssl-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.ssl-icon{font-size:20px}
+.ssl-name{flex:1;font-weight:600}
+.ssl-val{color:var(--gold);font-weight:800}
+
+/* ═══════════════════════════════
+   MARKET
+═══════════════════════════════ */
+.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.mkt-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:20px;transition:all .18s}
+.mkt-card:hover{border-color:rgba(255,215,0,.18);transform:translateY(-2px)}
+.mkt-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--gold2);margin-bottom:8px}
+.mkt-q{font-size:16px;font-weight:700;letter-spacing:-.2px;line-height:1.35;margin-bottom:14px}
+.mkt-btns{display:flex;gap:10px}
+.mkt-btn{flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid transparent;
+  font-size:15px;font-weight:800;cursor:pointer;transition:all .16s;
+  display:flex;flex-direction:column;align-items:center;gap:2px}
+.mkt-btn:active{transform:scale(.96)}
+.mkt-btn.yes{background:rgba(48,209,88,.12);color:var(--green);border-color:rgba(48,209,88,.2)}
+.mkt-btn.no{background:rgba(255,69,58,.1);color:var(--red);border-color:rgba(255,69,58,.18)}
+.mkt-btn.yes:hover{background:rgba(48,209,88,.22)}
+.mkt-btn.no:hover{background:rgba(255,69,58,.2)}
+.mkt-btn.yes.selected{background:rgba(48,209,88,.28);box-shadow:0 0 14px rgba(48,209,88,.2);border-color:var(--green)}
+.mkt-btn.no.selected{background:rgba(255,69,58,.22);box-shadow:0 0 14px rgba(255,69,58,.15);border-color:var(--red)}
+.mkt-odds{font-size:10px;font-weight:500;opacity:.7}
+.mkt-amounts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.amt-btn{padding:5px 12px;border-radius:99px;background:var(--d3);border:1px solid var(--d5);
+  color:rgba(255,255,255,.5);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s}
+.amt-btn:hover{background:var(--d4);color:#fff}
+.amt-btn.chosen{background:var(--gmid);border-color:rgba(255,215,0,.3);color:var(--gold)}
+.confirm-btn{padding:7px 16px;border-radius:99px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#000;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;border:none}
+.confirm-btn:hover{transform:scale(1.04)}
+.mkt-foot{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--w8);font-size:12px;color:var(--ash)}
+.mkt-foot strong{color:var(--gold)}
+
+/* ═══════════════════════════════
+   TASKS
+═══════════════════════════════ */
+.tasks-layout{display:grid;grid-template-columns:1fr 260px;gap:22px;align-items:start}
+.tasks-main{display:flex;flex-direction:column;gap:8px}
+.task-sec-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;
+  color:var(--gold);margin:12px 0 6px}
+.task-card{background:var(--d2);border:1px solid var(--w8);border-radius:16px;
+  padding:15px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .15s}
+.task-card:hover:not(.done){border-color:rgba(255,215,0,.2);background:rgba(28,28,36,.9)}
+.task-card:active:not(.done){transform:scale(.99)}
+.task-card.done{opacity:.45;pointer-events:none}
+.tc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;background:var(--gmid);border:1px solid rgba(255,215,0,.18)}
+.tc-info{flex:1}
+.tc-name{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.tc-desc{font-size:11px;color:var(--ash);margin-top:1px}
+.tc-reward{display:flex;align-items:center;gap:3px;background:var(--gmid);
+  border:1px solid rgba(255,215,0,.22);border-radius:99px;padding:4px 10px;
+  font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap}
+.tc-done{font-size:20px}
+
+.tasks-side{display:flex;flex-direction:column;gap:14px}
+.prog-card{background:var(--d2);border:1px solid var(--w8);border-radius:20px;padding:20px}
+.prog-card h3{font-size:16px;font-weight:800;margin-bottom:14px;letter-spacing:-.2px}
+.prog-ring-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.prog-ring-info .pval{font-size:24px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
+.prog-ring-info .psub{font-size:11px;color:var(--ash)}
+.prog-bar{height:5px;background:var(--d3);border-radius:99px;overflow:hidden;margin-top:8px}
+.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));border-radius:99px;transition:width .5s ease}
+
+/* ═══════════════════════════════
+   REWARDS
+═══════════════════════════════ */
+.rewards-hero{background:linear-gradient(160deg,#1C1200,#2A1800,#1C1200);
+  border:1px solid rgba(255,215,0,.2);border-radius:22px;padding:26px;
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;position:relative;overflow:hidden}
+.rewards-hero::before{content:'';position:absolute;top:-40px;right:-20px;width:240px;height:240px;
+  background:radial-gradient(circle,rgba(255,215,0,.14),transparent 65%);pointer-events:none}
+.rh-lbl{font-size:11px;color:var(--gold2);font-weight:700;text-transform:uppercase;letter-spacing:.7px}
+.rh-amount{font-size:52px;font-weight:900;color:var(--gold);letter-spacing:-2.5px;line-height:1;margin:4px 0}
+.rh-unit{font-size:15px;color:var(--gold2)}
+.rh-dog{font-size:72px;filter:drop-shadow(0 0 22px rgba(255,215,0,.4));animation:dogFloat 4s ease-in-out infinite}
+.rewards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px}
+.rwd-card{background:var(--d2);border:1px solid var(--w8);border-radius:20px;overflow:hidden;
+  cursor:pointer;transition:all .22s}
+.rwd-card:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.22);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.rwd-card:active{transform:scale(.97)}
+.rwd-img{height:95px;display:flex;align-items:center;justify-content:center;font-size:46px;border-bottom:1px solid var(--w8)}
+.ri1{background:linear-gradient(160deg,#1A0000,#2E0A00)}
+.ri2{background:linear-gradient(160deg,#00081A,#001830)}
+.ri3{background:linear-gradient(160deg,#0A000A,#1A001A)}
+.ri4{background:linear-gradient(160deg,#001400,#002A00)}
+.ri5{background:linear-gradient(160deg,#1A1200,#2A1E00)}
+.ri6{background:linear-gradient(160deg,#0A0A1A,#14142E)}
+.rwd-body{padding:14px}
+.rwd-name{font-size:14px;font-weight:800;letter-spacing:-.2px}
+.rwd-type{font-size:11px;color:var(--ash);margin-top:1px}
+.rwd-price{font-size:18px;font-weight:900;color:var(--gold);margin:10px 0 10px;display:flex;align-items:center;gap:3px}
+.rwd-btn{width:100%;padding:9px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
+  font-size:12px;font-weight:800;transition:all .15s}
+.rwd-btn:hover{opacity:.85}
+.rwd-btn:active{transform:scale(.96)}
+
+/* ═══════════════════════════════
+   PROFILE SHEET
+═══════════════════════════════ */
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(12px);z-index:500;align-items:flex-end;justify-content:center}
+#overlay.open{display:flex;animation:fadeOv .2s ease}
+@keyframes fadeOv{from{opacity:0}to{opacity:1}}
+#sheet{background:var(--d2);border-radius:24px 24px 0 0;padding:16px 22px 44px;
+  width:100%;max-width:580px;max-height:80vh;overflow-y:auto;
+  animation:sheetUp .3s cubic-bezier(.22,1,.36,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sh-handle{width:38px;height:4px;background:var(--d5);border-radius:99px;margin:0 auto 22px}
+.pf-ava{width:82px;height:82px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#000;
+  margin:0 auto 12px;box-shadow:0 0 32px rgba(255,215,0,.4)}
+.pf-name{font-size:24px;font-weight:900;text-align:center;letter-spacing:-.4px}
+.pf-tag{font-size:13px;color:var(--gold2);text-align:center;margin-top:2px;margin-bottom:20px}
+.pf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.pfs-box{background:var(--d3);border-radius:12px;padding:13px;text-align:center}
+.pfs-val{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:-.4px}
+.pfs-lbl{font-size:10px;color:var(--ash);margin-top:1px}
+.pf-menu{display:flex;flex-direction:column;gap:2px}
+.pf-mi{display:flex;align-items:center;gap:11px;padding:12px;border-radius:12px;
+  cursor:pointer;font-size:14px;font-weight:600;transition:background .12s}
+.pf-mi:hover{background:var(--w8)}
+.pf-mi-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.pf-arr{margin-left:auto;color:var(--ash);font-size:13px}
+
+.hist-item{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--w8)}
+.hist-item:last-child{border-bottom:none}
+.hi-ic{font-size:22px}
+.hi-c{flex:1}
+.hi-a{font-size:13px;font-weight:600}
+.hi-d{font-size:11px;color:var(--ash);margin-top:1px}
+.hi-v{font-size:14px;font-weight:800}
+.hi-v.p{color:var(--green)}
+.hi-v.m{color:var(--red)}
+
+/* ═══════════════════════════════
+   RESULT MODAL
+═══════════════════════════════ */
+#resultModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);
+  backdrop-filter:blur(24px);z-index:600;align-items:center;justify-content:center}
+#resultModal.open{display:flex}
+.rm-box{background:var(--d2);border-radius:26px;padding:38px 28px;text-align:center;
+  max-width:320px;width:90%;border:1px solid rgba(255,215,0,.22);
+  box-shadow:0 0 70px rgba(255,215,0,.18);animation:popIn .4s cubic-bezier(.22,1,.36,1)}
+.rm-emoji{font-size:68px;display:block;margin-bottom:10px;animation:bounceIn .45s cubic-bezier(.22,1,.36,1) .1s both}
+@keyframes bounceIn{from{transform:scale(.3) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.rm-title{font-size:28px;font-weight:900;letter-spacing:-.6px;margin-bottom:5px}
+.rm-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:18px}
+.rm-reward{background:linear-gradient(135deg,rgba(255,215,0,.14),var(--gpale));
+  border:1px solid rgba(255,215,0,.22);border-radius:16px;padding:16px;margin-bottom:20px}
+.rm-amount{font-size:38px;font-weight:900;color:var(--gold);letter-spacing:-1.5px}
+.rm-lbl{font-size:11px;color:var(--gold2);margin-top:2px;font-weight:600}
+.rm-close{width:100%;padding:15px;border-radius:99px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
+  font-size:15px;font-weight:800;cursor:pointer;transition:all .2s}
+.rm-close:hover{box-shadow:0 6px 28px rgba(255,215,0,.4)}
+
+/* TOAST */
+#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-8px);
+  background:rgba(22,22,28,.97);border:1px solid rgba(255,215,0,.3);
+  backdrop-filter:blur(20px);color:#fff;padding:11px 20px;
+  border-radius:99px;font-size:13px;font-weight:600;z-index:700;
+  opacity:0;transition:all .3s cubic-bezier(.22,1,.36,1);pointer-events:none;
+  white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* CONFETTI */
+.cf{position:fixed;z-index:650;pointer-events:none;border-radius:3px}
+@keyframes cfFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:768px){
+  #sidebar{display:none}
+  #main{margin-left:0;padding-bottom:var(--tabh)}
+  #mobTop{display:flex}
+  #mobTab{display:flex}
+  .screen{padding:14px 14px 20px}
+  .pg-title{font-size:26px}
+  .hero-h{font-size:34px}
+  .hero-dog{font-size:60px;right:10px}
+  .hero{padding:20px 16px}
+  .home-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .hg-tile{padding:12px 8px}
+  .hg-ic{font-size:26px}
+  .hg-prize{font-size:16px}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+  .sb-val{font-size:20px}
+  .wheel-wrap{grid-template-columns:1fr}
+  .wheel-canvas-wrap{width:240px;height:240px;margin:0 auto}
+  #wheelCanvas{width:240px !important;height:240px !important}
+  .picker-layout{grid-template-columns:1fr}
+  .scratch-arena{grid-template-columns:1fr}
+  .tasks-layout{grid-template-columns:1fr}
+  .rewards-hero{flex-direction:column;text-align:center;gap:12px}
+  .rh-amount{font-size:40px}
+  .lottery-grid{grid-template-columns:1fr}
+  .market-grid{grid-template-columns:1fr}
+  .nums-grid{gap:5px}
+  .num-btn{font-size:10px}
+}
+@media(min-width:769px) and (max-width:1100px){
+  .wheel-wrap{grid-template-columns:1fr 260px}
+  .picker-layout{grid-template-columns:1fr 240px}
+  .tasks-layout{grid-template-columns:1fr 240px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- RESULT MODAL -->
+<div id="resultModal">
+  <div class="rm-box">
+    <span class="rm-emoji" id="rmEmoji">🎉</span>
+    <div class="rm-title" id="rmTitle">Bravo !</div>
+    <div class="rm-sub" id="rmSub">Tu as gagné</div>
+    <div class="rm-reward">
+      <div class="rm-amount" id="rmAmount">+500 SPIDS</div>
+      <div class="rm-lbl">Crédité sur ton compte</div>
+    </div>
+    <button class="rm-close" id="rmClose">🐕 Merci Spidy !</button>
+  </div>
+</div>
+
+<!-- PROFILE OVERLAY -->
+<div id="overlay">
+  <div id="sheet">
+    <div class="sh-handle"></div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logomark">🐕</div>
+      <div class="sb-logotext">SPIDY</div>
+    </div>
+    <div class="sb-section">Jeux</div>
+    <button class="sb-btn active" data-screen="home"><div class="sb-ic">🏠</div> Accueil</button>
+    <button class="sb-btn" data-screen="wheel"><div class="sb-ic">🎡</div> Roue</button>
+    <button class="sb-btn" data-screen="lottery"><div class="sb-ic">🎰</div> Loterie</button>
+    <button class="sb-btn" data-screen="scratch"><div class="sb-ic">💎</div> Grattage</button>
+    <button class="sb-btn" data-screen="market"><div class="sb-ic">📈</div> Prédictions</button>
+    <div class="sb-section">Compte</div>
+    <button class="sb-btn" data-screen="tasks"><div class="sb-ic">✅</div> Tâches</button>
+    <button class="sb-btn" data-screen="rewards"><div class="sb-ic">🎁</div> Récompenses</button>
+    <button class="sb-btn" data-screen="account"><div class="sb-ic">👤</div> Compte</button>
+    <div class="sb-bottom">
+      <div class="sb-balance">
+        <span style="font-size:22px">🪙</span>
+        <div>
+          <div class="sbb-lbl">Mes SPIDS</div>
+          <div class="sbb-val" id="sideBarBal">1 250</div>
+        </div>
+      </div>
+      <div class="sb-profile" id="sbProfile" title="Ouvrir le compte">
+        <div class="sp-ava">J</div>
+        <div><div class="sp-name">Joueur_7842</div><div class="sp-lvl">⚡ Niveau 7</div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- Mobile Top -->
+    <div id="mobTop">
+      <div class="mt-logo">🐕 SPIDY</div>
+      <div class="mt-right">
+        <div class="mt-bal">🪙 <span id="mobBal">1 250</span></div>
+        <div class="mt-ava" id="mobAvatar" title="Compte">J</div>
+      </div>
+    </div>
+
+    <!-- ─── HOME ─── -->
+    <div class="screen active" id="screen-home">
+      <div class="hero">
+        <div class="hero-tag">En direct · Jackpot actif</div>
+        <div class="hero-h">Play Free.<br>Win Real.</div>
+        <div class="hero-p">Loterie, grattage, prédictions — tout gratuit. Gagne des SPIDS et échange contre de vraies récompenses.</div>
+        <div class="hero-btns">
+          <button class="btn-gold" data-goto="lottery">🎰 Jouer maintenant</button>
+          <button class="btn-ghost" data-goto="wheel">🎡 Tourner la roue</button>
+        </div>
+        <div class="hero-dog">🐕</div>
+      </div>
+      <div class="spidy-bar">
+        <div class="spidy-dog">🐕</div>
+        <div class="spidy-text">
+          <div class="spidy-name">Spidy — Ta mascotte</div>
+          <div class="spidy-msg">Woof ! Bienvenue sur SPIDY 🎉 N'oublie pas ton <strong>spin gratuit</strong> — tu peux gagner jusqu'à <strong>500 SPIDS</strong> ! Explore les jeux et cumule un max de points.</div>
+        </div>
+      </div>
+      <div class="home-grid">
+        <div class="hg-tile blue" data-goto="lottery">
+          <div><div class="hg-badge">JACKPOT</div></div>
+          <div class="hg-ic">🎰</div>
+          <div><div class="hg-lbl">Loterie</div><div class="hg-title">Méga Fortune</div><div class="hg-prize">50 000</div></div>
+        </div>
+        <div class="hg-tile purple" data-goto="scratch">
+          <div></div>
+          <div class="hg-ic">💎</div>
+          <div><div class="hg-lbl">Grattage</div><div class="hg-title">Gold Rush</div><div class="hg-prize">10 000</div></div>
+        </div>
+        <div class="hg-tile teal" data-goto="market">
+          <div><div class="hg-badge">x3.5</div></div>
+          <div class="hg-ic">📈</div>
+          <div><div class="hg-lbl">Prédiction</div><div class="hg-title">Marchés</div><div class="hg-prize">Live</div></div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="sb-val" id="homeStatSpids">1 250</div><div class="sb-lbl">SPIDS</div></div>
+        <div class="stat-box"><div class="sb-val">47</div><div class="sb-lbl">Parties jouées</div></div>
+        <div class="stat-box"><div class="sb-val">12</div><div class="sb-lbl">Victoires</div></div>
+      </div>
+    </div>
+
+    <!-- ─── WHEEL ─── -->
+    <div class="screen" id="screen-wheel">
+      <div class="pg-title">Roue du <span>Destin</span></div>
+      <div class="pg-sub">1 spin gratuit chaque jour</div>
+      <div class="spidy-bar">
+        <div class="spidy-dog">🐕</div>
+        <div class="spidy-text">
+          <div class="spidy-name">Spidy</div>
+          <div class="spidy-msg">Appuie sur le bouton doré ou au centre de la roue pour la faire tourner ! Tu peux gagner de <strong>25 à 500 SPIDS</strong> ou un ticket de grattage gratuit 🎟️</div>
+        </div>
+      </div>
+      <div class="wheel-wrap">
+        <div class="wheel-panel">
+          <div class="wheel-canvas-wrap">
+            <div class="wheel-pointer">▼</div>
+            <canvas id="wheelCanvas" width="280" height="280"></canvas>
+            <div class="wheel-center" id="wCenter">🐕</div>
+          </div>
+          <button id="spinBtn">🎡 Tourner la roue !</button>
+          <div id="spinMsg"></div>
+        </div>
+        <div>
+          <div class="prize-panel">
+            <h3>🏆 Prizes à gagner</h3>
+            <div id="prizeList"></div>
+          </div>
+          <div class="streak-panel">
+            <div style="font-size:15px;font-weight:800">Streak de connexion</div>
+            <div style="font-size:12px;color:var(--ash);margin-top:3px">Connecte-toi chaque jour</div>
+            <div class="streak-days" id="streakDays"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── LOTTERY ─── -->
+    <div class="screen" id="screen-lottery">
+      <!-- List -->
+      <div id="lotteryListView">
+        <div class="pg-title">🎰 <span>Loterie</span></div>
+        <div class="pg-sub">Choisis ton tirage · Entièrement gratuit</div>
+        <div class="spidy-bar">
+          <div class="spidy-dog">🐕</div>
+          <div class="spidy-text">
+            <div class="spidy-name">Spidy</div>
+            <div class="spidy-msg">Clique sur une loterie, sélectionne tes numéros ou utilise le <strong>Quick Pick</strong> pour un tirage aléatoire. Valide et attend les résultats !</div>
+          </div>
+        </div>
+        <div class="lottery-grid" id="lotteryGrid"></div>
+      </div>
+      <!-- Picker -->
+      <div id="lotteryPicker">
+        <button class="back-btn" id="lotBackBtn">‹ Retour aux loteries</button>
+        <div class="picker-layout">
+          <div>
+            <div class="numbers-card">
+              <div class="numbers-title" id="pickerTitle">Méga Fortune</div>
+              <div class="numbers-sub" id="pickerSub">Sélectionne 6 numéros parmi 49</div>
+              <div class="nums-grid" id="numsGrid"></div>
+              <div class="sel-track">
+                <div class="sel-track-lbl">Tes numéros</div>
+                <div class="sel-balls" id="selBalls"></div>
+              </div>
+            </div>
+          </div>
+          <div class="picker-side">
+            <div class="prize-card-sm">
+              <div class="pcs-lbl">Prize Jackpot</div>
+              <div class="pcs-amount" id="pickerPrize">50 000 SPIDS</div>
+              <div class="pcs-desc" id="pickerDesc">Tirage dans 4h 23min</div>
+            </div>
+            <button class="qpick-btn" id="quickPickBtn">🎲 Quick Pick (aléatoire)</button>
+            <button id="validateBtn" disabled>🎟️ Valider mon ticket</button>
+            <div class="vhint" id="vHint">0/6 numéros sélectionnés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SCRATCH ─── -->
+    <div class="screen" id="screen-scratch">
+      <div id="scratchListView">
+        <div class="pg-title">💎 <span>Grattage</span></div>
+        <div class="pg-sub">Gratte et révèle tes gains</div>
+        <div class="spidy-bar">
+          <div class="spidy-dog">🐕</div>
+          <div class="spidy-text">
+            <div class="spidy-name">Spidy</div>
+            <div class="spidy-msg">Choisis une carte et gratte avec ton doigt ou ta souris. <strong>3 symboles identiques</strong> = tu gagnes ! Entièrement gratuit 🎉</div>
+          </div>
+        </div>
+        <div class="scratch-grid-view" id="scratchGrid"></div>
+      </div>
+      <div id="scratchGame">
+        <button class="back-btn" id="scratchBackBtn">‹ Retour au grattage</button>
+        <div class="scratch-arena">
+          <div class="scratch-main-card">
+            <div class="numbers-title" id="scratchTitle">Gold Rush</div>
+            <div class="numbers-sub">Gratte pour révéler les symboles cachés</div>
+            <div class="scratch-canvas-wrap" id="scratchWrap">
+              <div class="scratch-under" id="scratchUnder"></div>
+              <canvas id="scratchCanvas" width="400" height="240"></canvas>
+            </div>
+            <div class="scratch-hint">Gratte avec ton doigt ou ta souris 👆</div>
+            <button class="reveal-btn" id="revealBtn">Tout révéler d'un coup</button>
+          </div>
+          <div class="scratch-side">
+            <div class="numbers-title">Guide des prizes</div>
+            <div class="ss-legend" id="scratchLegend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MARKET ─── -->
+    <div class="screen" id="screen-market">
+      <div class="pg-title">📈 <span>Prédictions</span></div>
+      <div class="pg-sub">Parie sur l'avenir avec tes SPIDS</div>
+      <div class="spidy-bar">
+        <div class="spidy-dog">🐕</div>
+        <div class="spidy-text">
+          <div class="spidy-name">Spidy</div>
+          <div class="spidy-msg">Vote OUI ou NON sur chaque question. Sélectionne ton montant et confirme. Si ta prédiction est juste, tu multiplies ta mise ! Woof 🐕</div>
+        </div>
+      </div>
+      <div class="market-grid" id="marketGrid"></div>
+    </div>
+
+    <!-- ─── TASKS ─── -->
+    <div class="screen" id="screen-tasks">
+      <div class="pg-title">✅ <span>Tâches</span></div>
+      <div class="pg-sub">Gagne des SPIDS sans risque</div>
+      <div class="spidy-bar">
+        <div class="spidy-dog">🐕</div>
+        <div class="spidy-text">
+          <div class="spidy-name">Spidy</div>
+          <div class="spidy-msg">Accomplis les tâches pour gagner des SPIDS gratuitement. <span id="taskCountSpidy">3/7 tâches</span> complétées aujourd'hui ! Clique pour valider chaque tâche.</div>
+        </div>
+      </div>
+      <div class="tasks-layout">
+        <div class="tasks-main" id="tasksList"></div>
+        <div class="tasks-side">
+          <div class="prog-card">
+            <h3>Progression du jour</h3>
+            <div class="prog-ring-row">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="24" fill="none" stroke="var(--d4)" stroke-width="5"/>
+                <circle id="progRing" cx="30" cy="30" r="24" fill="none" stroke="var(--gold)" stroke-width="5"
+                  stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="86"
+                  transform="rotate(-90 30 30)" style="transition:stroke-dashoffset .5s ease"/>
+              </svg>
+              <div class="prog-ring-info">
+                <div class="pval" id="progText">3/7</div>
+                <div class="psub">tâches</div>
+              </div>
+            </div>
+            <div class="prog-bar"><div class="prog-bar-fill" id="progBar" style="width:43%"></div></div>
+          </div>
+          <div class="prize-card-sm">
+            <div class="pcs-lbl">Bonus total possible</div>
+            <div class="pcs-amount" id="bonusDisplay">1 075</div>
+            <div class="pcs-desc">SPIDS disponibles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── REWARDS ─── -->
+    <div class="screen" id="screen-rewards">
+      <div class="pg-title">🎁 <span>Récompenses</span></div>
+      <div class="pg-sub">Échange tes SPIDS contre de vraies récompenses</div>
+      <div class="rewards-hero">
+        <div>
+          <div class="rh-lbl">Ton solde</div>
+          <div class="rh-amount" id="rwdBal">1 250</div>
+          <div class="rh-unit">SPIDS</div>
+        </div>
+        <div class="rh-dog">🐕</div>
+      </div>
+      <div class="rewards-grid" id="rewardsGrid"></div>
+    </div>
+
+    <!-- ─── ACCOUNT (NOUVELLE PAGE / ÉCRAN) ─── -->
+    <div class="screen" id="screen-account">
+      <div class="pg-title">👤 <span>Compte</span></div>
+      <div class="pg-sub">Gestion du profil · Historique · Statistiques</div>
+
+      <div class="spidy-bar">
+        <div class="spidy-dog">🐕</div>
+        <div class="spidy-text">
+          <div class="spidy-name">Spidy</div>
+          <div class="spidy-msg">Ici tu retrouves ton profil et ton historique. Tu peux ouvrir la fiche compte (style iOS) ou consulter l’historique directement.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
+        <div class="numbers-card">
+          <div class="numbers-title">Ton compte</div>
+          <div class="numbers-sub">Avatar, stats, menu</div>
+          <button class="btn-gold" id="openSheetBtn" style="width:100%;justify-content:center">👤 Ouvrir la fiche iOS</button>
+          <div style="height:12px"></div>
+          <div class="sel-track">
+            <div class="sel-track-lbl">SPIDS disponibles</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="sel-ball" style="width:auto;border-radius:14px;padding:0 12px;height:34px">🪙 <span id="acctBal" style="margin-left:6px">1 250</span></div>
+              <div style="font-size:12px;color:var(--ash)">Utilise tes SPIDS pour parier & échanger.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prize-panel">
+          <h3>📋 Historique</h3>
+          <div id="accountHistory"></div>
+          <div style="height:10px"></div>
+          <button class="qpick-btn" id="clearHistoryBtn">🧹 Effacer l’historique (demo)</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Mobile Bottom Tab -->
+<div id="mobTab">
+  <button class="tb-btn active" data-screen="home"><span class="tb-ic">🏠</span><span class="tb-lbl">Accueil</span></button>
+  <button class="tb-btn" data-screen="wheel"><span class="tb-ic">🎡</span><span class="tb-lbl">Roue</span></button>
+  <button class="tb-btn" data-screen="lottery"><span class="tb-ic">🎰</span><span class="tb-lbl">Loterie</span></button>
+  <button class="tb-btn" data-screen="scratch"><span class="tb-ic">💎</span><span class="tb-lbl">Grattage</span></button>
+  <button class="tb-btn" id="moreBtn"><span class="tb-ic">⋯</span><span class="tb-lbl">Plus</span></button>
+</div>
+
+<div id="morePopup">
+  <div class="mp-grid">
+    <div class="mp-item" data-screen="market"><div class="mp-item-ic">📈</div><div class="mp-item-lbl">Marchés</div></div>
+    <div class="mp-item" data-screen="tasks"><div class="mp-item-ic">✅</div><div class="mp-item-lbl">Tâches</div></div>
+    <div class="mp-item" data-screen="rewards"><div class="mp-item-ic">🎁</div><div class="mp-item-lbl">Rewards</div></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// "PAGES" EN UN SEUL FICHIER (ROUTER)
+// -> chaque section = une "page" via #home, #wheel, #lottery...
+// -> toutes les options de navigation y mènent
+// ══════════════════════════════════════════════════
+function routeTo(screen) {
+  // hash update (page)
+  if (location.hash.replace('#','') !== screen) {
+    history.pushState({screen:screen}, '', '#' + screen);
+  }
+  goTo(screen);
+}
+function getStartRoute() {
+  var h = (location.hash || '').replace('#','').trim();
+  return h || 'home';
+}
+window.addEventListener('popstate', function() {
+  goTo(getStartRoute());
+});
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+var SPIDS = 1250;
+var currentScreen = 'home';
+var canSpin = true;
+var wheelSpinning = false;
+var wheelRot = 0;
+var tasksDone = 3;
+var totalTasks = 7;
+var lottState = {maxN:49, pick:6, sel:[], name:'', prize:'', desc:''};
+var scratchCtx = null, scratchPainting = false, scratchDone = false;
+var currentScratchCard = null;
+var marketChoices = {}; // key -> {choice, amount, confirmed}
+
+// Historique simple (pour la page Compte)
+var HISTORY = [
+  {ic:'🎡', a:'Roue du Destin', d:"Aujourd'hui 14h32", v:'+200', cls:'p'},
+  {ic:'🎰', a:'Loterie Méga Fortune', d:"Aujourd'hui 10h15", v:'+75', cls:'p'},
+  {ic:'💎', a:'Grattage Gold Rush', d:'Hier 20h45', v:'+500', cls:'p'},
+  {ic:'✅', a:'Tâche : Connexion', d:'Hier 09h00', v:'+50', cls:'p'},
+  {ic:'📈', a:'Pari Bitcoin', d:'25 fév 11h00', v:'-100', cls:'m'},
+  {ic:'🎁', a:'Récompense Netflix', d:'24 fév 18h00', v:'-1000', cls:'m'},
+];
+
+// ══════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════
+function goTo(screen) {
+  // hide all screens
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+
+  // deactivate nav
+  var navBtns = document.querySelectorAll('.sb-btn, .tb-btn');
+  for (var j = 0; j < navBtns.length; j++) navBtns[j].classList.remove('active');
+
+  // show target
+  var target = document.getElementById('screen-' + screen);
+  if (target) target.classList.add('active');
+
+  // activate sidebar btn
+  var sb = document.querySelector('.sb-btn[data-screen="' + screen + '"]');
+  if (sb) sb.classList.add('active');
+
+  // activate tab btn
+  var tb = document.querySelector('.tb-btn[data-screen="' + screen + '"]');
+  if (tb) tb.classList.add('active');
+
+  currentScreen = screen;
+
+  // close more popup
+  var mp = document.getElementById('morePopup');
+  if (mp) mp.style.display = 'none';
+
+  // scroll to top
+  window.scrollTo(0, 0);
+  var main = document.getElementById('main');
+  if (main) main.scrollTop = 0;
+
+  // page-specific refresh
+  if (screen === 'account') renderAccount();
+
+  updateBalances();
+}
+
+// Sidebar nav buttons
+document.querySelectorAll('.sb-btn[data-screen]').forEach(function(btn) {
+  btn.addEventListener('click', function() { routeTo(this.dataset.screen); });
+});
+
+// Tab bar buttons
+document.querySelectorAll('.tb-btn[data-screen]').forEach(function(btn) {
+  btn.addEventListener('click', function() { routeTo(this.dataset.screen); });
+});
+
+// More button
+document.getElementById('moreBtn').addEventListener('click', function(e) {
+  e.stopPropagation();
+  var mp = document.getElementById('morePopup');
+  mp.style.display = mp.style.display === 'block' ? 'none' : 'block';
+});
+document.querySelectorAll('.mp-item[data-screen]').forEach(function(item) {
+  item.addEventListener('click', function() { routeTo(this.dataset.screen); });
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#morePopup') && !e.target.closest('#moreBtn')) {
+    document.getElementById('morePopup').style.display = 'none';
+  }
+});
+
+// data-goto buttons (hero etc)
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-goto]');
+  if (el) routeTo(el.dataset.goto);
+});
+
+// Profile buttons -> page Compte
+document.getElementById('sbProfile').addEventListener('click', function(){ routeTo('account'); });
+document.getElementById('mobAvatar').addEventListener('click', function(){ routeTo('account'); });
+
+// ══════════════════════════════════════════════════
+// BALANCES
+// ══════════════════════════════════════════════════
+function updateBalances() {
+  var f = SPIDS.toLocaleString('fr-FR');
+  var ids = ['sideBarBal','mobBal','homeStatSpids','rwdBal','acctBal'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = f;
+  });
+}
+
+function earn(amount, label) {
+  SPIDS += amount;
+  updateBalances();
+  if (amount > 0) toast('🪙 +' + amount + ' SPIDS · ' + label);
+  else toast('🪙 ' + amount + ' SPIDS · ' + label);
+  // log
+  HISTORY.unshift({
+    ic: amount > 0 ? '🪙' : '🧾',
+    a: label,
+    d: 'À l’instant',
+    v: (amount > 0 ? '+' : '') + amount,
+    cls: amount > 0 ? 'p' : 'm'
+  });
+  if (HISTORY.length > 30) HISTORY.pop();
+  if (currentScreen === 'account') renderAccountHistory();
+}
+
+// ══════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════
+var toastTimer = null;
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 3000);
+}
+
+// ══════════════════════════════════════════════════
+// RESULT MODAL
+// ══════════════════════════════════════════════════
+function showResult(emoji, title, sub, amount) {
+  document.getElementById('rmEmoji').textContent = emoji;
+  document.getElementById('rmTitle').textContent = title;
+  document.getElementById('rmSub').textContent = sub;
+  document.getElementById('rmAmount').textContent = amount;
+  document.getElementById('resultModal').classList.add('open');
+  spawnConfetti();
+}
+document.getElementById('rmClose').addEventListener('click', function() {
+  document.getElementById('resultModal').classList.remove('open');
+  document.querySelectorAll('.cf').forEach(function(c) { c.remove(); });
+});
+
+function spawnConfetti() {
+  var colors = ['#FFD700','#D4A017','#FFF','#FF6B35','#30D158','#F5C842'];
+  for (var i = 0; i < 80; i++) {
+    (function(i) {
+      setTimeout(function() {
+        var c = document.createElement('div');
+        c.className = 'cf';
+        var s = 5 + Math.random() * 7;
+        c.style.cssText = 'left:' + (10 + Math.random() * 80) + 'vw;top:-15px;width:' + s + 'px;height:' + s + 'px;background:' + colors[Math.floor(Math.random() * colors.length)] + ';' + (Math.random() > 0.5 ? 'border-radius:50%' : '') + ';animation:cfFall ' + (1.6 + Math.random() * 1.4) + 's ease-in forwards;animation-delay:' + (Math.random() * 0.3) + 's';
+        document.body.appendChild(c);
+      }, i * 18);
+    })(i);
+  }
+}
+
+// ══════════════════════════════════════════════════
+// PROFILE SHEET
+// ══════════════════════════════════════════════════
+function openProfile() {
+  document.getElementById('sheetBody').innerHTML = buildProfileHTML();
+  document.getElementById('overlay').classList.add('open');
+}
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+function buildProfileHTML() {
+  return '<div class="pf-ava">J</div>' +
+    '<div class="pf-name">Joueur_7842</div>' +
+    '<div class="pf-tag">⚡ Niveau 7 · Chasseur d\'Or</div>' +
+    '<div class="pf-stats">' +
+      '<div class="pfs-box"><div class="pfs-val">' + SPIDS.toLocaleString('fr-FR') + '</div><div class="pfs-lbl">SPIDS</div></div>' +
+      '<div class="pfs-box"><div class="pfs-val">47</div><div class="pfs-lbl">Parties</div></div>' +
+      '<div class="pfs-box"><div class="pfs-val">12</div><div class="pfs-lbl">Victoires</div></div>' +
+    '</div>' +
+    '<div class="pf-menu">' +
+      '<div class="pf-mi" onclick="showHistorySheet()"><div class="pf-mi-ic" style="background:rgba(255,215,0,.15)">📋</div> Historique<span class="pf-arr">›</span></div>' +
+      '<div class="pf-mi" onclick="toast(\'⚙️ Paramètres bientôt\')"><div class="pf-mi-ic" style="background:rgba(0,122,255,.15)">⚙️</div> Paramètres<span class="pf-arr">›</span></div>' +
+      '<div class="pf-mi" onclick="toast(\'🏆 Classement bientôt\')"><div class="pf-mi-ic" style="background:rgba(255,215,0,.15)">🏆</div> Classement<span class="pf-arr">›</span></div>' +
+    '</div>';
+}
+
+function showHistorySheet() {
+  var html = '<button onclick="openProfile()" style="background:none;border:none;color:var(--gold);font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:18px">‹ Retour</button>';
+  html += '<div style="font-size:20px;font-weight:900;margin-bottom:14px;letter-spacing:-.4px">Historique</div>';
+  HISTORY.slice(0, 12).forEach(function(h) {
+    html += '<div class="hist-item"><div class="hi-ic">' + h.ic + '</div><div class="hi-c"><div class="hi-a">' + h.a + '</div><div class="hi-d">' + h.d + '</div></div><div class="hi-v ' + h.cls + '">' + h.v + '</div></div>';
+  });
+  document.getElementById('sheetBody').innerHTML = html;
+}
+
+// Page Compte
+function renderAccount() {
+  renderAccountHistory();
+  updateBalances();
+}
+function renderAccountHistory() {
+  var el = document.getElementById('accountHistory');
+  if (!el) return;
+  el.innerHTML = HISTORY.slice(0, 10).map(function(h) {
+    return '<div class="hist-item"><div class="hi-ic">' + h.ic + '</div><div class="hi-c"><div class="hi-a">' + h.a + '</div><div class="hi-d">' + h.d + '</div></div><div class="hi-v ' + h.cls + '">' + h.v + '</div></div>';
+  }).join('');
+}
+document.getElementById('openSheetBtn').addEventListener('click', openProfile);
+document.getElementById('clearHistoryBtn').addEventListener('click', function(){
+  HISTORY = [];
+  toast('🧹 Historique effacé (demo)');
+  renderAccountHistory();
+});
+
+// ══════════════════════════════════════════════════
+// WHEEL
+// ══════════════════════════════════════════════════
+var wSegs = [
+  {label:'50 SPIDS',  val:50,  color:'#7A5200', tx:'#FFD700'},
+  {label:'100 SPIDS', val:100, color:'#C8900C', tx:'#000'},
+  {label:'25 SPIDS',  val:25,  color:'#4A3000', tx:'#FFD700'},
+  {label:'200 SPIDS', val:200, color:'#F0BC40', tx:'#000'},
+  {label:'Ticket 🎟', val:0,   color:'#4A1A82', tx:'#FFF'},
+  {label:'75 SPIDS',  val:75,  color:'#9A7200', tx:'#FFF'},
+  {label:'500 🏆',    val:500, color:'#1A0600', tx:'#FFD700'},
+  {label:'150 SPIDS', val:150, color:'#D4A017', tx:'#000'},
+];
+
+function buildPrizeList() {
+  var el = document.getElementById('prizeList');
+  if (!el) return;
+  el.innerHTML = wSegs.map(function(s) {
+    return '<div class="prize-row"><div class="pr-dot" style="background:' + s.color + ';border:1px solid ' + s.tx + '44"></div><div class="pr-name">' + s.label + '</div><div class="pr-val">' + (s.val > 0 ? '+' + s.val : '🎟️ Free') + '</div></div>';
+  }).join('');
+}
+
+function buildStreakDays() {
+  var el = document.getElementById('streakDays');
+  if (!el) return;
+  var labels = ['L','M','M','J','V','S','D'];
+  el.innerHTML = labels.map(function(d, i) {
+    var cls = i < 4 ? 'done' : (i === 4 ? 'today' : '');
+    return '<div class="sd-item ' + cls + '">' + (cls === 'done' ? '✓' : d) + '</div>';
+  }).join('');
+}
+
+function drawWheel(angle) {
+  var canvas = document.getElementById('wheelCanvas');
+  if (!canvas) return;
+  var sz = canvas.width;
+  var ctx = canvas.getContext('2d');
+  var cx = sz/2, cy = sz/2, r = sz/2 - 4;
+  var seg = (Math.PI * 2) / wSegs.length;
+  ctx.clearRect(0, 0, sz, sz);
+
+  // glow ring
+  var og = ctx.createRadialGradient(cx,cy,r-2,cx,cy,r+10);
+  og.addColorStop(0,'rgba(255,215,0,.5)');
+  og.addColorStop(1,'rgba(255,215,0,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,r+8,0,Math.PI*2);
+  ctx.fillStyle = og; ctx.fill();
+
+  wSegs.forEach(function(s, i) {
+    var a1 = angle + i * seg - Math.PI/2;
+    var a2 = a1 + seg;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,a1,a2); ctx.closePath();
+    ctx.fillStyle = s.color; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2; ctx.stroke();
+    // text
+    ctx.save();
+    ctx.translate(cx,cy); ctx.rotate(a1 + seg/2);
+    ctx.textAlign = 'right'; ctx.fillStyle = s.tx;
+    ctx.font = 'bold ' + (s.label.length > 7 ? 10 : 12) + 'px Inter,sans-serif';
+    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 3;
+    ctx.fillText(s.label, r - 10, 4);
+    ctx.restore();
+  });
+
+  // border
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle = 'rgba(255,215,0,.7)'; ctx.lineWidth = 4; ctx.stroke();
+  // dividers
+  wSegs.forEach(function(_, i) {
+    var a = angle + i * seg - Math.PI/2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx + Math.cos(a)*r, cy + Math.sin(a)*r);
+    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 1.5; ctx.stroke();
+  });
+}
+
+function spinWheel() {
+  if (!canSpin || wheelSpinning) return;
+  wheelSpinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('wCenter').style.pointerEvents = 'none';
+  document.getElementById('spinMsg').textContent = '🐕 Spidy tourne la roue...';
+
+  var extra = 1800 + Math.random() * 1440;
+  var target = wheelRot + extra;
+  var dur = 4200;
+  var t0 = performance.now();
+  var from = wheelRot;
+
+  function ease(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function frame(now) {
+    var p = Math.min((now - t0) / dur, 1);
+    wheelRot = from + (target - from) * ease(p);
+    drawWheel(wheelRot * Math.PI / 180);
+    if (p < 1) { requestAnimationFrame(frame); return; }
+
+    wheelSpinning = false;
+    canSpin = false;
+    var norm = ((wheelRot % 360) + 360) % 360;
+    var segDeg = 360 / wSegs.length;
+    var idx = Math.floor(((360 - norm) % 360) / segDeg) % wSegs.length;
+    var won = wSegs[idx];
+
+    setTimeout(function() {
+      if (won.val > 0) {
+        earn(won.val, 'Roue du Destin');
+        showResult('🎡', '+' + won.val + ' SPIDS !', "La roue t'a souri !", '+' + won.val + ' SPIDS');
+      } else {
+        toast('🎟️ Un ticket de grattage ajouté à ton compte !');
+        showResult('🎟️', 'Ticket Gratuit !', "Un ticket de grattage t'attend !", '1 Ticket Offert');
+      }
+      document.getElementById('spinBtn').textContent = '✅ Reviens demain !';
+      document.getElementById('spinMsg').textContent = 'Prochain spin demain';
+    }, 400);
+  }
+  requestAnimationFrame(frame);
+}
+document.getElementById('spinBtn').addEventListener('click', spinWheel);
+document.getElementById('wCenter').addEventListener('click', spinWheel);
+
+// ══════════════════════════════════════════════════
+// LOTTERY
+// ══════════════════════════════════════════════════
+var LOTTS = [
+  {id:'mega', name:'Méga Fortune', prize:'50 000 SPIDS', desc:'Tirage dans 4h 23min', maxN:49, pick:6, cls:'lot-c1', badge:'🌟 Jackpot'},
+  {id:'el',   name:'El Dorado',    prize:'20 000 SPIDS', desc:'Tirage dans 1h 10min', maxN:36, pick:5, cls:'lot-c2', badge:'🏆 Populaire'},
+  {id:'qw',   name:'Quick Win',    prize:'5 000 SPIDS',  desc:'Tirage dans 12min',   maxN:20, pick:4, cls:'lot-c3', badge:'⚡ Rapide'},
+];
+
+function buildLotteryGrid() {
+  var el = document.getElementById('lotteryGrid');
+  if (!el) return;
+  el.innerHTML = LOTTS.map(function(l) {
+    return '<div class="lot-card ' + l.cls + '" data-lotid="' + l.id + '">' +
+      '<div class="lot-badge">' + l.badge + '</div>' +
+      '<div class="lot-name">' + l.name + '</div>' +
+      '<div class="lot-prize">' + l.prize + '</div>' +
+      '<div class="lot-meta">' + l.desc + ' · ' + l.pick + '/' + l.maxN + '</div>' +
+      '<div class="lot-bg">' + l.pick + '</div>' +
+      '<div class="lot-arrow">›</div>' +
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.lot-card').forEach(function(card) {
+    card.addEventListener('click', function() { openLottery(this.dataset.lotid); });
+  });
+}
+
+function openLottery(id) {
+  var l = LOTTS.find(function(x) { return x.id === id; });
+  lottState = {maxN:l.maxN, pick:l.pick, sel:[], name:l.name, prize:l.prize, desc:l.desc};
+  document.getElementById('pickerTitle').textContent = l.name;
+  document.getElementById('pickerSub').textContent = 'Sélectionne ' + l.pick + ' numéros parmi ' + l.maxN;
+  document.getElementById('pickerPrize').textContent = l.prize;
+  document.getElementById('pickerDesc').textContent = l.desc;
+  buildNumsGrid(l.maxN);
+  renderSelBalls();
+  document.getElementById('lotteryListView').classList.add('hidden');
+  document.getElementById('lotteryPicker').classList.add('show');
+}
+
+document.getElementById('lotBackBtn').addEventListener('click', function() {
+  document.getElementById('lotteryListView').classList.remove('hidden');
+  document.getElementById('lotteryPicker').classList.remove('show');
+});
+
+function buildNumsGrid(max) {
+  var g = document.getElementById('numsGrid');
+  g.innerHTML = '';
+  for (var i = 1; i <= max; i++) {
+    var b = document.createElement('button');
+    b.className = 'num-btn';
+    b.textContent = i;
+    b.dataset.num = i;
+    b.addEventListener('click', (function(n, btn) {
+      return function() { toggleNum(btn, n); };
+    })(i, b));
+    g.appendChild(b);
+  }
+}
+
+function toggleNum(btn, n) {
+  var idx = lottState.sel.indexOf(n);
+  if (idx >= 0) {
+    lottState.sel.splice(idx, 1);
+    btn.classList.remove('picked');
+  } else {
+    if (lottState.sel.length >= lottState.pick) {
+      toast('Maximum ' + lottState.pick + ' numéros ! Désélectionne-en un.');
+      return;
+    }
+    lottState.sel.push(n);
+    btn.classList.add('picked');
+  }
+  renderSelBalls();
+}
+
+function renderSelBalls() {
+  var wrap = document.getElementById('selBalls');
+  var sorted = lottState.sel.slice().sort(function(a,b){return a-b;});
+  wrap.innerHTML = sorted.map(function(n) {
+    return '<div class="sel-ball">' + n + '</div>';
+  }).join('');
+  var done = lottState.sel.length === lottState.pick;
+  document.getElementById('validateBtn').disabled = !done;
+  document.getElementById('vHint').textContent = lottState.sel.length + '/' + lottState.pick + ' numéros sélectionnés';
+}
+
+document.getElementById('quickPickBtn').addEventListener('click', function() {
+  lottState.sel = [];
+  document.querySelectorAll('.num-btn').forEach(function(b) { b.classList.remove('picked'); });
+  var pool = [];
+  for (var i = 1; i <= lottState.maxN; i++) pool.push(i);
+  while (lottState.sel.length < lottState.pick) {
+    var ri = Math.floor(Math.random() * pool.length);
+    var n = pool.splice(ri, 1)[0];
+    lottState.sel.push(n);
+    var btn = document.querySelector('.num-btn[data-num="' + n + '"]');
+    if (btn) btn.classList.add('picked');
+  }
+  renderSelBalls();
+  toast('🎲 Numéros générés aléatoirement !');
+});
+
+document.getElementById('validateBtn').addEventListener('click', function() {
+  if (lottState.sel.length < lottState.pick) return;
+  var win = Math.random() < 0.2;
+  document.getElementById('lotteryListView').classList.remove('hidden');
+  document.getElementById('lotteryPicker').classList.remove('show');
+  setTimeout(function() {
+    if (win) {
+      var amt = Math.floor(Math.random() * 4000) + 200;
+      earn(amt, 'Loterie ' + lottState.name);
+      showResult('🎰', 'JACKPOT !', 'Tu as gagné à ' + lottState.name + ' !', '+' + amt + ' SPIDS');
+    } else {
+      earn(5, 'Ticket soumis');
+      toast('🎫 Ticket validé ! Résultats dans ' + lottState.desc);
+    }
+  }, 200);
+});
+
+// ══════════════════════════════════════════════════
+// SCRATCH
+// ══════════════════════════════════════════════════
+// ⚠️ FIX IMPORTANT : les clés emoji doivent être entre guillemets sinon le JS casse.
+var SCRATCHES = [
+  {name:'Gold Rush',     prize:'10 000', icon:'💰', cls:'sg1', syms:['💰','💰','💰','💎','⭐','🔑','💰','💎','⭐'], win:'💰', prices:{"💰":"500","💎":"1000","⭐":"250","🔑":"100"}},
+  {name:'Spidy Jackpot', prize:'50 000', icon:'🐕', cls:'sg2', syms:['🐕','💎','🐕','⭐','🐕','🔑','💎','⭐','💰'], win:'🐕', prices:{"🐕":"5000","💎":"1000","⭐":"250","🔑":"100","💰":"500"}},
+  {name:'Diamant Noir',  prize:'5 000',  icon:'💎', cls:'sg3', syms:['💎','⭐','💎','🔑','💎','💰','⭐','🔑','💰'], win:'💎', prices:{"💎":"1000","⭐":"250","🔑":"100","💰":"500"}},
+  {name:'Lucky Star',    prize:'25 000', icon:'⭐', cls:'sg4', syms:['⭐','⭐','⭐','💰','🔑','💎','💰','🐕','⭐'], win:'⭐', prices:{"⭐":"250","💰":"500","🔑":"100","💎":"1000","🐕":"5000"}},
+];
+
+function buildScratchGrid() {
+  var el = document.getElementById('scratchGrid');
+  if (!el) return;
+  el.innerHTML = SCRATCHES.map(function(c, i) {
+    return '<div class="sc-tile" data-sci="' + i + '">' +
+      '<div class="sc-cover ' + c.cls + '">' + c.icon + '</div>' +
+      '<div class="sc-info">' +
+        '<div class="sc-name">' + c.name + '</div>' +
+        '<div class="sc-prize">' + c.prize + '</div>' +
+        '<div class="sc-sub">SPIDS max</div>' +
+        '<div class="sc-badge">GRATUIT</div>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.sc-tile').forEach(function(tile) {
+    tile.addEventListener('click', function() { openScratch(parseInt(this.dataset.sci,10)); });
+  });
+}
+
+function openScratch(idx) {
+  currentScratchCard = SCRATCHES[idx];
+  scratchDone = false;
+  document.getElementById('scratchTitle').textContent = currentScratchCard.name;
+  document.getElementById('scratchListView').classList.add('hidden');
+  document.getElementById('scratchGame').classList.add('show');
+  buildScratchLegend();
+  setTimeout(function() { initScratchCanvas(); }, 60);
+}
+
+document.getElementById('scratchBackBtn').addEventListener('click', function() {
+  document.getElementById('scratchListView').classList.remove('hidden');
+  document.getElementById('scratchGame').classList.remove('show');
+  scratchCtx = null; scratchDone = false; scratchPainting = false;
+});
+
+function buildScratchLegend() {
+  var c = currentScratchCard;
+  var uniq = [];
+  c.syms.forEach(function(s) { if (uniq.indexOf(s) < 0) uniq.push(s); });
+  var el = document.getElementById('scratchLegend');
+  el.innerHTML = uniq.map(function(s) {
+    return '<div class="ssl-row">' +
+      '<div class="ssl-icon">' + s + '</div>' +
+      '<div class="ssl-name">' + (s === c.win ? '<strong>x3 = Jackpot !</strong>' : 'Symbole') + '</div>' +
+      '<div class="ssl-val">' + (c.prices[s] || '0') + ' SPIDS</div>' +
+      '</div>';
+  }).join('');
+}
+
+function initScratchCanvas() {
+  var c = currentScratchCard;
+  var wrap = document.getElementById('scratchWrap');
+  var canvas = document.getElementById('scratchCanvas');
+  var w = wrap.offsetWidth || 400;
+  var h = 240;
+  canvas.width = w; canvas.height = h;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  scratchCtx = canvas.getContext('2d');
+
+  // underlying
+  var under = document.getElementById('scratchUnder');
+  under.innerHTML = c.syms.map(function(s) {
+    return '<div class="su-cell"><div class="su-icon">' + s + '</div><div class="su-val">' + (c.prices[s]||'0') + '</div></div>';
+  }).join('');
+
+  // gold cover
+  var grd = scratchCtx.createLinearGradient(0,0,w,h);
+  grd.addColorStop(0,'#6A4A00');
+  grd.addColorStop(0.3,'#C8900C');
+  grd.addColorStop(0.5,'#F0BC40');
+  grd.addColorStop(0.7,'#C8900C');
+  grd.addColorStop(1,'#8A6000');
+  scratchCtx.fillStyle = grd;
+  scratchCtx.fillRect(0,0,w,h);
+
+  // texture
+  for (var i = 0; i < 600; i++) {
+    scratchCtx.fillStyle = 'rgba(0,0,0,.04)';
+    scratchCtx.beginPath();
+    scratchCtx.arc(Math.random()*w, Math.random()*h, .5+Math.random()*1.5, 0, Math.PI*2);
+    scratchCtx.fill();
+  }
+
+  scratchCtx.fillStyle = 'rgba(0,0,0,.4)';
+  scratchCtx.font = 'bold 17px Inter,sans-serif';
+  scratchCtx.textAlign = 'center';
+  scratchCtx.fillText('✦ GRATTE ICI ✦', w/2, h/2);
+  scratchCtx.font = '12px Inter,sans-serif';
+  scratchCtx.fillText('SPIDY · ' + c.name, w/2, h/2 + 22);
+
+  scratchPainting = false;
+
+  function down(e){ scratchPainting=true; doScratch(e,canvas); }
+  function move(e){ if(scratchPainting) doScratch(e,canvas); }
+  function up(){ scratchPainting=false; checkAutoReveal(canvas); }
+
+  canvas.onmousedown  = down;
+  canvas.onmousemove  = move;
+  canvas.onmouseup    = up;
+
+  canvas.ontouchstart = function(e){ e.preventDefault(); down(e.touches[0]); };
+  canvas.ontouchmove  = function(e){ e.preventDefault(); move(e.touches[0]); };
+  canvas.ontouchend   = function(){ up(); };
+}
+
+function doScratch(e, canvas) {
+  if (!scratchCtx || scratchDone) return;
+  var r = canvas.getBoundingClientRect();
+  var sx = canvas.width / r.width;
+  var sy = canvas.height / r.height;
+  var x = (e.clientX - r.left) * sx;
+  var y = (e.clientY - r.top) * sy;
+  scratchCtx.globalCompositeOperation = 'destination-out';
+  scratchCtx.beginPath();
+  scratchCtx.arc(x, y, 28, 0, Math.PI*2);
+  scratchCtx.fill();
+}
+
+function checkAutoReveal(canvas) {
+  if (scratchDone || !scratchCtx) return;
+  var d = scratchCtx.getImageData(0,0,canvas.width,canvas.height).data;
+  var t = 0;
+  for (var i = 3; i < d.length; i += 4) if (d[i] < 128) t++;
+  if (t / (canvas.width * canvas.height) > 0.48) revealScratch();
+}
+
+function revealScratch() {
+  if (scratchDone) return;
+  scratchDone = true;
+  if (scratchCtx) scratchCtx.clearRect(0,0,9999,9999);
+  var c = currentScratchCard;
+  var wins = c.syms.filter(function(s){return s===c.win;}).length;
+  setTimeout(function() {
+    if (wins >= 3) {
+      var amt = parseInt(c.prices[c.win],10) * wins;
+      earn(amt, 'Grattage ' + c.name);
+      showResult('💎', 'Tu as gagné !', '3 ' + c.win + ' — ' + c.name + ' !', '+' + amt + ' SPIDS');
+    } else {
+      earn(10, 'Participation grattage');
+      toast('😅 Pas de chance sur ' + c.name + ' · +10 SPIDS de participation');
+    }
+  }, 350);
+}
+document.getElementById('revealBtn').addEventListener('click', revealScratch);
+
+// ══════════════════════════════════════════════════
+// MARKET
+// ══════════════════════════════════════════════════
+var MARKETS = [
+  {key:'btc', cat:'🪙 Crypto',    q:'Bitcoin dépassera les 150 000$ avant fin 2025 ?', yo:'2.1x', no:'1.4x', pool:'12 500', time:'18j 4h'},
+  {key:'psg', cat:'⚽ Sport',     q:'Le PSG gagnera la Ligue des Champions 2025 ?',     yo:'3.5x', no:'1.2x', pool:'8 200',  time:'45j'},
+  {key:'apl', cat:'🤖 Tech',      q:'Apple lancera l\'iPhone 17 avec caméra 108MP ?',  yo:'1.8x', no:'1.6x', pool:'5 700',  time:'90j'},
+  {key:'fr',  cat:'🌍 Monde',     q:'La France gagnera +5 médailles or aux JO 2028 ?', yo:'2.2x', no:'1.5x', pool:'3 100',  time:'850j'},
+];
+var betAmounts = [25, 50, 100, 200];
+
+function buildMarketGrid() {
+  var el = document.getElementById('marketGrid');
+  if (!el) return;
+  el.innerHTML = MARKETS.map(function(m) {
+    var mc = marketChoices[m.key] || {};
+    var ysel = mc.choice === 'yes' ? 'selected' : '';
+    var nsel = mc.choice === 'no' ? 'selected' : '';
+    var showAmounts = mc.choice && !mc.confirmed;
+    var amtsHTML = betAmounts.map(function(a) {
+      return '<button class="amt-btn' + (mc.amount === a ? ' chosen' : '') + '" onclick="setAmt(\'' + m.key + '\',' + a + ')">' + a + '</button>';
+    }).join('');
+    var confirmHTML = mc.choice ? '<button class="confirm-btn" onclick="confirmBet(\'' + m.key + '\')">✓ Confirmer</button>' : '';
+
+    return '<div class="mkt-card" id="mc-' + m.key + '">' +
+      '<div class="mkt-cat">' + m.cat + '</div>' +
+      '<div class="mkt-q">' + m.q + '</div>' +
+      '<div class="mkt-btns">' +
+        '<button class="mkt-btn yes ' + ysel + '" onclick="chooseMarket(\'' + m.key + '\',\'yes\')">OUI <span class="mkt-odds">+' + m.yo + '</span></button>' +
+        '<button class="mkt-btn no ' + nsel + '" onclick="chooseMarket(\'' + m.key + '\',\'no\')">NON <span class="mkt-odds">+' + m.no + '</span></button>' +
+      '</div>' +
+      (showAmounts ? '<div class="mkt-amounts">' + amtsHTML + confirmHTML + '</div>' : '') +
+      (mc.confirmed ? '<div style="font-size:12px;color:var(--green);margin-top:8px;font-weight:700">✅ Pari enregistré · ' + mc.amount + ' SPIDS misés</div>' : '') +
+      '<div class="mkt-foot"><div class="mkt-foot">Pool : <strong>' + m.pool + ' SPIDS</strong></div><div>⏰ ' + m.time + '</div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function chooseMarket(key, choice) {
+  if (marketChoices[key] && marketChoices[key].confirmed) return;
+  var prev = marketChoices[key] || {};
+  marketChoices[key] = {choice: choice, amount: prev.amount || 50, confirmed: false};
+  buildMarketGrid();
+}
+
+function setAmt(key, amt) {
+  if (!marketChoices[key]) return;
+  marketChoices[key].amount = amt;
+  buildMarketGrid();
+}
+
+function confirmBet(key) {
+  var mc = marketChoices[key];
+  if (!mc || !mc.choice) return;
+  var amt = mc.amount || 50;
+  if (SPIDS < amt) { toast('❌ Pas assez de SPIDS ! Il te faut ' + (amt - SPIDS) + ' de plus.'); return; }
+  earn(-amt, 'Pari prédiction');
+  marketChoices[key].confirmed = true;
+  buildMarketGrid();
+  showResult('📈', 'Pari enregistré !', 'Tu as misé ' + amt + ' SPIDS sur ' + (mc.choice === 'yes' ? 'OUI' : 'NON'), '-' + amt + ' SPIDS misés');
+}
+
+// ══════════════════════════════════════════════════
+// TASKS
+// ══════════════════════════════════════════════════
+var TASKS = [
+  {id:'t1',icon:'🌅',name:'Connexion du jour',     desc:'Connecte-toi quotidiennement', reward:50,  done:true},
+  {id:'t2',icon:'🎡',name:'Tourner la roue',        desc:'Effectue ton spin quotidien',   reward:30,  done:true},
+  {id:'t3',icon:'📲',name:'Partager SPIDY',         desc:'Partage le site avec un ami',   reward:100, done:true},
+  {id:'t4',icon:'🎰',name:'Jouer à la loterie',     desc:'Valide un ticket de loterie',   reward:75,  done:false},
+  {id:'t5',icon:'📈',name:'Faire une prédiction',   desc:'Place un pari sur un marché',   reward:150, done:false},
+  {id:'t6',icon:'🏆',name:'7 jours consécutifs',    desc:'Connexions 7j de suite',        reward:500, done:false, weekly:true},
+  {id:'t7',icon:'👥',name:'Inviter un ami',         desc:"Ton ami s'inscrit via ton lien", reward:500, done:false, weekly:true},
+];
+
+function buildTasksList() {
+  var el = document.getElementById('tasksList');
+  if (!el) return;
+  var daily = TASKS.filter(function(t){return !t.weekly;});
+  var weekly = TASKS.filter(function(t){return t.weekly;});
+  var html = '<div class="task-sec-lbl">Quotidiennes</div>';
+  daily.forEach(function(t) { html += taskCardHTML(t); });
+  html += '<div class="task-sec-lbl">Hebdomadaires</div>';
+  weekly.forEach(function(t) { html += taskCardHTML(t); });
+  el.innerHTML = html;
+
+  el.querySelectorAll('.task-card:not(.done)').forEach(function(card) {
+    card.addEventListener('click', function() { doTask(this.dataset.tid); });
+  });
+}
+
+function taskCardHTML(t) {
+  return '<div class="task-card' + (t.done?' done':'') + '" data-tid="' + t.id + '">' +
+    '<div class="tc-icon">' + t.icon + '</div>' +
+    '<div class="tc-info"><div class="tc-name">' + t.name + '</div><div class="tc-desc">' + t.desc + '</div></div>' +
+    (t.done ? '<div class="tc-done">✅</div>' : '<div class="tc-reward">🪙 +' + t.reward + '</div>') +
+    '</div>';
+}
+
+function doTask(tid) {
+  var t = TASKS.find(function(x){return x.id===tid;});
+  if (!t || t.done) return;
+  t.done = true;
+  tasksDone++;
+  earn(t.reward, 'Tâche : ' + t.name);
+  buildTasksList();
+  updateTaskProgress();
+  if (tasksDone === totalTasks) {
+    setTimeout(function() {
+      earn(100, 'Bonus toutes les tâches');
+      showResult('🏆','Toutes les tâches !',"Bonus débloqué pour avoir tout complété !",'+100 SPIDS BONUS');
+    }, 600);
+  }
+}
+
+function updateTaskProgress() {
+  var pct = (tasksDone / totalTasks) * 100;
+  var bar = document.getElementById('progBar');
+  var ring = document.getElementById('progRing');
+  var txt = document.getElementById('progText');
+  var spy = document.getElementById('taskCountSpidy');
+  if (bar) bar.style.width = pct + '%';
+  if (ring) ring.style.strokeDashoffset = 150.8 - (150.8 * pct / 100);
+  if (txt) txt.textContent = tasksDone + '/' + totalTasks;
+  if (spy) spy.textContent = tasksDone + '/' + totalTasks + ' tâches';
+}
+
+// ══════════════════════════════════════════════════
+// REWARDS
+// ══════════════════════════════════════════════════
+var REWARDS = [
+  {name:'Amazon',      type:'Carte cadeau 5€',    cost:500,  icon:'🛒',cls:'ri1'},
+  {name:'Netflix',     type:'1 mois gratuit',      cost:1000, icon:'🎬',cls:'ri2'},
+  {name:'Spotify',     type:'1 mois Premium',      cost:800,  icon:'🎵',cls:'ri3'},
+  {name:'Ticket VIP',  type:'Grattage Premium x5', cost:300,  icon:'💎',cls:'ri5'},
+  {name:'Cashback',    type:'10€ sur PayPal',       cost:2000, icon:'💳',cls:'ri1'},
+  {name:'Loterie VIP', type:'Ticket exclusif',      cost:250,  icon:'🌟',cls:'ri6'},
+];
+
+function buildRewardsGrid() {
+  var el = document.getElementById('rewardsGrid');
+  if (!el) return;
+  el.innerHTML = REWARDS.map(function(r,i) {
+    return '<div class="rwd-card" data-rwdi="' + i + '">' +
+      '<div class="rwd-img ' + r.cls + '">' + r.icon + '</div>' +
+      '<div class="rwd-body">' +
+        '<div class="rwd-name">' + r.name + '</div>' +
+        '<div class="rwd-type">' + r.type + '</div>' +
+        '<div class="rwd-price">🪙 ' + r.cost.toLocaleString('fr-FR') + '</div>' +
+        '<button class="rwd-btn">Échanger</button>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.rwd-card').forEach(function(card) {
+    card.addEventListener('click', function() { redeemReward(parseInt(this.dataset.rwdi,10)); });
+  });
+}
+
+function redeemReward(idx) {
+  var r = REWARDS[idx];
+  if (SPIDS < r.cost) {
+    toast('❌ Pas assez de SPIDS ! Il te faut ' + (r.cost - SPIDS).toLocaleString('fr-FR') + ' de plus.');
+    return;
+  }
+  earn(-r.cost, 'Récompense : ' + r.name);
+  showResult('🎁','Récompense obtenue !', r.name + ' · ' + r.type, '-' + r.cost + ' SPIDS');
+  document.getElementById('rwdBal').textContent = SPIDS.toLocaleString('fr-FR');
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+buildPrizeList();
+buildStreakDays();
+buildLotteryGrid();
+buildScratchGrid();
+buildMarketGrid();
+buildTasksList();
+buildRewardsGrid();
+updateTaskProgress();
+updateBalances();
+drawWheel(0);
+
+// start route
+goTo(getStartRoute());
+</script>
+</body>
+</html>
