@@ -1,1754 +1,253 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>SPIDY — Play Free. Win Real.</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SPIDWIN — Joue gratuitement. Gagne pour de vrai.</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ── RESET ── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{font-size:16px}
-body{background:#0A0A0C;color:#fff;font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
-button{font-family:inherit;cursor:pointer;border:none;outline:none}
-input{font-family:inherit}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--gold:#FFE27A;--gold2:#F6C84C;--violet:#C24BFF;--violet2:#8B1CFF;--bg1:#09060F;--bg2:#150A23;--card:#160E22;--card2:#211234;--line:rgba(255,255,255,.09);--muted:#B9A9CC;--green:#30D158;--red:#FF5A52;--shadow:0 18px 60px rgba(0,0,0,.35);--sidebar:220px;--tabh:72px}
+html,body{height:100%}
+body{font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;background:radial-gradient(circle at 15% 0%, rgba(194,75,255,.18), transparent 28%),radial-gradient(circle at 100% 15%, rgba(255,226,122,.10), transparent 24%),linear-gradient(180deg,var(--bg1),#11081B 45%,var(--bg2))}
+button{font:inherit;border:0;cursor:pointer} img{display:block;max-width:100%}
+.mascot{background:center/contain no-repeat;display:block;flex-shrink:0}
+.goldText{background:linear-gradient(135deg,#fff5cf 0%,var(--gold) 30%,#f1b8ff 70%,var(--violet2) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#app{display:flex;min-height:100vh}#sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);padding:18px 12px;background:linear-gradient(180deg,rgba(18,10,29,.98),rgba(11,7,19,.98));border-right:1px solid rgba(255,226,122,.12);backdrop-filter:blur(20px);display:flex;flex-direction:column;z-index:50}#main{margin-left:var(--sidebar);flex:1;min-width:0}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:6px 8px 18px}.sb-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,rgba(255,226,122,.15),rgba(194,75,255,.16));display:grid;place-items:center;box-shadow:0 0 22px rgba(255,226,122,.15)}.sb-mark::before{content:'★';font-size:20px;color:var(--gold)} .sb-name{font-size:20px;font-weight:900;letter-spacing:-.5px}
+.sb-section{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 10px 4px}.sb-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:12px;background:none;color:rgba(255,255,255,.68);font-size:13px;font-weight:700;text-align:left;transition:.15s}.sb-btn:hover{background:linear-gradient(135deg,rgba(194,75,255,.10),rgba(255,226,122,.07));color:#fff}.sb-btn.active{background:linear-gradient(135deg,rgba(194,75,255,.18),rgba(255,226,122,.14));color:var(--gold);border:1px solid rgba(255,226,122,.2)}.sb-ic{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.05);flex-shrink:0}
+.sb-bottom{margin-top:auto}.balanceCard{display:flex;gap:8px;align-items:center;padding:12px;border-radius:14px;background:linear-gradient(135deg,rgba(255,226,122,.13),rgba(194,75,255,.12));border:1px solid rgba(255,226,122,.18)}.balanceCard strong{font-size:20px}.profileMini{display:flex;gap:10px;align-items:center;padding:10px 6px}.ava{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),var(--violet));color:#17091f;font-weight:900}
+#mobTop{display:none;position:sticky;top:0;z-index:55;padding:10px 14px;background:rgba(10,7,16,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);justify-content:space-between;align-items:center}#mobTab{display:none;position:fixed;left:0;right:0;bottom:0;height:var(--tabh);z-index:60;background:rgba(14,10,24,.97);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding-top:8px}#mobTab .tb-btn{flex:1;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;font-weight:700}.tb-btn.active{color:var(--gold)}
+#wheelBubble{display:none;position:fixed;right:16px;bottom:calc(var(--tabh) + 12px);z-index:65;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);box-shadow:0 18px 40px rgba(0,0,0,.35),0 0 28px rgba(255,226,122,.28);align-items:center;justify-content:center;animation:floaty 3s ease-in-out infinite}#wheelBubble .mascot{width:42px;height:42px;background-image:url('assets/wheel-main.png')}@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.screen{display:none;padding:clamp(14px,2.4vw,28px);animation:fadeIn .22s ease}.screen.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pg-title{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-1px;margin-bottom:4px}.pg-sub{font-size:14px;color:var(--muted);margin-bottom:18px}
+.hero{position:relative;overflow:hidden;border:1px solid rgba(255,226,122,.16);border-radius:26px;padding:22px;background:linear-gradient(135deg,#251034,#3e145b 35%,#28103f 70%,#1a0b2a);box-shadow:var(--shadow);margin-bottom:16px}.hero::before{content:'';position:absolute;inset:auto -70px -70px auto;width:250px;height:250px;background:radial-gradient(circle,rgba(255,226,122,.14),transparent 65%)}.hero-tag{display:inline-flex;gap:6px;align-items:center;padding:5px 12px;border-radius:99px;background:rgba(48,209,88,.12);border:1px solid rgba(48,209,88,.18);color:var(--green);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}.hero h1{font-size:clamp(30px,5vw,48px);line-height:.96;max-width:620px;font-weight:900;letter-spacing:-2px;margin-bottom:10px}.hero p{max-width:560px;color:rgba(255,255,255,.76);line-height:1.5;margin-bottom:16px}
+.heroBtns{display:flex;gap:10px;flex-wrap:wrap}.btnGold,.btnGhost{padding:13px 20px;border-radius:99px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center}.btnGold{background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);color:#150717;box-shadow:0 12px 28px rgba(255,226,122,.16)}.btnGhost{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.heroDogWrap{position:absolute;right:clamp(8px,2vw,22px);bottom:-6px;width:clamp(180px,26vw,290px);max-width:40%;pointer-events:none;z-index:1}.heroDog{aspect-ratio:1/1.45;background-image:url('assets/coin.png');background-position:right bottom}.hero>*:not(.heroDogWrap):not(.heroCoins){position:relative;z-index:2}.hero h1,.hero p,.heroBtns,.hero-tag{max-width:min(58%,640px)}.heroCoins{display:none}.coin,.mouthCoin{display:none}@keyframes spinCoin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.spotCard,.spidy-bar,.panel,.card{background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.spotCard{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px;margin-bottom:14px;background:linear-gradient(135deg,rgba(194,75,255,.12),rgba(255,226,122,.10))}.spotWheel{width:74px;height:74px;border-radius:50%;background:conic-gradient(from 0deg,#6d27d9,#4bc1ff,#ffe27a,#ff5b5b,#7be52d,#8a44ff);border:3px solid rgba(255,226,122,.45);box-shadow:0 0 22px rgba(255,226,122,.18);position:relative}.spotWheel::before{content:'▼';position:absolute;left:50%;top:-16px;transform:translateX(-50%);color:var(--gold)}
+.spidy-bar{display:flex;gap:12px;align-items:flex-start;padding:16px 18px;margin-bottom:22px;background:linear-gradient(135deg,rgba(194,75,255,.13),rgba(255,226,122,.09))}.spidy-bar .mascot{width:clamp(68px,8vw,92px);height:clamp(86px,10vw,110px);flex:0 0 auto}.spidy-bar>div:last-child{min-width:0;flex:1}.spidy-name{font-size:11px;color:var(--gold2);font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}.spidy-msg{font-size:13px;color:rgba(255,255,255,.8);line-height:1.5}
+.home-grid,.stats-row,.market-grid,.rewards-grid,.lottery-grid,.scratch-grid{display:grid;gap:12px}.home-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:16px}.stats-row{grid-template-columns:repeat(3,minmax(0,1fr))}.tile{padding:16px;border-radius:18px;min-height:138px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(255,255,255,.08);cursor:pointer}.tile.blue{background:linear-gradient(160deg,#191542,#2C2271)}.tile.purple{background:linear-gradient(160deg,#2E1248,#561A73)}.tile.teal{background:linear-gradient(160deg,#25143B,#482659)}.tile .big{font-size:18px;font-weight:900}.badge{display:inline-block;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:800;background:rgba(255,226,122,.18);color:var(--gold);border:1px solid rgba(255,226,122,.28)}.stat{padding:14px;border-radius:16px;text-align:center;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line)}.stat .v{font-size:26px;font-weight:900}
+.wheel-layout,.picker-layout,.scratch-layout,.account-layout,.tasks-layout{display:grid;gap:18px}.wheel-layout{grid-template-columns:minmax(0,1fr) 320px}.picker-layout{grid-template-columns:minmax(0,1fr) minmax(260px,320px);align-items:start}.scratch-layout{grid-template-columns:minmax(0,1fr) 270px}.tasks-layout{grid-template-columns:minmax(0,1fr) 260px}.account-layout{grid-template-columns:minmax(0,1fr) 320px}.panel{padding:22px}.wheelCanvasWrap{position:relative;width:min(100%,340px);aspect-ratio:1;margin:auto}.wheelCanvasWrap canvas{width:100%;height:100%;display:block;border-radius:50%}.wheel-pointer{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:28px;z-index:3}.wheel-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);box-shadow:0 0 20px rgba(255,226,122,.35);z-index:4}.wheel-center .mascot{width:44px;height:44px;background-image:url('assets/wheel-alt.png')}.wheelDecor{display:none}.wheelBtn{width:100%;padding:15px;border-radius:99px;font-size:16px;font-weight:900;background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);color:#140715}
+.listRow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.dot{width:10px;height:10px;border-radius:50%}.backBtn{display:inline-flex;gap:6px;align-items:center;background:none;color:var(--gold);font-weight:700;margin-bottom:16px}.gridNums,.gridSymbols{display:grid;gap:8px}.gridNums{grid-template-columns:repeat(auto-fit,minmax(42px,1fr));margin-bottom:14px}.gridSymbols{grid-template-columns:repeat(4,minmax(0,1fr))}.numBtn,.symbolBtn{display:grid;place-items:center;font-weight:900;color:rgba(255,255,255,.78);background:#241634;border:1px solid rgba(255,255,255,.08);transition:.14s}.numBtn{aspect-ratio:1;border-radius:50%;font-size:12px;min-width:0}.symbolBtn{padding:10px 6px;border-radius:14px;font-size:24px;display:flex;flex-direction:column;line-height:1.05;min-height:72px;text-align:center}.numBtn.picked,.symbolBtn.picked{background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);color:#18071c;transform:translateY(-1px)}.selWrap{padding:12px;border-radius:14px;background:#221531;border:1px solid var(--line)}.balls{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;min-height:32px}.ball{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff3b5 0%,var(--gold2) 26%,#f0b5ff 74%,var(--violet) 100%);color:#17091f;font-size:12px;font-weight:900}.ball.sym{border-radius:10px}
+.sideHero{padding:18px;border-radius:18px;background:linear-gradient(160deg,#261136,#3c1454);border:1px solid rgba(255,226,122,.18)}.sideHero .big{font-size:30px;font-weight:900;line-height:1;word-break:break-word}.hint{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}.lottery-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.lotCard{padding:22px;border-radius:22px;cursor:pointer;position:relative;overflow:hidden;border:1px solid rgba(255,226,122,.16)}.lot1{background:linear-gradient(160deg,#241247,#46186B)}.lot2{background:linear-gradient(160deg,#2A103E,#5B1F66)}.lot3{background:linear-gradient(160deg,#1B0F32,#39205E)}.lotName{font-size:24px;font-weight:900}.lotPrize{font-size:30px;font-weight:900}.lotMeta{font-size:13px;color:rgba(255,255,255,.68);margin-top:6px}
+.scratch-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}.scratchCard{border-radius:20px;overflow:hidden;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line);cursor:pointer}.scratchTop{height:130px;display:grid;place-items:center;background:linear-gradient(160deg,#2a1236,#4f1742);font-size:52px}.scratchBody{padding:14px}.scratchTitle{font-size:16px;font-weight:900}.scratchPrize{font-size:22px;font-weight:900}
+.scratchWrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line)}.scratchUnder{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)}.scratchCell{display:grid;place-items:center;gap:4px;border:1px solid rgba(255,255,255,.04)}.scratchCell .ico{font-size:26px}.scratchCell .val{font-size:11px;font-weight:900;color:var(--gold)}#scratchCanvas{position:relative;z-index:2;display:block;width:100%;height:auto;touch-action:none}.progress{display:flex;gap:10px;align-items:center;margin:12px 0}.bar{flex:1;height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold2),var(--violet))}
+.market-grid{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}.mkt{padding:20px;border-radius:22px;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line)}.mktQ{font-size:17px;font-weight:800;line-height:1.4;margin-bottom:14px}.pickRow{display:flex;gap:10px}.pickBtn{flex:1;padding:12px;border-radius:14px;font-weight:900;font-size:15px}.yes{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.18)}.no{background:rgba(255,90,82,.10);color:var(--red);border:1px solid rgba(255,90,82,.18)}.yes.sel{background:rgba(48,209,88,.26)}.no.sel{background:rgba(255,90,82,.24)}.amtRow{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.amt{padding:6px 12px;border-radius:99px;background:#241634;border:1px solid rgba(255,255,255,.08);color:#fff}.amt.sel{background:rgba(255,226,122,.16);color:var(--gold);border-color:rgba(255,226,122,.25)}
+.taskCard{padding:14px 16px;border-radius:16px;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line);display:flex;align-items:center;gap:12px;cursor:pointer}.taskCard.done{opacity:.48;pointer-events:none}.taskReward{margin-left:auto;padding:4px 10px;border-radius:99px;background:rgba(255,226,122,.16);color:var(--gold);font-weight:900}.progCard{padding:20px;border-radius:20px;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));border:1px solid var(--line)}
+.rewardHero{padding:22px;border-radius:24px;background:linear-gradient(160deg,#251034,#38134F,#1B0E2B);border:1px solid rgba(255,226,122,.18);display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}.rewardHero .mascot{width:92px;height:112px;background-image:url('assets/bonus.png')}.rewardAmount{font-size:48px;font-weight:900;letter-spacing:-2px}.rewards-grid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}.rewardCard{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,var(--card),rgba(18,11,29,.96));cursor:pointer}.rewardTop{height:96px;display:grid;place-items:center;font-size:46px;background:linear-gradient(160deg,#2F123A,#5A2039)}.rewardBody{padding:14px}.rewardName{font-size:14px;font-weight:900}.rewardCost{font-size:20px;font-weight:900;margin:10px 0}
+.accountStatGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.aStat{padding:12px;border-radius:14px;background:#241634;border:1px solid var(--line);text-align:center}.histItem{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.histVal.p{color:var(--green)}.histVal.m{color:var(--red)}
+#overlay,#resultModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)}#overlay.open,#resultModal.open{display:flex}#overlay{align-items:flex-end;justify-content:center}#sheet{width:min(100%,580px);max-height:82vh;overflow:auto;border-radius:24px 24px 0 0;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.99));padding:16px 22px 40px}.handle{width:40px;height:4px;border-radius:999px;background:#3f2a56;margin:0 auto 18px}#resultModal{align-items:center;justify-content:center}.resultBox{width:min(92vw,360px);padding:28px;border-radius:28px;background:linear-gradient(180deg,var(--card),rgba(18,11,29,.99));border:1px solid rgba(255,226,122,.22);text-align:center;box-shadow:0 0 70px rgba(194,75,255,.14)}.resultMascot{width:96px;height:118px;margin:0 auto 10px;background-image:url('assets/token.png')}.resultAmount{font-size:34px;font-weight:900;letter-spacing:-1.2px}.resultEmoji{font-size:54px;display:block;margin-bottom:6px}.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:rgba(22,16,34,.96);border:1px solid rgba(255,226,122,.28);padding:11px 18px;border-radius:99px;z-index:120;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1}.hidden{display:none !important}
+.accountEditGrid{display:grid;gap:10px}.accountEditGrid label{font-size:12px;font-weight:700;color:var(--gold)}.accountEditGrid input,.accountEditGrid textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;outline:none}.accountEditGrid textarea{min-height:104px;resize:vertical;line-height:1.45}.accountEditGrid input:focus,.accountEditGrid textarea:focus{border-color:rgba(255,226,122,.45);box-shadow:0 0 0 3px rgba(255,226,122,.08)}.accountEditActions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}.accountEditActions button{flex:1;min-width:160px}.btnDanger{background:linear-gradient(180deg,#7a1f28,#521017);color:#fff;border:1px solid rgba(255,90,82,.5);box-shadow:0 10px 24px rgba(255,90,82,.18)}
+@media(min-width:1090px){#screen-scratch .scratch-layout{grid-template-columns:minmax(0,760px) 260px;align-items:start}#screen-scratch #scratchGame .panel:first-child{padding:18px}#screen-scratch .scratchWrap{max-width:520px;margin:0 auto}#screen-scratch #scratchCanvas{max-width:520px}#screen-scratch .progress,#screen-scratch .hint,#screen-scratch #revealScratch{max-width:520px;margin-left:auto;margin-right:auto}}
+@media(max-width:1080px){.wheel-layout,.picker-layout,.scratch-layout,.tasks-layout,.account-layout{grid-template-columns:1fr}}
+@media(max-width:768px){#sidebar{display:none}#main{margin-left:0;padding-bottom:var(--tabh)}#mobTop,#mobTab,#wheelBubble{display:flex}.home-grid,.stats-row,.accountStatGrid{grid-template-columns:1fr}.hero{padding-bottom:126px}.hero h1,.hero p,.heroBtns,.hero-tag{max-width:100%}.heroDogWrap{width:clamp(130px,38vw,210px);right:8px;bottom:-12px;max-width:42%}.mouthCoin{right:84px;bottom:76px}.c1{right:150px}.c2{right:110px}.c3{right:54px}.c4{right:18px}.c5{right:130px;top:150px}.picker-layout,.scratch-layout{gap:12px}.panel{padding:18px}.symbolBtn{font-size:22px;min-height:64px}.spidy-bar{padding:14px}.spidy-bar .mascot{width:58px;height:74px}}
+@media(max-width:520px){.screen{padding:14px}.hero h1{font-size:30px}.heroBtns .btnGold,.heroBtns .btnGhost{width:100%}.lottery-grid,.market-grid,.scratch-grid,.rewards-grid{grid-template-columns:1fr}.gridNums{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.gridSymbols{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.pickRow{flex-direction:column}.panel{padding:16px}.heroDogWrap{width:clamp(120px,42vw,180px);right:4px;bottom:-10px;max-width:44%}.spotCard{align-items:flex-start;flex-direction:column}.spotCard>div:last-child{width:100%;justify-content:space-between}.symbolBtn{font-size:18px;min-height:54px;padding:8px 4px}.numBtn{font-size:10px}.ball{width:28px;height:28px;font-size:11px}}
+</style>
+<style>
+.heroDog,.heroDog.mascot{background-image:url('assets/coin.png') !important}
+.heroDogWrap{width:clamp(150px,24vw,260px)!important;max-width:35%!important;right:12px!important;bottom:-2px!important}
+.heroCoins{display:none!important}
+#screen-home .spidy-bar .mascot{background-image:url('assets/wheel-main.png') !important;width:clamp(74px,9vw,96px)!important;height:clamp(90px,11vw,118px)!important}
+#screen-wheel .spidy-bar .mascot,#screen-wheel .wheel-center .mascot,#screen-wheel .wheelDecor .dog,#wheelBubble .mascot{background-image:url('assets/wheel-main.png') !important}
+#screen-wheel .wheelDecor .dog.alt{background-image:url('assets/wheel-alt.png') !important}
+#screen-wheel .wheelDecor .dog.trophy{background-image:url('assets/trophy.png') !important}
+#screen-lottery .spidy-bar .mascot{background-image:url('assets/ticket.png') !important}
+#screen-scratch .spidy-bar .mascot{background-image:url('assets/scratch.png') !important}
+#screen-tasks .spidy-bar .mascot,#screen-market .spidy-bar .mascot{background-image:url('assets/construction.png') !important}
+#screen-rewards .rewardHero .mascot{background-image:url('assets/bonus.png') !important}
+.resultMascot{background-size:contain;background-repeat:no-repeat;background-position:center bottom}
+@media(max-width:640px){.heroDogWrap{width:clamp(120px,42vw,180px)!important;right:4px!important;bottom:-10px!important;max-width:44%!important}#screen-home .spidy-bar .mascot{width:62px!important;height:78px!important}}
 
-/* ── VARIABLES ── */
-:root{
-  --gold:#FFD700;--gold2:#D4A017;--gold3:#A67C00;--gold4:#7A5A00;
-  --glow:rgba(255,215,0,0.3);--gpale:rgba(255,215,0,0.08);--gmid:rgba(255,215,0,0.16);
-  --d1:#0A0A0C;--d2:#141418;--d3:#1E1E24;--d4:#28282F;--d5:#38383F;
-  --ash:#8A8A95;--w8:rgba(255,255,255,0.08);--w15:rgba(255,255,255,0.15);
-  --green:#30D158;--red:#FF453A;--blue:#0A84FF;
-  --sidebar:220px;--tabh:72px;
+.lottery-main-panel,.scratch-main-panel{min-width:0}
+.lottery-side-col,.scratch-legend-panel{min-width:0}
+#screen-lottery .picker-layout,#screen-scratch .scratch-layout{align-items:start}
+#screen-lottery .sideHero{position:sticky;top:86px}
+#screen-lottery .gridNums,#screen-lottery .gridSymbols,#screen-scratch .scratchWrap{position:relative;z-index:2}
+@media(max-width:1080px){#screen-lottery .sideHero{position:static}}
+</style>
+
+<style id="repair-fixes">
+@media(min-width:769px){
+  .lottery-side-col{align-self:start}
+  #quickPick,#validateLottery{display:flex;align-items:center;justify-content:center}
+  #quickPick{margin-top:14px!important}
+  .scratch-layout .panel:first-child{max-width:780px}
+  #scratchWrap{max-width:720px;margin:0 auto}
 }
+.accountEditActions .btnDanger, #deleteAccountBtn{display:flex;align-items:center;justify-content:center}
+#deleteAccountBtn{margin-top:16px!important}
+.accountEditGrid textarea{min-height:120px}
+</style>
 
-/* ═══════════════════════════════
-   LAYOUT
-═══════════════════════════════ */
-#app{display:flex;min-height:100vh}
-
-/* SIDEBAR */
-#sidebar{
-  width:var(--sidebar);position:fixed;left:0;top:0;bottom:0;
-  background:rgba(14,14,18,0.97);border-right:1px solid rgba(255,215,0,0.1);
-  display:flex;flex-direction:column;padding:20px 12px 20px;
-  z-index:100;backdrop-filter:blur(20px);
-}
-.sb-logo{display:flex;align-items:center;gap:10px;padding:4px 8px;margin-bottom:24px}
-.sb-logomark{width:38px;height:38px;background:linear-gradient(135deg,var(--gold3),var(--gold));
-  border-radius:11px;display:flex;align-items:center;justify-content:center;
-  font-size:20px;box-shadow:0 0 18px var(--glow)}
-.sb-logotext{font-size:22px;font-weight:900;letter-spacing:-0.5px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-.sb-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
-  color:var(--ash);padding:0 10px;margin:12px 0 4px}
-
-.sb-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;
-  border-radius:12px;background:none;color:rgba(255,255,255,0.55);
-  font-size:13px;font-weight:600;transition:all .15s;text-align:left;margin-bottom:2px}
-.sb-btn:hover{background:var(--w8);color:#fff}
-.sb-btn.active{background:var(--gmid);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
-.sb-btn .sb-ic{width:28px;height:28px;border-radius:8px;background:var(--w8);
-  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.sb-btn.active .sb-ic{background:rgba(255,215,0,0.15)}
-
-.sb-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
-.sb-balance{background:var(--gmid);border:1px solid rgba(255,215,0,0.22);
-  border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px}
-.sbb-val{font-size:18px;font-weight:900;color:var(--gold);letter-spacing:-0.5px}
-.sbb-lbl{font-size:10px;color:var(--ash);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.sb-profile{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;cursor:pointer;transition:background .15s}
-.sb-profile:hover{background:var(--w8)}
-.sp-ava{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));
-  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#000;
-  box-shadow:0 0 10px var(--glow);flex-shrink:0}
-.sp-name{font-size:13px;font-weight:700}
-.sp-lvl{font-size:11px;color:var(--gold2)}
-
-/* MAIN */
-#main{margin-left:var(--sidebar);flex:1;min-height:100vh}
-
-/* MOBILE TOP */
-#mobTop{display:none;position:sticky;top:0;z-index:50;
-  background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--w8);padding:10px 16px;
-  align-items:center;justify-content:space-between}
-.mt-logo{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.mt-right{display:flex;align-items:center;gap:8px}
-.mt-bal{display:flex;align-items:center;gap:4px;background:var(--gmid);
-  border:1px solid rgba(255,215,0,0.22);border-radius:99px;padding:5px 11px;
-  font-size:13px;font-weight:700;color:var(--gold)}
-.mt-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));
-  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;cursor:pointer}
-
-/* MOBILE BOTTOM TAB */
-#mobTab{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--tabh);
-  background:rgba(14,14,18,0.97);backdrop-filter:blur(20px);
-  border-top:1px solid var(--w8);z-index:100;align-items:flex-start;padding-top:8px}
-.tb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;padding:0;transition:transform .12s}
-.tb-btn:active{transform:scale(.88)}
-.tb-ic{font-size:22px;transition:transform .2s}
-.tb-lbl{font-size:9px;font-weight:600;color:var(--ash);transition:color .2s}
-.tb-btn.active .tb-lbl{color:var(--gold)}
-.tb-btn.active .tb-ic{transform:scale(1.12);filter:drop-shadow(0 0 6px var(--gold))}
-
-/* MORE POPUP */
-#morePopup{display:none;position:fixed;bottom:var(--tabh);left:0;right:0;z-index:99;
-  background:rgba(14,14,18,0.98);backdrop-filter:blur(20px);
-  border-top:1px solid var(--w8);padding:14px 16px}
-.mp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:400px;margin:0 auto}
-.mp-item{background:var(--d3);border:1px solid var(--w8);border-radius:12px;
-  padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .15s}
-.mp-item:active{transform:scale(.94);background:var(--d4)}
-.mp-item-ic{font-size:22px}
-.mp-item-lbl{font-size:11px;color:var(--ash);font-weight:600}
-
-/* ═══════════════════════════════
-   SCREENS
-═══════════════════════════════ */
-.screen{display:none;padding:28px;animation:fadeIn .25s ease}
-.screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-.pg-title{font-size:32px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
-.pg-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.pg-sub{font-size:14px;color:var(--ash);margin-bottom:22px}
-
-/* SPIDY CARD */
-.spidy-bar{background:linear-gradient(135deg,rgba(212,160,23,.13),var(--gpale));
-  border:1px solid rgba(255,215,0,.2);border-radius:18px;padding:16px 18px;
-  display:flex;align-items:flex-start;gap:12px;margin-bottom:22px;position:relative;overflow:hidden}
-.spidy-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,215,0,.5),transparent)}
-.spidy-dog{font-size:40px;flex-shrink:0;animation:dogFloat 3s ease-in-out infinite}
-@keyframes dogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.spidy-text{}
-.spidy-name{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;
-  color:var(--gold2);display:flex;align-items:center;gap:5px;margin-bottom:3px}
-.spidy-name::before{content:'●';font-size:6px;color:var(--green);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.spidy-msg{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
-
-/* ═══════════════════════════════
-   HOME
-═══════════════════════════════ */
-.hero{background:linear-gradient(135deg,#1A1000,#2A1A00,#1A1000);
-  border-radius:24px;padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden;
-  border:1px solid rgba(255,215,0,.2);box-shadow:0 8px 50px rgba(0,0,0,.5)}
-.hero::after{content:'';position:absolute;top:-40px;right:-30px;width:250px;height:250px;
-  background:radial-gradient(circle,rgba(255,215,0,.18),transparent 65%);pointer-events:none}
-.hero-tag{display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);
-  border-radius:99px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--gold);
-  text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
-.hero-tag::before{content:'●';font-size:7px;color:var(--green);animation:blink 2s infinite}
-.hero-h{font-size:46px;font-weight:900;letter-spacing:-2px;line-height:.95;margin-bottom:12px;
-  background:linear-gradient(160deg,#fff 0%,var(--gold) 60%,var(--gold2) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  position:relative;z-index:1}
-.hero-p{font-size:14px;color:rgba(255,255,255,.6);max-width:300px;line-height:1.5;margin-bottom:20px;z-index:1;position:relative}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
-.hero-dog{position:absolute;right:16px;bottom:0;font-size:80px;line-height:1;
-  filter:drop-shadow(0 0 24px rgba(255,215,0,.4));animation:dogFloat 4s ease-in-out infinite}
-
-.btn-gold{display:inline-flex;align-items:center;gap:6px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#000;padding:13px 22px;border-radius:99px;font-size:14px;font-weight:800;
-  transition:all .2s;box-shadow:0 4px 20px rgba(255,215,0,.4)}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,.5)}
-.btn-gold:active{transform:scale(.97)}
-.btn-ghost{display:inline-flex;align-items:center;gap:6px;
-  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.8);
-  padding:13px 22px;border-radius:99px;font-size:14px;font-weight:700;transition:all .2s}
-.btn-ghost:hover{background:var(--w15)}
-
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.hg-tile{border-radius:18px;padding:18px 14px;cursor:pointer;transition:all .2s;
-  position:relative;overflow:hidden;border:1px solid transparent;aspect-ratio:.9;
-  display:flex;flex-direction:column;justify-content:space-between}
-.hg-tile:hover{transform:translateY(-4px)}
-.hg-tile:active{transform:scale(.97)}
-.hg-tile.blue{background:linear-gradient(160deg,#0D1B3E,#172B60);border-color:rgba(0,122,255,.2)}
-.hg-tile.purple{background:linear-gradient(160deg,#1E0D2E,#301545);border-color:rgba(175,82,222,.2)}
-.hg-tile.teal{background:linear-gradient(160deg,#0D2A1A,#154028);border-color:rgba(48,209,88,.2)}
-.hg-ic{font-size:34px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.4))}
-.hg-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)}
-.hg-title{font-size:16px;font-weight:800;letter-spacing:-.2px}
-.hg-prize{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
-.hg-badge{position:absolute;top:10px;right:10px;background:rgba(255,215,0,.2);
-  border:1px solid rgba(255,215,0,.3);border-radius:99px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--gold)}
-
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat-box{background:var(--d2);border:1px solid var(--w8);border-radius:14px;padding:14px;text-align:center;
-  position:relative;overflow:hidden}
-.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
-.sb-val{font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
-.sb-lbl{font-size:11px;color:var(--ash);margin-top:2px}
-
-/* ═══════════════════════════════
-   WHEEL
-═══════════════════════════════ */
-.wheel-wrap{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
-.wheel-panel{background:var(--d2);border:1px solid var(--w8);border-radius:22px;
-  padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px}
-.wheel-canvas-wrap{position:relative;width:280px;height:280px}
-#wheelCanvas{border-radius:50%;display:block;
-  box-shadow:0 0 40px rgba(255,215,0,.3),0 0 80px rgba(255,215,0,.1)}
-.wheel-pointer{position:absolute;top:-18px;left:50%;transform:translateX(-50%);
-  font-size:28px;filter:drop-shadow(0 2px 6px rgba(255,215,0,.6));z-index:5}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:54px;height:54px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  border:3px solid var(--d1);display:flex;align-items:center;justify-content:center;
-  font-size:24px;cursor:pointer;z-index:10;
-  box-shadow:0 0 20px rgba(255,215,0,.6);transition:transform .15s}
-.wheel-center:active{transform:translate(-50%,-50%) scale(.9)}
-
-#spinBtn{width:100%;padding:15px;border-radius:99px;font-size:16px;font-weight:800;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
-  box-shadow:0 4px 28px rgba(255,215,0,.4);transition:all .2s}
-#spinBtn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,215,0,.5)}
-#spinBtn:active:not([disabled]){transform:scale(.97)}
-#spinBtn[disabled]{opacity:.35;cursor:not-allowed;transform:none !important;box-shadow:none}
-#spinMsg{font-size:12px;color:var(--ash);text-align:center;min-height:18px}
-
-.prize-panel{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
-.prize-panel h3{font-size:17px;font-weight:800;margin-bottom:14px;letter-spacing:-.3px}
-.prize-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--w8)}
-.prize-row:last-child{border-bottom:none}
-.pr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.pr-name{flex:1;font-size:13px;font-weight:600}
-.pr-val{font-size:13px;font-weight:800;color:var(--gold)}
-
-.streak-panel{background:linear-gradient(135deg,rgba(255,215,0,.1),var(--gpale));
-  border:1px solid rgba(255,215,0,.2);border-radius:22px;padding:20px;margin-top:14px}
-.streak-days{display:flex;gap:6px;margin-top:10px}
-.sd-item{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;background:var(--d3);border:1px solid var(--w8);color:var(--ash)}
-.sd-item.done{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
-  border-color:var(--gold);box-shadow:0 0 8px rgba(255,215,0,.3)}
-.sd-item.today{background:rgba(255,215,0,.15);border-color:var(--gold);color:var(--gold);animation:pulseG 2s infinite}
-@keyframes pulseG{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,.4)}50%{box-shadow:0 0 0 5px rgba(255,215,0,0)}}
-
-/* ═══════════════════════════════
-   LOTTERY
-═══════════════════════════════ */
-.lottery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.lot-card{border-radius:22px;padding:24px 22px;cursor:pointer;transition:all .22s;
-  position:relative;overflow:hidden;border:1px solid rgba(255,215,0,.15)}
-.lot-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
-.lot-card:active{transform:scale(.98)}
-.lot-c1{background:linear-gradient(160deg,#0D1B3E,#1A2E60)}
-.lot-c2{background:linear-gradient(160deg,#1E0D2E,#311550)}
-.lot-c3{background:linear-gradient(160deg,#0D2A1A,#174530)}
-.lot-badge{display:inline-flex;align-items:center;gap:4px;
-  background:rgba(255,215,0,.18);border:1px solid rgba(255,215,0,.3);
-  border-radius:99px;padding:3px 10px;font-size:10px;font-weight:800;
-  color:var(--gold);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
-.lot-name{font-size:24px;font-weight:900;letter-spacing:-.5px}
-.lot-prize{font-size:32px;font-weight:900;color:var(--gold);letter-spacing:-1px}
-.lot-meta{font-size:13px;color:rgba(255,255,255,.5);margin-top:6px}
-.lot-bg{position:absolute;right:-10px;bottom:-20px;font-size:120px;opacity:.06;font-weight:900}
-.lot-arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);
-  font-size:20px;color:var(--gold);opacity:.5}
-
-/* PICKER */
-#lotteryPicker{display:none}
-#lotteryPicker.show{display:block}
-#lotteryListView.hidden{display:none}
-.back-btn{display:inline-flex;align-items:center;gap:5px;background:none;
-  color:var(--gold);font-size:15px;font-weight:600;cursor:pointer;padding:6px 0;margin-bottom:18px;transition:opacity .15s}
-.back-btn:hover{opacity:.7}
-.picker-layout{display:grid;grid-template-columns:1fr 260px;gap:22px;align-items:start}
-.numbers-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
-.numbers-title{font-size:20px;font-weight:800;letter-spacing:-.3px}
-.numbers-sub{font-size:13px;color:var(--ash);margin:4px 0 16px}
-.nums-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:14px}
-.num-btn{aspect-ratio:1;border-radius:50%;background:var(--d3);border:1.5px solid var(--d5);
-  color:rgba(255,255,255,.5);font-size:12px;font-weight:600;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all .14s}
-.num-btn:hover{background:var(--d4);color:#fff}
-.num-btn.picked{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
-  border-color:var(--gold);font-weight:900;
-  box-shadow:0 0 14px rgba(255,215,0,.4);transform:scale(1.08)}
-.sel-track{background:var(--d3);border:1px solid var(--w8);border-radius:12px;padding:12px 14px;min-height:50px}
-.sel-track-lbl{font-size:10px;color:var(--ash);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px}
-.sel-balls{display:flex;gap:7px;flex-wrap:wrap;min-height:28px;align-items:center}
-.sel-ball{width:30px;height:30px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#000;
-  animation:pop .2s cubic-bezier(.22,1,.36,1)}
-@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-
-.picker-side{display:flex;flex-direction:column;gap:12px}
-.prize-card-sm{background:linear-gradient(160deg,#1C1200,#2A1A00);
-  border:1px solid rgba(255,215,0,.22);border-radius:18px;padding:18px}
-.pcs-lbl{font-size:11px;color:var(--gold2);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
-.pcs-amount{font-size:32px;font-weight:900;color:var(--gold);letter-spacing:-1px;margin:4px 0}
-.pcs-desc{font-size:12px;color:rgba(255,255,255,.4)}
-#validateBtn{width:100%;padding:15px;border-radius:99px;font-size:15px;font-weight:800;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
-  box-shadow:0 4px 22px rgba(255,215,0,.35);transition:all .2s}
-#validateBtn:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,.5)}
-#validateBtn:active:not([disabled]){transform:scale(.97)}
-#validateBtn[disabled]{opacity:.3;cursor:not-allowed;transform:none !important;box-shadow:none}
-.qpick-btn{width:100%;padding:12px;border-radius:99px;font-size:14px;font-weight:700;
-  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.8);transition:all .2s}
-.qpick-btn:hover{background:var(--w15)}
-.vhint{font-size:12px;color:var(--ash);text-align:center;margin-top:6px}
-
-/* ═══════════════════════════════
-   SCRATCH
-═══════════════════════════════ */
-.scratch-grid-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-#scratchGame{display:none}
-#scratchGame.show{display:block}
-#scratchListView.hidden{display:none}
-.sc-tile{background:var(--d2);border:1px solid var(--w8);border-radius:20px;
-  overflow:hidden;cursor:pointer;transition:all .22s}
-.sc-tile:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.25);box-shadow:0 14px 44px rgba(0,0,0,.4)}
-.sc-tile:active{transform:scale(.97)}
-.sc-cover{height:120px;display:flex;align-items:center;justify-content:center;font-size:50px;
-  border-bottom:1px solid var(--w8)}
-.sc-cover.sg1{background:linear-gradient(160deg,#1C1000,#2E1A00)}
-.sc-cover.sg2{background:linear-gradient(160deg,#0A0A2A,#12124A)}
-.sc-cover.sg3{background:linear-gradient(160deg,#0A1A0A,#123012)}
-.sc-cover.sg4{background:linear-gradient(160deg,#1A0A10,#30101A)}
-.sc-info{padding:14px}
-.sc-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
-.sc-prize{font-size:20px;font-weight:900;color:var(--gold)}
-.sc-sub{font-size:11px;color:var(--ash);margin-top:1px}
-.sc-badge{display:inline-block;background:var(--gmid);border:1px solid rgba(255,215,0,.25);
-  border-radius:99px;padding:2px 8px;margin-top:8px;font-size:9px;font-weight:800;color:var(--gold);text-transform:uppercase}
-
-.scratch-arena{display:grid;grid-template-columns:1fr 280px;gap:22px;align-items:start}
-.scratch-main-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:22px}
-.scratch-canvas-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--w8)}
-.scratch-under{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)}
-.su-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border:1px solid rgba(255,255,255,.04);gap:2px}
-.su-icon{font-size:26px}
-.su-val{font-size:12px;font-weight:800;color:var(--gold)}
-#scratchCanvas{position:relative;z-index:2;display:block;cursor:crosshair;border-radius:14px}
-.scratch-hint{font-size:12px;color:var(--ash);text-align:center;margin-top:8px}
-.reveal-btn{width:100%;margin-top:10px;padding:11px;border-radius:99px;
-  background:var(--w8);border:1px solid var(--w15);color:rgba(255,255,255,.7);
-  font-size:13px;font-weight:700;transition:all .15s}
-.reveal-btn:hover{background:var(--w15)}
-
-.scratch-side{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:20px}
-.ss-legend{margin-top:12px;display:flex;flex-direction:column;gap:8px}
-.ssl-row{display:flex;align-items:center;gap:10px;font-size:13px}
-.ssl-icon{font-size:20px}
-.ssl-name{flex:1;font-weight:600}
-.ssl-val{color:var(--gold);font-weight:800}
-
-/* ═══════════════════════════════
-   MARKET
-═══════════════════════════════ */
-.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.mkt-card{background:var(--d2);border:1px solid var(--w8);border-radius:22px;padding:20px;transition:all .18s}
-.mkt-card:hover{border-color:rgba(255,215,0,.18);transform:translateY(-2px)}
-.mkt-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--gold2);margin-bottom:8px}
-.mkt-q{font-size:16px;font-weight:700;letter-spacing:-.2px;line-height:1.35;margin-bottom:14px}
-.mkt-btns{display:flex;gap:10px}
-.mkt-btn{flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid transparent;
-  font-size:15px;font-weight:800;cursor:pointer;transition:all .16s;
-  display:flex;flex-direction:column;align-items:center;gap:2px}
-.mkt-btn:active{transform:scale(.96)}
-.mkt-btn.yes{background:rgba(48,209,88,.12);color:var(--green);border-color:rgba(48,209,88,.2)}
-.mkt-btn.no{background:rgba(255,69,58,.1);color:var(--red);border-color:rgba(255,69,58,.18)}
-.mkt-btn.yes:hover{background:rgba(48,209,88,.22)}
-.mkt-btn.no:hover{background:rgba(255,69,58,.2)}
-.mkt-btn.yes.selected{background:rgba(48,209,88,.28);box-shadow:0 0 14px rgba(48,209,88,.2);border-color:var(--green)}
-.mkt-btn.no.selected{background:rgba(255,69,58,.22);box-shadow:0 0 14px rgba(255,69,58,.15);border-color:var(--red)}
-.mkt-odds{font-size:10px;font-weight:500;opacity:.7}
-.mkt-amounts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.amt-btn{padding:5px 12px;border-radius:99px;background:var(--d3);border:1px solid var(--d5);
-  color:rgba(255,255,255,.5);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s}
-.amt-btn:hover{background:var(--d4);color:#fff}
-.amt-btn.chosen{background:var(--gmid);border-color:rgba(255,215,0,.3);color:var(--gold)}
-.confirm-btn{padding:7px 16px;border-radius:99px;background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#000;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;border:none}
-.confirm-btn:hover{transform:scale(1.04)}
-.mkt-foot{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;
-  border-top:1px solid var(--w8);font-size:12px;color:var(--ash)}
-.mkt-foot strong{color:var(--gold)}
-
-/* ═══════════════════════════════
-   TASKS
-═══════════════════════════════ */
-.tasks-layout{display:grid;grid-template-columns:1fr 260px;gap:22px;align-items:start}
-.tasks-main{display:flex;flex-direction:column;gap:8px}
-.task-sec-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;
-  color:var(--gold);margin:12px 0 6px}
-.task-card{background:var(--d2);border:1px solid var(--w8);border-radius:16px;
-  padding:15px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .15s}
-.task-card:hover:not(.done){border-color:rgba(255,215,0,.2);background:rgba(28,28,36,.9)}
-.task-card:active:not(.done){transform:scale(.99)}
-.task-card.done{opacity:.45;pointer-events:none}
-.tc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  font-size:20px;flex-shrink:0;background:var(--gmid);border:1px solid rgba(255,215,0,.18)}
-.tc-info{flex:1}
-.tc-name{font-size:14px;font-weight:700;letter-spacing:-.2px}
-.tc-desc{font-size:11px;color:var(--ash);margin-top:1px}
-.tc-reward{display:flex;align-items:center;gap:3px;background:var(--gmid);
-  border:1px solid rgba(255,215,0,.22);border-radius:99px;padding:4px 10px;
-  font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap}
-.tc-done{font-size:20px}
-
-.tasks-side{display:flex;flex-direction:column;gap:14px}
-.prog-card{background:var(--d2);border:1px solid var(--w8);border-radius:20px;padding:20px}
-.prog-card h3{font-size:16px;font-weight:800;margin-bottom:14px;letter-spacing:-.2px}
-.prog-ring-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.prog-ring-info .pval{font-size:24px;font-weight:900;color:var(--gold);letter-spacing:-.5px}
-.prog-ring-info .psub{font-size:11px;color:var(--ash)}
-.prog-bar{height:5px;background:var(--d3);border-radius:99px;overflow:hidden;margin-top:8px}
-.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));border-radius:99px;transition:width .5s ease}
-
-/* ═══════════════════════════════
-   REWARDS
-═══════════════════════════════ */
-.rewards-hero{background:linear-gradient(160deg,#1C1200,#2A1800,#1C1200);
-  border:1px solid rgba(255,215,0,.2);border-radius:22px;padding:26px;
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;position:relative;overflow:hidden}
-.rewards-hero::before{content:'';position:absolute;top:-40px;right:-20px;width:240px;height:240px;
-  background:radial-gradient(circle,rgba(255,215,0,.14),transparent 65%);pointer-events:none}
-.rh-lbl{font-size:11px;color:var(--gold2);font-weight:700;text-transform:uppercase;letter-spacing:.7px}
-.rh-amount{font-size:52px;font-weight:900;color:var(--gold);letter-spacing:-2.5px;line-height:1;margin:4px 0}
-.rh-unit{font-size:15px;color:var(--gold2)}
-.rh-dog{font-size:72px;filter:drop-shadow(0 0 22px rgba(255,215,0,.4));animation:dogFloat 4s ease-in-out infinite}
-.rewards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px}
-.rwd-card{background:var(--d2);border:1px solid var(--w8);border-radius:20px;overflow:hidden;
-  cursor:pointer;transition:all .22s}
-.rwd-card:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.22);box-shadow:0 14px 40px rgba(0,0,0,.4)}
-.rwd-card:active{transform:scale(.97)}
-.rwd-img{height:95px;display:flex;align-items:center;justify-content:center;font-size:46px;border-bottom:1px solid var(--w8)}
-.ri1{background:linear-gradient(160deg,#1A0000,#2E0A00)}
-.ri2{background:linear-gradient(160deg,#00081A,#001830)}
-.ri3{background:linear-gradient(160deg,#0A000A,#1A001A)}
-.ri4{background:linear-gradient(160deg,#001400,#002A00)}
-.ri5{background:linear-gradient(160deg,#1A1200,#2A1E00)}
-.ri6{background:linear-gradient(160deg,#0A0A1A,#14142E)}
-.rwd-body{padding:14px}
-.rwd-name{font-size:14px;font-weight:800;letter-spacing:-.2px}
-.rwd-type{font-size:11px;color:var(--ash);margin-top:1px}
-.rwd-price{font-size:18px;font-weight:900;color:var(--gold);margin:10px 0 10px;display:flex;align-items:center;gap:3px}
-.rwd-btn{width:100%;padding:9px;border-radius:10px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;
-  font-size:12px;font-weight:800;transition:all .15s}
-.rwd-btn:hover{opacity:.85}
-.rwd-btn:active{transform:scale(.96)}
-
-/* ═══════════════════════════════
-   PROFILE SHEET
-═══════════════════════════════ */
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
-  backdrop-filter:blur(12px);z-index:500;align-items:flex-end;justify-content:center}
-#overlay.open{display:flex;animation:fadeOv .2s ease}
-@keyframes fadeOv{from{opacity:0}to{opacity:1}}
-#sheet{background:var(--d2);border-radius:24px 24px 0 0;padding:16px 22px 44px;
-  width:100%;max-width:580px;max-height:80vh;overflow-y:auto;
-  animation:sheetUp .3s cubic-bezier(.22,1,.36,1)}
-@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sh-handle{width:38px;height:4px;background:var(--d5);border-radius:99px;margin:0 auto 22px}
-.pf-ava{width:82px;height:82px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#000;
-  margin:0 auto 12px;box-shadow:0 0 32px rgba(255,215,0,.4)}
-.pf-name{font-size:24px;font-weight:900;text-align:center;letter-spacing:-.4px}
-.pf-tag{font-size:13px;color:var(--gold2);text-align:center;margin-top:2px;margin-bottom:20px}
-.pf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
-.pfs-box{background:var(--d3);border-radius:12px;padding:13px;text-align:center}
-.pfs-val{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:-.4px}
-.pfs-lbl{font-size:10px;color:var(--ash);margin-top:1px}
-.pf-menu{display:flex;flex-direction:column;gap:2px}
-.pf-mi{display:flex;align-items:center;gap:11px;padding:12px;border-radius:12px;
-  cursor:pointer;font-size:14px;font-weight:600;transition:background .12s}
-.pf-mi:hover{background:var(--w8)}
-.pf-mi-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
-.pf-arr{margin-left:auto;color:var(--ash);font-size:13px}
-
-.hist-item{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--w8)}
-.hist-item:last-child{border-bottom:none}
-.hi-ic{font-size:22px}
-.hi-c{flex:1}
-.hi-a{font-size:13px;font-weight:600}
-.hi-d{font-size:11px;color:var(--ash);margin-top:1px}
-.hi-v{font-size:14px;font-weight:800}
-.hi-v.p{color:var(--green)}
-.hi-v.m{color:var(--red)}
-
-/* ═══════════════════════════════
-   RESULT MODAL
-═══════════════════════════════ */
-#resultModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);
-  backdrop-filter:blur(24px);z-index:600;align-items:center;justify-content:center}
-#resultModal.open{display:flex}
-.rm-box{background:var(--d2);border-radius:26px;padding:38px 28px;text-align:center;
-  max-width:320px;width:90%;border:1px solid rgba(255,215,0,.22);
-  box-shadow:0 0 70px rgba(255,215,0,.18);animation:popIn .4s cubic-bezier(.22,1,.36,1)}
-.rm-emoji{font-size:68px;display:block;margin-bottom:10px;animation:bounceIn .45s cubic-bezier(.22,1,.36,1) .1s both}
-@keyframes bounceIn{from{transform:scale(.3) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-.rm-title{font-size:28px;font-weight:900;letter-spacing:-.6px;margin-bottom:5px}
-.rm-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:18px}
-.rm-reward{background:linear-gradient(135deg,rgba(255,215,0,.14),var(--gpale));
-  border:1px solid rgba(255,215,0,.22);border-radius:16px;padding:16px;margin-bottom:20px}
-.rm-amount{font-size:38px;font-weight:900;color:var(--gold);letter-spacing:-1.5px}
-.rm-lbl{font-size:11px;color:var(--gold2);margin-top:2px;font-weight:600}
-.rm-close{width:100%;padding:15px;border-radius:99px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;
-  font-size:15px;font-weight:800;cursor:pointer;transition:all .2s}
-.rm-close:hover{box-shadow:0 6px 28px rgba(255,215,0,.4)}
-
-/* TOAST */
-#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-8px);
-  background:rgba(22,22,28,.97);border:1px solid rgba(255,215,0,.3);
-  backdrop-filter:blur(20px);color:#fff;padding:11px 20px;
-  border-radius:99px;font-size:13px;font-weight:600;z-index:700;
-  opacity:0;transition:all .3s cubic-bezier(.22,1,.36,1);pointer-events:none;
-  white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* CONFETTI */
-.cf{position:fixed;z-index:650;pointer-events:none;border-radius:3px}
-@keyframes cfFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
+<style id="mobile-account-nav-fixes">
+.btnDanger{background:linear-gradient(180deg,#ff6b6b,#d92d45);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 24px rgba(217,45,69,.22);font-weight:800;border-radius:16px;padding:13px 16px;transition:transform .15s ease, box-shadow .15s ease, filter .15s ease}
+.btnDanger:hover{transform:translateY(-1px);filter:brightness(1.03);box-shadow:0 16px 28px rgba(217,45,69,.28)}
+.accountEditGrid textarea{width:100%;min-height:110px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;outline:none;resize:vertical;font:inherit}
+.accountEditGrid textarea:focus{border-color:rgba(255,226,122,.45);box-shadow:0 0 0 3px rgba(255,226,122,.08)}
+#mobAccountBtn{display:flex;align-items:center;gap:8px;cursor:pointer}
+#mobTopRight{position:relative;display:flex;align-items:center;gap:8px}
+#mobAvatar{cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+#mobAccountMenu{position:absolute;top:calc(100% + 10px);right:0;min-width:220px;padding:10px;border-radius:18px;background:linear-gradient(180deg,rgba(22,14,34,.98),rgba(15,10,25,.98));border:1px solid rgba(255,226,122,.18);box-shadow:0 18px 42px rgba(0,0,0,.32);display:none;z-index:80}
+#mobAccountMenu.open{display:block}
+#mobAccountMenu .menuHead{padding:8px 10px 10px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:6px}
+#mobAccountMenu .menuName{font-size:13px;font-weight:800;color:#fff}
+#mobAccountMenu .menuSub{font-size:11px;color:var(--muted);margin-top:2px}
+#mobAccountMenu .menuBtn{width:100%;display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:none;color:#fff;text-align:left;font-weight:700}
+#mobAccountMenu .menuBtn:hover{background:rgba(255,255,255,.06)}
+#mobAccountMenu .menuBtn.danger{color:#ff8a84}
+#mobAccountMenu .menuDivider{height:1px;background:rgba(255,255,255,.08);margin:6px 0}
+#mobTab .tb-btn{min-width:0}
+#mobTab .tb-btn span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 @media(max-width:768px){
-  #sidebar{display:none}
-  #main{margin-left:0;padding-bottom:var(--tabh)}
+  #mobTab{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:76px;padding:8px 6px 0;gap:2px}
+  #mobTab .tb-btn{font-size:8px;padding:0 2px}
+  #mobTab .tb-btn span:first-child{font-size:20px!important}
   #mobTop{display:flex}
-  #mobTab{display:flex}
-  .screen{padding:14px 14px 20px}
-  .pg-title{font-size:26px}
-  .hero-h{font-size:34px}
-  .hero-dog{font-size:60px;right:10px}
-  .hero{padding:20px 16px}
-  .home-grid{grid-template-columns:repeat(3,1fr);gap:8px}
-  .hg-tile{padding:12px 8px}
-  .hg-ic{font-size:26px}
-  .hg-prize{font-size:16px}
-  .stats-row{grid-template-columns:repeat(3,1fr)}
-  .sb-val{font-size:20px}
-  .wheel-wrap{grid-template-columns:1fr}
-  .wheel-canvas-wrap{width:240px;height:240px;margin:0 auto}
-  #wheelCanvas{width:240px !important;height:240px !important}
-  .picker-layout{grid-template-columns:1fr}
-  .scratch-arena{grid-template-columns:1fr}
-  .tasks-layout{grid-template-columns:1fr}
-  .rewards-hero{flex-direction:column;text-align:center;gap:12px}
-  .rh-amount{font-size:40px}
-  .lottery-grid{grid-template-columns:1fr}
-  .market-grid{grid-template-columns:1fr}
-  .nums-grid{gap:5px}
-  .num-btn{font-size:10px}
+  #mobTop .goldText{font-size:17px!important}
+  #mobTop .ava{width:36px;height:36px}
+  #main{padding-bottom:78px}
+  #screen-lottery .picker-layout{gap:10px}
+  #screen-lottery .panel{padding:14px}
+  #screen-lottery .gridNums{grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+  #screen-lottery .numBtn{font-size:9px}
+  #screen-lottery .gridSymbols{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  #screen-lottery .symbolBtn{font-size:15px;min-height:48px;padding:6px 2px}
+  #screen-lottery .sideHero{padding:14px}
+  #screen-lottery #quickPick,
+  #screen-lottery #validateLottery{margin-top:10px!important;padding:11px 12px}
+  #screen-lottery .lottery-side-col .panel{padding:14px}
 }
-@media(min-width:769px) and (max-width:1100px){
-  .wheel-wrap{grid-template-columns:1fr 260px}
-  .picker-layout{grid-template-columns:1fr 240px}
-  .tasks-layout{grid-template-columns:1fr 240px}
+@media(max-width:520px){
+  #mobTab{height:74px}
+  #screen-lottery .gridNums{grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+  #screen-lottery .numBtn{font-size:8px}
+  #screen-lottery .gridSymbols{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  #screen-lottery .symbolBtn{font-size:13px;min-height:42px;padding:4px 1px;border-radius:12px}
+  #screen-lottery .panel{padding:12px}
+  #screen-lottery .selWrap{padding:10px}
 }
 </style>
+
 </head>
 <body>
-
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- RESULT MODAL -->
-<div id="resultModal">
-  <div class="rm-box">
-    <span class="rm-emoji" id="rmEmoji">🎉</span>
-    <div class="rm-title" id="rmTitle">Bravo !</div>
-    <div class="rm-sub" id="rmSub">Tu as gagné</div>
-    <div class="rm-reward">
-      <div class="rm-amount" id="rmAmount">+500 SPIDS</div>
-      <div class="rm-lbl">Crédité sur ton compte</div>
-    </div>
-    <button class="rm-close" id="rmClose">🐕 Merci Spidy !</button>
-  </div>
-</div>
-
-<!-- PROFILE OVERLAY -->
-<div id="overlay">
-  <div id="sheet">
-    <div class="sh-handle"></div>
-    <div id="sheetBody"></div>
-  </div>
-</div>
-
-<!-- APP -->
+<div class="toast" id="toast"></div>
+<div id="overlay"><div id="sheet"><div class="handle"></div><div id="sheetBody"></div></div></div>
+<div id="resultModal"><div class="resultBox"><div class="resultMascot" id="resultMascot"></div><span class="resultEmoji" id="resultEmoji">🎉</span><div class="pg-title" id="resultTitle">Bravo !</div><div class="pg-sub" id="resultSub">Tu as gagné</div><div class="spotCard" style="padding:14px;margin:14px 0"><div style="width:100%"><div class="resultAmount goldText" id="resultAmount">+50 SPID</div><div style="font-size:11px;color:#f0bcff;margin-top:4px">Crédité sur ton compte</div></div></div><button class="btnGold" style="width:100%" id="closeResult">Super !</button></div></div>
 <div id="app">
-
-  <!-- SIDEBAR -->
-  <nav id="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logomark">🐕</div>
-      <div class="sb-logotext">SPIDY</div>
-    </div>
-    <div class="sb-section">Jeux</div>
-    <button class="sb-btn active" data-screen="home"><div class="sb-ic">🏠</div> Accueil</button>
-    <button class="sb-btn" data-screen="wheel"><div class="sb-ic">🎡</div> Roue</button>
-    <button class="sb-btn" data-screen="lottery"><div class="sb-ic">🎰</div> Loterie</button>
-    <button class="sb-btn" data-screen="scratch"><div class="sb-ic">💎</div> Grattage</button>
-    <button class="sb-btn" data-screen="market"><div class="sb-ic">📈</div> Prédictions</button>
-    <div class="sb-section">Compte</div>
-    <button class="sb-btn" data-screen="tasks"><div class="sb-ic">✅</div> Tâches</button>
-    <button class="sb-btn" data-screen="rewards"><div class="sb-ic">🎁</div> Récompenses</button>
-    <button class="sb-btn" data-screen="account"><div class="sb-ic">👤</div> Compte</button>
-    <div class="sb-bottom">
-      <div class="sb-balance">
-        <span style="font-size:22px">🪙</span>
-        <div>
-          <div class="sbb-lbl">Mes SPIDS</div>
-          <div class="sbb-val" id="sideBarBal">1 250</div>
-        </div>
-      </div>
-      <div class="sb-profile" id="sbProfile" title="Ouvrir le compte">
-        <div class="sp-ava">J</div>
-        <div><div class="sp-name">Joueur_7842</div><div class="sp-lvl">⚡ Niveau 7</div></div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- MAIN -->
-  <div id="main">
-
-    <!-- Mobile Top -->
-    <div id="mobTop">
-      <div class="mt-logo">🐕 SPIDY</div>
-      <div class="mt-right">
-        <div class="mt-bal">🪙 <span id="mobBal">1 250</span></div>
-        <div class="mt-ava" id="mobAvatar" title="Compte">J</div>
-      </div>
-    </div>
-
-    <!-- ─── HOME ─── -->
-    <div class="screen active" id="screen-home">
-      <div class="hero">
-        <div class="hero-tag">En direct · Jackpot actif</div>
-        <div class="hero-h">Play Free.<br>Win Real.</div>
-        <div class="hero-p">Loterie, grattage, prédictions — tout gratuit. Gagne des SPIDS et échange contre de vraies récompenses.</div>
-        <div class="hero-btns">
-          <button class="btn-gold" data-goto="lottery">🎰 Jouer maintenant</button>
-          <button class="btn-ghost" data-goto="wheel">🎡 Tourner la roue</button>
-        </div>
-        <div class="hero-dog">🐕</div>
-      </div>
-      <div class="spidy-bar">
-        <div class="spidy-dog">🐕</div>
-        <div class="spidy-text">
-          <div class="spidy-name">Spidy — Ta mascotte</div>
-          <div class="spidy-msg">Woof ! Bienvenue sur SPIDY 🎉 N'oublie pas ton <strong>spin gratuit</strong> — tu peux gagner jusqu'à <strong>500 SPIDS</strong> ! Explore les jeux et cumule un max de points.</div>
-        </div>
-      </div>
-      <div class="home-grid">
-        <div class="hg-tile blue" data-goto="lottery">
-          <div><div class="hg-badge">JACKPOT</div></div>
-          <div class="hg-ic">🎰</div>
-          <div><div class="hg-lbl">Loterie</div><div class="hg-title">Méga Fortune</div><div class="hg-prize">50 000</div></div>
-        </div>
-        <div class="hg-tile purple" data-goto="scratch">
-          <div></div>
-          <div class="hg-ic">💎</div>
-          <div><div class="hg-lbl">Grattage</div><div class="hg-title">Gold Rush</div><div class="hg-prize">10 000</div></div>
-        </div>
-        <div class="hg-tile teal" data-goto="market">
-          <div><div class="hg-badge">x3.5</div></div>
-          <div class="hg-ic">📈</div>
-          <div><div class="hg-lbl">Prédiction</div><div class="hg-title">Marchés</div><div class="hg-prize">Live</div></div>
-        </div>
-      </div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="sb-val" id="homeStatSpids">1 250</div><div class="sb-lbl">SPIDS</div></div>
-        <div class="stat-box"><div class="sb-val">47</div><div class="sb-lbl">Parties jouées</div></div>
-        <div class="stat-box"><div class="sb-val">12</div><div class="sb-lbl">Victoires</div></div>
-      </div>
-    </div>
-
-    <!-- ─── WHEEL ─── -->
-    <div class="screen" id="screen-wheel">
-      <div class="pg-title">Roue du <span>Destin</span></div>
-      <div class="pg-sub">1 spin gratuit chaque jour</div>
-      <div class="spidy-bar">
-        <div class="spidy-dog">🐕</div>
-        <div class="spidy-text">
-          <div class="spidy-name">Spidy</div>
-          <div class="spidy-msg">Appuie sur le bouton doré ou au centre de la roue pour la faire tourner ! Tu peux gagner de <strong>25 à 500 SPIDS</strong> ou un ticket de grattage gratuit 🎟️</div>
-        </div>
-      </div>
-      <div class="wheel-wrap">
-        <div class="wheel-panel">
-          <div class="wheel-canvas-wrap">
-            <div class="wheel-pointer">▼</div>
-            <canvas id="wheelCanvas" width="280" height="280"></canvas>
-            <div class="wheel-center" id="wCenter">🐕</div>
-          </div>
-          <button id="spinBtn">🎡 Tourner la roue !</button>
-          <div id="spinMsg"></div>
-        </div>
-        <div>
-          <div class="prize-panel">
-            <h3>🏆 Prizes à gagner</h3>
-            <div id="prizeList"></div>
-          </div>
-          <div class="streak-panel">
-            <div style="font-size:15px;font-weight:800">Streak de connexion</div>
-            <div style="font-size:12px;color:var(--ash);margin-top:3px">Connecte-toi chaque jour</div>
-            <div class="streak-days" id="streakDays"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─── LOTTERY ─── -->
-    <div class="screen" id="screen-lottery">
-      <!-- List -->
-      <div id="lotteryListView">
-        <div class="pg-title">🎰 <span>Loterie</span></div>
-        <div class="pg-sub">Choisis ton tirage · Entièrement gratuit</div>
-        <div class="spidy-bar">
-          <div class="spidy-dog">🐕</div>
-          <div class="spidy-text">
-            <div class="spidy-name">Spidy</div>
-            <div class="spidy-msg">Clique sur une loterie, sélectionne tes numéros ou utilise le <strong>Quick Pick</strong> pour un tirage aléatoire. Valide et attend les résultats !</div>
-          </div>
-        </div>
-        <div class="lottery-grid" id="lotteryGrid"></div>
-      </div>
-      <!-- Picker -->
-      <div id="lotteryPicker">
-        <button class="back-btn" id="lotBackBtn">‹ Retour aux loteries</button>
-        <div class="picker-layout">
-          <div>
-            <div class="numbers-card">
-              <div class="numbers-title" id="pickerTitle">Méga Fortune</div>
-              <div class="numbers-sub" id="pickerSub">Sélectionne 6 numéros parmi 49</div>
-              <div class="nums-grid" id="numsGrid"></div>
-              <div class="sel-track">
-                <div class="sel-track-lbl">Tes numéros</div>
-                <div class="sel-balls" id="selBalls"></div>
-              </div>
-            </div>
-          </div>
-          <div class="picker-side">
-            <div class="prize-card-sm">
-              <div class="pcs-lbl">Prize Jackpot</div>
-              <div class="pcs-amount" id="pickerPrize">50 000 SPIDS</div>
-              <div class="pcs-desc" id="pickerDesc">Tirage dans 4h 23min</div>
-            </div>
-            <button class="qpick-btn" id="quickPickBtn">🎲 Quick Pick (aléatoire)</button>
-            <button id="validateBtn" disabled>🎟️ Valider mon ticket</button>
-            <div class="vhint" id="vHint">0/6 numéros sélectionnés</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─── SCRATCH ─── -->
-    <div class="screen" id="screen-scratch">
-      <div id="scratchListView">
-        <div class="pg-title">💎 <span>Grattage</span></div>
-        <div class="pg-sub">Gratte et révèle tes gains</div>
-        <div class="spidy-bar">
-          <div class="spidy-dog">🐕</div>
-          <div class="spidy-text">
-            <div class="spidy-name">Spidy</div>
-            <div class="spidy-msg">Choisis une carte et gratte avec ton doigt ou ta souris. <strong>3 symboles identiques</strong> = tu gagnes ! Entièrement gratuit 🎉</div>
-          </div>
-        </div>
-        <div class="scratch-grid-view" id="scratchGrid"></div>
-      </div>
-      <div id="scratchGame">
-        <button class="back-btn" id="scratchBackBtn">‹ Retour au grattage</button>
-        <div class="scratch-arena">
-          <div class="scratch-main-card">
-            <div class="numbers-title" id="scratchTitle">Gold Rush</div>
-            <div class="numbers-sub">Gratte pour révéler les symboles cachés</div>
-            <div class="scratch-canvas-wrap" id="scratchWrap">
-              <div class="scratch-under" id="scratchUnder"></div>
-              <canvas id="scratchCanvas" width="400" height="240"></canvas>
-            </div>
-            <div class="scratch-hint">Gratte avec ton doigt ou ta souris 👆</div>
-            <button class="reveal-btn" id="revealBtn">Tout révéler d'un coup</button>
-          </div>
-          <div class="scratch-side">
-            <div class="numbers-title">Guide des prizes</div>
-            <div class="ss-legend" id="scratchLegend"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─── MARKET ─── -->
-    <div class="screen" id="screen-market">
-      <div class="pg-title">📈 <span>Prédictions</span></div>
-      <div class="pg-sub">Parie sur l'avenir avec tes SPIDS</div>
-      <div class="spidy-bar">
-        <div class="spidy-dog">🐕</div>
-        <div class="spidy-text">
-          <div class="spidy-name">Spidy</div>
-          <div class="spidy-msg">Vote OUI ou NON sur chaque question. Sélectionne ton montant et confirme. Si ta prédiction est juste, tu multiplies ta mise ! Woof 🐕</div>
-        </div>
-      </div>
-      <div class="market-grid" id="marketGrid"></div>
-    </div>
-
-    <!-- ─── TASKS ─── -->
-    <div class="screen" id="screen-tasks">
-      <div class="pg-title">✅ <span>Tâches</span></div>
-      <div class="pg-sub">Gagne des SPIDS sans risque</div>
-      <div class="spidy-bar">
-        <div class="spidy-dog">🐕</div>
-        <div class="spidy-text">
-          <div class="spidy-name">Spidy</div>
-          <div class="spidy-msg">Accomplis les tâches pour gagner des SPIDS gratuitement. <span id="taskCountSpidy">3/7 tâches</span> complétées aujourd'hui ! Clique pour valider chaque tâche.</div>
-        </div>
-      </div>
-      <div class="tasks-layout">
-        <div class="tasks-main" id="tasksList"></div>
-        <div class="tasks-side">
-          <div class="prog-card">
-            <h3>Progression du jour</h3>
-            <div class="prog-ring-row">
-              <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle cx="30" cy="30" r="24" fill="none" stroke="var(--d4)" stroke-width="5"/>
-                <circle id="progRing" cx="30" cy="30" r="24" fill="none" stroke="var(--gold)" stroke-width="5"
-                  stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="86"
-                  transform="rotate(-90 30 30)" style="transition:stroke-dashoffset .5s ease"/>
-              </svg>
-              <div class="prog-ring-info">
-                <div class="pval" id="progText">3/7</div>
-                <div class="psub">tâches</div>
-              </div>
-            </div>
-            <div class="prog-bar"><div class="prog-bar-fill" id="progBar" style="width:43%"></div></div>
-          </div>
-          <div class="prize-card-sm">
-            <div class="pcs-lbl">Bonus total possible</div>
-            <div class="pcs-amount" id="bonusDisplay">1 075</div>
-            <div class="pcs-desc">SPIDS disponibles</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─── REWARDS ─── -->
-    <div class="screen" id="screen-rewards">
-      <div class="pg-title">🎁 <span>Récompenses</span></div>
-      <div class="pg-sub">Échange tes SPIDS contre de vraies récompenses</div>
-      <div class="rewards-hero">
-        <div>
-          <div class="rh-lbl">Ton solde</div>
-          <div class="rh-amount" id="rwdBal">1 250</div>
-          <div class="rh-unit">SPIDS</div>
-        </div>
-        <div class="rh-dog">🐕</div>
-      </div>
-      <div class="rewards-grid" id="rewardsGrid"></div>
-    </div>
-
-    <!-- ─── ACCOUNT (NOUVELLE PAGE / ÉCRAN) ─── -->
-    <div class="screen" id="screen-account">
-      <div class="pg-title">👤 <span>Compte</span></div>
-      <div class="pg-sub">Gestion du profil · Historique · Statistiques</div>
-
-      <div class="spidy-bar">
-        <div class="spidy-dog">🐕</div>
-        <div class="spidy-text">
-          <div class="spidy-name">Spidy</div>
-          <div class="spidy-msg">Ici tu retrouves ton profil et ton historique. Tu peux ouvrir la fiche compte (style iOS) ou consulter l’historique directement.</div>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
-        <div class="numbers-card">
-          <div class="numbers-title">Ton compte</div>
-          <div class="numbers-sub">Avatar, stats, menu</div>
-          <button class="btn-gold" id="openSheetBtn" style="width:100%;justify-content:center">👤 Ouvrir la fiche iOS</button>
-          <div style="height:12px"></div>
-          <div class="sel-track">
-            <div class="sel-track-lbl">SPIDS disponibles</div>
-            <div style="display:flex;align-items:center;gap:10px">
-              <div class="sel-ball" style="width:auto;border-radius:14px;padding:0 12px;height:34px">🪙 <span id="acctBal" style="margin-left:6px">1 250</span></div>
-              <div style="font-size:12px;color:var(--ash)">Utilise tes SPIDS pour parier & échanger.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="prize-panel">
-          <h3>📋 Historique</h3>
-          <div id="accountHistory"></div>
-          <div style="height:10px"></div>
-          <button class="qpick-btn" id="clearHistoryBtn">🧹 Effacer l’historique (demo)</button>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /main -->
-</div><!-- /app -->
-
-<!-- Mobile Bottom Tab -->
-<div id="mobTab">
-  <button class="tb-btn active" data-screen="home"><span class="tb-ic">🏠</span><span class="tb-lbl">Accueil</span></button>
-  <button class="tb-btn" data-screen="wheel"><span class="tb-ic">🎡</span><span class="tb-lbl">Roue</span></button>
-  <button class="tb-btn" data-screen="lottery"><span class="tb-ic">🎰</span><span class="tb-lbl">Loterie</span></button>
-  <button class="tb-btn" data-screen="scratch"><span class="tb-ic">💎</span><span class="tb-lbl">Grattage</span></button>
-  <button class="tb-btn" id="moreBtn"><span class="tb-ic">⋯</span><span class="tb-lbl">Plus</span></button>
-</div>
-
-<div id="morePopup">
-  <div class="mp-grid">
-    <div class="mp-item" data-screen="market"><div class="mp-item-ic">📈</div><div class="mp-item-lbl">Marchés</div></div>
-    <div class="mp-item" data-screen="tasks"><div class="mp-item-ic">✅</div><div class="mp-item-lbl">Tâches</div></div>
-    <div class="mp-item" data-screen="rewards"><div class="mp-item-ic">🎁</div><div class="mp-item-lbl">Rewards</div></div>
-  </div>
-</div>
-
+<aside id="sidebar">
+<div class="sb-logo"><div class="sb-mark"></div><div class="sb-name goldText">SPIDWIN</div></div>
+<div class="sb-section">Jeux</div>
+<button class="sb-btn active" data-screen="home"><span class="sb-ic">🏠</span>Accueil</button>
+<button class="sb-btn" data-screen="wheel"><span class="sb-ic">🎡</span>SPIDWHEEL</button>
+<button class="sb-btn" data-screen="lottery"><span class="sb-ic">🎰</span>Loterie</button>
+<button class="sb-btn" data-screen="scratch"><span class="sb-ic">💎</span>Grattage</button>
+<button class="sb-btn" data-screen="market"><span class="sb-ic">📈</span>Prédictions</button>
+<div class="sb-section">Compte</div>
+<button class="sb-btn" data-screen="tasks"><span class="sb-ic">✅</span>Tâches</button>
+<button class="sb-btn" data-screen="rewards"><span class="sb-ic">🎁</span>Récompenses</button>
+<button class="sb-btn" data-screen="account"><span class="sb-ic">👤</span>Compte</button>
+<div class="sb-bottom"><div class="balanceCard"><div style="font-size:24px">🪙</div><div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Mes SPID</div><strong class="goldText" id="balSide">1 250</strong></div></div><div class="profileMini"><div class="ava" id="sideAvatar">J</div><div><div style="font-weight:800;font-size:13px" id="sidePlayerName">Joueur_7842</div><div style="font-size:11px;color:#f0bcff" id="sidePlayerLevel">⚡ Niveau 7</div></div></div></div>
+</aside>
+<main id="main">
+<div id="mobTop"><div class="goldText" style="font-size:18px;font-weight:900">SPIDWIN</div><div id="mobTopRight"><div id="mobAccountBtn" style="display:flex;align-items:center;gap:8px"><div style="padding:6px 10px;border-radius:99px;background:rgba(255,226,122,.12);border:1px solid rgba(255,226,122,.18);color:var(--gold);font-size:13px;font-weight:800">🪙 <span id="balMob">1 250</span></div><div class="ava" id="mobAvatar" aria-label="Ouvrir le menu compte" role="button" tabindex="0">J</div></div><div id="mobAccountMenu" aria-hidden="true"><div class="menuHead"><div class="menuName" id="mobMenuName">Joueur_7842</div><div class="menuSub">Accès rapide</div></div><button class="menuBtn" id="mobMenuAccount">👤 Mon compte</button><button class="menuBtn" id="mobMenuEdit">✏️ Modifier mes infos</button><button class="menuBtn" id="mobMenuHistory">📋 Historique</button><div class="menuDivider"></div><button class="menuBtn danger" id="mobMenuDelete">🗑 Supprimer le compte</button></div></div></div>
+<section class="screen active" id="screen-home">
+<div class="hero"><div class="hero-tag">Jackpot actif</div><h1 class="goldText">Joue gratuitement.<br>Gagne pour de vrai.</h1><p>Loterie, grattage, roue et prédictions gratuites. Gagne des <strong>SPID</strong> puis échange-les contre de vraies récompenses.</p><div class="heroBtns"><button class="btnGold" data-goto="wheel">🎡 Tour gratuit</button><button class="btnGhost" data-goto="lottery">🎰 Jouer à la loterie</button></div><div class="heroDogWrap"><div class="heroDog mascot"></div></div><div class="heroCoins"><span class="coin c1"></span><span class="coin c2"></span><span class="coin c3"></span><span class="coin c4"></span><span class="coin c5"></span><span class="mouthCoin"></span></div></div>
+<div class="spotCard"><div><div class="badge" style="margin-bottom:10px">1 tour gratuit / jour</div><div style="font-size:20px;font-weight:900;margin-bottom:4px">Tourne la SPIDWHEEL maintenant</div><div style="font-size:13px;color:rgba(255,255,255,.74)">Jusqu’à <strong>150 SPID</strong>, un ticket grattage ou un ticket loterie.</div></div><div style="display:flex;align-items:center;gap:12px"><div class="spotWheel"></div><button class="btnGold" data-goto="wheel">Jouer</button></div></div>
+<div class="spidy-bar"><span class="mascot" style="background-image:url('assets/wheel-main.png')"></span><div><div class="spidy-name">SPIDY</div><div class="spidy-msg">Woof ! Pense à ton <strong>tour gratuit</strong> et à ta <strong>loterie 4 numéros + 2 symboles</strong>.</div></div></div>
+<div class="home-grid"><div class="tile blue" data-goto="lottery"><div><span class="badge">Loterie</span></div><div style="font-size:32px">🎰</div><div><div style="font-size:12px;color:rgba(255,255,255,.6)">Méga Fortune</div><div class="big goldText">Jackpot</div></div></div><div class="tile purple" data-goto="scratch"><div><span class="badge">Grattage</span></div><div style="font-size:32px">💎</div><div><div style="font-size:12px;color:rgba(255,255,255,.6)">Tickets instantanés</div><div class="big goldText">Jusqu’à 150</div></div></div><div class="tile teal" data-goto="market"><div><span class="badge">Prédictions</span></div><div style="font-size:32px">📈</div><div><div style="font-size:12px;color:rgba(255,255,255,.6)">Marchés live</div><div class="big goldText">Multiplie tes SPID</div></div></div></div>
+<div class="stats-row"><div class="stat"><div class="v goldText" id="homeSpids">1 250</div><div style="font-size:11px;color:var(--muted)">SPID</div></div><div class="stat"><div class="v goldText">47</div><div style="font-size:11px;color:var(--muted)">Parties</div></div><div class="stat"><div class="v goldText">12</div><div style="font-size:11px;color:var(--muted)">Victoires</div></div></div>
+</section>
+<section class="screen" id="screen-wheel"><div class="pg-title">SPIDWHEEL <span class="goldText">du Destin</span></div><div class="pg-sub">Tour gratuit quotidien</div><div class="spidy-bar"><span class="mascot" style="background-image:url('assets/wheel-main.png')"></span><div><div class="spidy-name">Conseil de roue</div><div class="spidy-msg">Appuie sur le centre ou sur le bouton. SPIDY tient déjà la roue pour toi : à la clé, <strong>5 à 150 SPID</strong>, un <strong>ticket grattage</strong> ou un <strong>ticket loterie</strong>.</div></div></div><div class="wheel-layout"><div class="panel"><div class="wheelCanvasWrap"><div class="wheel-pointer">▼</div><canvas id="wheelCanvas" width="320" height="320"></canvas><button class="wheel-center" id="wheelCenter"><span class="mascot"></span></button></div><div style="height:14px"></div><button class="wheelBtn" id="spinBtn">🎡 Tourner la roue</button><div class="hint" id="spinMsg">1 tour disponible aujourd'hui</div></div><div><div class="panel"><div style="font-size:18px;font-weight:900;margin-bottom:12px">Gains de la roue</div><div id="wheelPrizeList"></div></div></div></div></section>
+<section class="screen" id="screen-lottery"><div id="lotteryListView"><div class="pg-title">🎰 <span class="goldText">Loterie</span></div><div class="pg-sub">4 numéros de 1 à 49 + 2 symboles</div><div class="spidy-bar"><span class="mascot" style="background-image:url('assets/ticket.png')"></span><div><div class="spidy-name">Choisis ta grille</div><div class="spidy-msg">Sélectionne 4 numéros et 2 symboles, ou laisse SPIDY choisir avec Quick Pick.</div></div></div><div class="lottery-grid" id="lotteryGrid"></div></div><div id="lotteryPicker" class="hidden"><button class="backBtn" id="lotBack">‹ Retour aux loteries</button><div class="picker-layout"><div class="panel lottery-main-panel"><div style="font-size:20px;font-weight:900" id="lotTitle">Méga Fortune</div><div class="pg-sub" style="margin-bottom:12px" id="lotSub">Sélectionne 4 numéros de 1 à 49</div><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:8px;letter-spacing:.6px;text-transform:uppercase">Numéros</div><div class="gridNums" id="numGrid"></div><div style="font-size:12px;font-weight:800;color:var(--gold);margin:14px 0 8px;letter-spacing:.6px;text-transform:uppercase">Symboles</div><div class="gridSymbols" id="symbolGrid"></div><div class="selWrap" style="margin-top:14px"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:800">Ta grille</div><div class="balls" id="selectionWrap"></div></div></div><div class="lottery-side-col"><div class="sideHero"><div style="font-size:11px;color:var(--gold2);font-weight:800;text-transform:uppercase;letter-spacing:.6px">Règles</div><div class="big goldText">4 + 2</div><div style="font-size:13px;color:rgba(255,255,255,.74);margin-top:8px">Choisis 4 numéros de 1 à 49 et 2 symboles. 1 match = 2 SPID · 6 matchs = Jackpot.</div></div><button class="btnGhost" style="width:100%;margin-top:12px" id="quickPick">🎲 Quick Pick</button><button class="btnGold" style="width:100%;margin-top:12px" id="validateLottery" disabled>🎟️ Valider ma grille</button><div class="hint" id="lotHint">0/6 sélections</div><div class="panel" style="margin-top:12px"><div style="font-size:15px;font-weight:900;margin-bottom:10px">Symboles</div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:12px;color:rgba(255,255,255,.8)"><div>💎 Diamant</div><div>👑 Couronne</div><div>🏆 Trophée</div><div>🔱 Trident</div><div>🪙 Pièce d’or</div><div>🔔 Cloche dorée</div><div>🗝 Clé royale</div><div>⭐ Étoile</div></div></div></div></div></div></section>
+<section class="screen" id="screen-scratch"><div id="scratchListView"><div class="pg-title">💎 <span class="goldText">Grattage</span></div><div class="pg-sub">3 symboles identiques = gain</div><div class="spidy-bar"><span class="mascot" style="background-image:url('assets/scratch.png')"></span><div><div class="spidy-name">Ticket à gratter</div><div class="spidy-msg">Choisis une carte puis gratte pour révéler tes gains.</div></div></div><div class="scratch-grid" id="scratchGrid"></div></div><div id="scratchGame" class="hidden"><button class="backBtn" id="scratchBack">‹ Retour au grattage</button><div class="scratch-layout"><div class="panel scratch-main-panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px"><div><div style="font-size:20px;font-weight:900" id="scratchTitle">Ticket</div><div class="pg-sub" style="margin-bottom:0">Gratte la surface pour révéler les symboles</div></div><span class="mascot" style="width:76px;height:92px;background-image:url('assets/scratch-alt.png')"></span></div><div class="progress"><div style="font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase">Progression</div><div class="bar"><div class="fill" id="scratchFill"></div></div><div style="font-size:12px;font-weight:900;color:var(--gold);min-width:42px;text-align:right" id="scratchPct">0%</div></div><div class="scratchWrap" id="scratchWrap"><div class="scratchUnder" id="scratchUnder"></div><canvas id="scratchCanvas"></canvas></div><div class="hint">Gratte avec ton doigt ou ta souris</div><button class="btnGhost" style="width:100%;margin-top:10px" id="revealScratch">Tout révéler</button></div><div class="panel scratch-legend-panel"><div style="font-size:17px;font-weight:900;margin-bottom:10px">Gains du grattage</div><div id="scratchLegend"></div></div></div></div></section>
+<section class="screen" id="screen-market"><div class="pg-title">📈 <span class="goldText">Prédictions</span></div><div class="pg-sub">Vote Oui / Non et multiplie tes SPID</div><div class="spidy-bar"><span class="mascot" style="background-image:url('assets/construction.png')"></span><div><div class="spidy-name">Marchés en cours</div><div class="spidy-msg">Choisis ton camp puis valide un montant.</div></div></div><div class="market-grid" id="marketGrid"></div></section>
+<section class="screen" id="screen-tasks"><div class="pg-title">✅ <span class="goldText">Tâches</span></div><div class="pg-sub">Des SPID gratuits chaque jour</div><div class="spidy-bar"><span class="mascot" style="background-image:url('assets/construction.png')"></span><div><div class="spidy-name">Bonus du jour</div><div class="spidy-msg">Complète tes missions pour récupérer tous les SPID gratuits.</div></div></div><div class="tasks-layout"><div id="taskList"></div><div class="progCard"><div style="font-size:17px;font-weight:900;margin-bottom:10px">Progression du jour</div><div style="font-size:34px;font-weight:900" class="goldText" id="taskProg">3/7</div><div class="bar" style="margin-top:10px"><div class="fill" id="taskBar" style="width:43%"></div></div><div style="font-size:12px;color:var(--muted);margin-top:8px">Bonus total disponible : <strong class="goldText" id="taskBonus">1 405</strong></div></div></div></section>
+<section class="screen" id="screen-rewards"><div class="pg-title">🎁 <span class="goldText">Récompenses</span></div><div class="pg-sub">Échange tes SPID contre du concret</div><div class="rewardHero"><div><div style="font-size:11px;color:var(--gold2);font-weight:800;text-transform:uppercase;letter-spacing:.6px">Ton solde</div><div class="rewardAmount goldText" id="rewardBal">1 250</div><div style="color:#f0bcff">SPID</div></div><span class="mascot"></span></div><div class="rewards-grid" id="rewardsGrid"></div></section>
+<section class="screen" id="screen-account"><div class="pg-title">👤 <span class="goldText">Compte</span></div><div class="pg-sub">Profil, statistiques et historique</div><div class="account-layout"><div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px"><div style="display:flex;gap:12px;align-items:center"><div class="ava" style="width:44px;height:44px" id="accountAvatar">J</div><div><div style="font-size:16px;font-weight:900" id="accountPlayerName">Joueur_7842</div><div style="font-size:12px;color:#f0bcff" id="accountPlayerLevel">⚡ Niveau 7 · Chasseur d'or</div></div></div><div class="badge">🪙 <span id="accBal">1 250</span></div></div><div class="accountStatGrid"><div class="aStat"><div class="goldText" style="font-size:22px;font-weight:900" id="accSpids">1 250</div><div style="font-size:10px;color:var(--muted)">SPID</div></div><div class="aStat"><div class="goldText" style="font-size:22px;font-weight:900">47</div><div style="font-size:10px;color:var(--muted)">Parties</div></div><div class="aStat"><div class="goldText" style="font-size:22px;font-weight:900">12</div><div style="font-size:10px;color:var(--muted)">Victoires</div></div></div><div style="height:12px"></div><button class="btnGold" style="width:100%;margin-bottom:8px" id="editAccountBtn">✏️ Modifier le compte</button><button class="btnGhost" style="width:100%;margin-bottom:8px" id="openHistory">📋 Historique</button><button class="btnGhost" style="width:100%;margin-bottom:8px" id="openRanking">🏆 Classement</button><button class="btnGhost" style="width:100%;margin-bottom:8px" id="clearHistory">🧹 Effacer l'historique</button><button class="btnDanger" style="width:100%;margin-top:14px;margin-bottom:0" id="deleteAccountBtn">🗑️ Supprimer mon compte</button></div><div class="panel"><div style="font-size:17px;font-weight:900;margin-bottom:10px">Historique récent</div><div id="accountHistory"></div></div></div></section>
+</main></div>
+<div id="mobTab"><button class="tb-btn active" data-screen="home"><span style="font-size:22px">🏠</span><span>Accueil</span></button><button class="tb-btn" data-screen="lottery"><span style="font-size:22px">🎰</span><span>Loterie</span></button><button class="tb-btn" data-screen="scratch"><span style="font-size:22px">💎</span><span>Grattage</span></button><button class="tb-btn" data-screen="market"><span style="font-size:22px">📈</span><span>Prédictions</span></button><button class="tb-btn" data-screen="rewards"><span style="font-size:22px">🎁</span><span>Récompenses</span></button></div>
+<button id="wheelBubble" title="Ouvrir la roue"><span class="mascot"></span></button>
 <script>
-// ══════════════════════════════════════════════════
-// "PAGES" EN UN SEUL FICHIER (ROUTER)
-// -> chaque section = une "page" via #home, #wheel, #lottery...
-// -> toutes les options de navigation y mènent
-// ══════════════════════════════════════════════════
-function routeTo(screen) {
-  // hash update (page)
-  if (location.hash.replace('#','') !== screen) {
-    history.pushState({screen:screen}, '', '#' + screen);
-  }
-  goTo(screen);
+const STATE={spids:1250,current:'home',canSpin:true,wheelRot:0,spinBusy:false,taskDone:3,totalTasks:7};
+const SYMBOLS=['💎','👑','🏆','🔱','🪙','🔔','🗝','⭐']; const SYMBOL_LABELS={'💎':'Diamant','👑':'Couronne','🏆':'Trophée','🔱':'Trident','🪙':'Pièce d’or','🔔':'Cloche dorée','🗝':'Clé royale','⭐':'Étoile'};
+const LOTTERIES=[{id:'mega',name:'Méga Fortune',subtitle:'4 numéros + 2 symboles',desc:'Tirage dans 4h 20',theme:'lot1'},{id:'royal',name:'Royal 6',subtitle:'4 numéros + 2 symboles',desc:'Tirage dans 1h 10',theme:'lot2'},{id:'express',name:'Express Lucky',subtitle:'4 numéros + 2 symboles',desc:'Tirage dans 12 min',theme:'lot3'}];
+const LOTTERY_PAYOUT={1:2,2:8,3:25,4:80,5:250,6:'Jackpot'};
+const WHEEL_SEGMENTS=[{label:'5 SPID',type:'spid',value:5,color:'#4D1A82',tx:'#FFE27A'},{label:'10 SPID',type:'spid',value:10,color:'#F6C84C',tx:'#120614'},{label:'15 SPID',type:'spid',value:15,color:'#2B1042',tx:'#FFE27A'},{label:'20 SPID',type:'spid',value:20,color:'#C24BFF',tx:'#fff'},{label:'25 SPID',type:'spid',value:25,color:'#D39B1C',tx:'#120614'},{label:'50 SPID',type:'spid',value:50,color:'#5A2399',tx:'#FFE27A'},{label:'75 SPID',type:'spid',value:75,color:'#1D082E',tx:'#FFE27A'},{label:'100 SPID',type:'spid',value:100,color:'#F7D778',tx:'#120614'},{label:'150 SPID',type:'spid',value:150,color:'#8B1CFF',tx:'#fff'},{label:'Ticket grattage',type:'scratch',value:0,color:'#3A145B',tx:'#FFE27A'},{label:'Ticket grattage',type:'scratch',value:0,color:'#6D28E8',tx:'#fff'},{label:'Ticket loterie',type:'lottery',value:0,color:'#FFDE85',tx:'#120614'}];
+const SCRATCH_TEMPLATES=[{name:'Cerise Party', cover:'🍒', cells:['🍒','🍒','🍒','🍋','🍀','⭐','🍋','🎟️','💎']},{name:'Diamant Flash', cover:'💎', cells:['💎','⭐','💎','👑','💎','🍋','🎟️','🍀','🍒']},{name:'Couronne Royale', cover:'👑', cells:['👑','👑','👑','💎','🍒','⭐','🎫','🍀','🍋']},{name:'Lucky Ticket', cover:'🎟️', cells:['🎟️','🎟️','🎟️','🍋','🍒','💎','⭐','👑','🎫']}];
+const SCRATCH_REWARDS={'🍒':'5 SPID','🍋':'10 SPID','🍀':'20 SPID','⭐':'35 SPID','💎':'75 SPID','👑':'150 SPID','🎟️':'Ticket grattage','🎫':'Ticket loterie'};
+const MARKET_AMOUNTS=[25,50,100,200];
+const MARKETS=[{key:'btc',cat:'🪙 Crypto',q:'Bitcoin dépassera 150 000$ avant fin 2025 ?',yo:'2.1x',no:'1.4x',pool:'12 500',time:'18j 4h'},{key:'psg',cat:'⚽ Sport',q:'Le PSG gagnera la Ligue des Champions 2025 ?',yo:'3.5x',no:'1.2x',pool:'8 200',time:'45j'},{key:'apple',cat:'🤖 Tech',q:'Apple lancera un iPhone avec caméra 108 MP ?',yo:'1.8x',no:'1.6x',pool:'5 700',time:'90j'}];
+const TASKS=[{id:'t1',icon:'🌅',name:'Connexion du jour',desc:'Connecte-toi aujourd’hui',reward:50,done:true},{id:'t2',icon:'🎡',name:'Tourner la roue',desc:'Effectue ton tour quotidien',reward:30,done:true},{id:'t3',icon:'📲',name:'Partager SPIDWIN',desc:'Partage le lien avec un ami',reward:100,done:true},{id:'t4',icon:'🎰',name:'Jouer à la loterie',desc:'Valide une grille',reward:75,done:false},{id:'t5',icon:'💎',name:'Faire un grattage',desc:'Révèle une carte',reward:50,done:false},{id:'t6',icon:'📈',name:'Faire une prédiction',desc:'Place un pari',reward:150,done:false},{id:'t7',icon:'👥',name:'Inviter un ami',desc:'Un ami rejoint via ton lien',reward:950,done:false}];
+const REWARDS=[{name:'Amazon',type:'Carte cadeau 5€',cost:500,icon:'🛒'},{name:'Netflix',type:'1 mois',cost:1000,icon:'🎬'},{name:'Spotify',type:'Premium 1 mois',cost:800,icon:'🎵'},{name:'Ticket VIP',type:'5 tickets grattage',cost:300,icon:'💎'},{name:'Cashback',type:'10€ PayPal',cost:2000,icon:'💳'},{name:'Loterie VIP',type:'Ticket exclusif',cost:250,icon:'🌟'}];
+let HISTORY=[{ic:'🎡',a:'SPIDWHEEL du Destin',d:'Aujourd’hui 14:32',v:'+50',cls:'p'},{ic:'🎰',a:'Loterie Méga Fortune',d:'Aujourd’hui 10:15',v:'+8',cls:'p'},{ic:'💎',a:'Grattage Cerise Party',d:'Hier 20:45',v:'+35',cls:'p'},{ic:'✅',a:'Tâche : Connexion',d:'Hier 09:00',v:'+50',cls:'p'},{ic:'📈',a:'Pari Bitcoin',d:'25 fév 11:00',v:'-100',cls:'m'}];
+let lotState={nums:[],symbols:[],current:null}; let marketState={}; let currentScratch=null,scratchCtx=null,scratchDone=false,scratchProgress=0,scratchPointer=false,lastPoint=null;
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function fmt(n){return n.toLocaleString('fr-FR')} function updateBalances(){['#balSide','#balMob','#homeSpids','#rewardBal','#accBal','#accSpids'].forEach(sel=>{const el=$(sel); if(el) el.textContent=fmt(STATE.spids)});} function toast(msg){const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove('show'),2600)}
+function addHistory(ic,a,v){HISTORY.unshift({ic,a,d:'À l’instant',v:(v>0?'+':'')+v,cls:v>=0?'p':'m'}); if(HISTORY.length>30) HISTORY.pop(); renderHistory();}
+function earn(amount,label,icon='🪙'){STATE.spids+=amount; updateBalances(); addHistory(icon,label,amount); toast((amount>=0?'+':'')+amount+' SPID · '+label)}
+function setActive(screen){STATE.current=screen; $$('.screen').forEach(s=>s.classList.remove('active')); const page=$('#screen-'+screen); if(page) page.classList.add('active'); $$('.sb-btn,.tb-btn').forEach(b=>b.classList.toggle('active',b.dataset.screen===screen)); history.replaceState({},'', '#'+screen); if(screen==='wheel') requestAnimationFrame(()=>{resizeWheel(); drawWheel(STATE.wheelRot*Math.PI/180)})}
+function goto(screen){setActive(screen); window.scrollTo(0,0)}
+$$('[data-screen]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.screen))); document.addEventListener('click',e=>{const g=e.target.closest('[data-goto]'); if(g) goto(g.dataset.goto)}); $('#wheelBubble').addEventListener('click',()=>goto('wheel')); window.addEventListener('popstate',()=>setActive((location.hash||'#home').slice(1)||'home'));
+function openOverlay(html){$('#sheetBody').innerHTML=html; $('#overlay').classList.add('open')} $('#overlay').addEventListener('click',e=>{if(e.target.id==='overlay') $('#overlay').classList.remove('open')});
+function renderHistory(){const html=HISTORY.slice(0,8).map(h=>`<div class="histItem"><div style="font-size:22px">${h.ic}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${h.a}</div><div style="font-size:11px;color:var(--muted)">${h.d}</div></div><div class="histVal ${h.cls}" style="font-weight:900">${h.v}</div></div>`).join(''); const acc=$('#accountHistory'); if(acc) acc.innerHTML=html||'<div style="color:var(--muted)">Aucun historique</div>'}
+$('#openHistory').addEventListener('click',()=>openOverlay('<div style="font-size:20px;font-weight:900;margin-bottom:12px">Historique</div>'+HISTORY.map(h=>`<div class="histItem"><div style="font-size:22px">${h.ic}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${h.a}</div><div style="font-size:11px;color:var(--muted)">${h.d}</div></div><div class="histVal ${h.cls}" style="font-weight:900">${h.v}</div></div>`).join('')));
+$('#openRanking').addEventListener('click',()=>toast('🏆 Classement bientôt')); $('#clearHistory').addEventListener('click',()=>{HISTORY=[]; renderHistory(); toast('Historique effacé')});
+window.SPIDWIN_IMG_OVERRIDES={home:'assets/coin.png',wheel:'assets/wheel-main.png',wheelAlt:'assets/wheel-alt.png',token:'assets/token.png',coin:'assets/coin.png',podium:'assets/podium.png',bonus:'assets/bonus.png',scratch:'assets/scratch.png',scratchAlt:'assets/scratch-alt.png',construction:'assets/construction.png',ticket:'assets/ticket.png',gift:'assets/gift.png',trophy:'assets/trophy.png'};
+function resultMascotFor(type){const img=window.SPIDWIN_IMG_OVERRIDES; if(type==='scratch') return `url(${img.scratch})`; if(type==='lottery' || type==='ticket') return `url(${img.ticket})`; if(type==='wheel') return `url(${img.wheel})`; if(type==='spid') return `url(${img.token})`; return `url(${img.podium})`;}
+function showResult({emoji='🎉',title='Bravo !',sub='Tu as gagné',amount='+0 SPID',type='spid'}){$('#resultEmoji').textContent=emoji; $('#resultTitle').textContent=title; $('#resultSub').textContent=sub; $('#resultAmount').textContent=amount; $('#resultMascot').style.backgroundImage=resultMascotFor(type); $('#resultModal').classList.add('open');} $('#closeResult').addEventListener('click',()=>$('#resultModal').classList.remove('open'));
+function buildWheelPrizeList(){$('#wheelPrizeList').innerHTML=WHEEL_SEGMENTS.map(s=>`<div class="listRow"><div class="dot" style="background:${s.color}"></div><div style="flex:1;font-size:13px;font-weight:700">${s.label}</div><div style="font-weight:900;color:var(--gold)">${s.type==='spid'?'+'+s.value:(s.type==='scratch'?'🎟️':'🎰')}</div></div>`).join('')}
+function resizeWheel(){const canvas=$('#wheelCanvas'); const wrap=canvas.parentElement; const size=Math.max(220,Math.min(340,wrap.clientWidth)); const dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1)); canvas.style.width=size+'px'; canvas.style.height=size+'px'; canvas.width=Math.floor(size*dpr); canvas.height=Math.floor(size*dpr); const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0)}
+function drawWheel(angle=0){const canvas=$('#wheelCanvas'); const ctx=canvas.getContext('2d'); const size=canvas.clientWidth||320; const cx=size/2, cy=size/2, r=size/2-5; const seg=(Math.PI*2)/WHEEL_SEGMENTS.length; ctx.clearRect(0,0,size,size); WHEEL_SEGMENTS.forEach((s,i)=>{const a1=angle+i*seg-Math.PI/2,a2=a1+seg; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a1,a2); ctx.closePath(); ctx.fillStyle=s.color; ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=2; ctx.stroke(); ctx.save(); ctx.translate(cx,cy); ctx.rotate(a1+seg/2); ctx.textAlign='right'; ctx.fillStyle=s.tx; ctx.font='900 '+(size<260?9:11)+'px Inter'; ctx.fillText(s.label,r-12,4); ctx.restore()}); ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.strokeStyle='rgba(255,226,122,.7)'; ctx.lineWidth=4; ctx.stroke()}
+function spinWheel(){if(!STATE.canSpin||STATE.spinBusy) return; STATE.spinBusy=true; $('#spinBtn').disabled=true; $('#spinMsg').textContent='SPIDY tourne la roue...'; const extra=2400+Math.random()*1800; const from=STATE.wheelRot; const to=from+extra; const dur=4300; const t0=performance.now(); const ease=t=>1-Math.pow(1-t,4); function frame(t){const p=Math.min(1,(t-t0)/dur); STATE.wheelRot=from+(to-from)*ease(p); drawWheel(STATE.wheelRot*Math.PI/180); if(p<1){requestAnimationFrame(frame); return;} STATE.spinBusy=false; STATE.canSpin=false; const norm=((STATE.wheelRot%360)+360)%360; const idx=Math.floor(((360-norm)%360)/(360/WHEEL_SEGMENTS.length))%WHEEL_SEGMENTS.length; const won=WHEEL_SEGMENTS[idx]; setTimeout(()=>{ if(won.type==='spid'){earn(won.value,'SPIDWHEEL du Destin','🎡'); showResult({emoji:'🎡',title:'La roue t’a choisi !',sub:'Gain SPID immédiat',amount:'+'+won.value+' SPID',type:'spid'});} else if(won.type==='scratch'){toast('🎟️ Ticket grattage offert'); addHistory('🎟️','Ticket grattage offert',0); showResult({emoji:'🎟️',title:'Ticket grattage !',sub:'Un ticket gratuit vient d’être ajouté',amount:'1 ticket grattage',type:'scratch'});} else {toast('🎰 Ticket loterie offert'); addHistory('🎰','Ticket loterie offert',0); showResult({emoji:'🎰',title:'Ticket loterie !',sub:'Ta prochaine grille est offerte',amount:'1 ticket loterie',type:'lottery'});} $('#spinBtn').textContent='✅ Reviens demain'; $('#spinMsg').textContent='Prochain tour demain';},260)} requestAnimationFrame(frame)}
+$('#spinBtn').addEventListener('click',spinWheel); $('#wheelCenter').addEventListener('click',spinWheel); window.addEventListener('resize',()=>{resizeWheel(); drawWheel(STATE.wheelRot*Math.PI/180); if(!$('#scratchGame').classList.contains('hidden')&&currentScratch) initScratchCanvas();});
+function buildLotteryList(){$('#lotteryGrid').innerHTML=LOTTERIES.map(l=>`<div class="lotCard ${l.theme}" data-lot="${l.id}"><div class="badge" style="margin-bottom:10px">${l.subtitle}</div><div class="lotName">${l.name}</div><div class="lotPrize goldText">4 + 2</div><div class="lotMeta">${l.desc}</div></div>`).join(''); $$('#lotteryGrid .lotCard').forEach(c=>c.addEventListener('click',()=>openLottery(c.dataset.lot)))}
+function openLottery(id){lotState={nums:[],symbols:[],current:LOTTERIES.find(l=>l.id===id)}; $('#lotTitle').textContent=lotState.current.name; $('#lotteryListView').classList.add('hidden'); $('#lotteryPicker').classList.remove('hidden'); buildNumGrid(); buildSymbolGrid(); renderLotterySelection()} $('#lotBack').addEventListener('click',()=>{$('#lotteryListView').classList.remove('hidden'); $('#lotteryPicker').classList.add('hidden')});
+function buildNumGrid(){$('#numGrid').innerHTML=Array.from({length:49},(_,i)=>`<button class="numBtn" data-num="${i+1}">${i+1}</button>`).join(''); $$('#numGrid .numBtn').forEach(b=>b.addEventListener('click',()=>toggleNum(+b.dataset.num,b)))}
+function buildSymbolGrid(){$('#symbolGrid').innerHTML=SYMBOLS.map(s=>`<button class="symbolBtn" data-sym="${s}" title="${SYMBOL_LABELS[s]}">${s}<span style="font-size:10px;margin-top:4px;color:rgba(255,255,255,.7)">${SYMBOL_LABELS[s]}</span></button>`).join(''); $$('#symbolGrid .symbolBtn').forEach(b=>b.addEventListener('click',()=>toggleSymbol(b.dataset.sym,b)))}
+function toggleNum(n,btn){const idx=lotState.nums.indexOf(n); if(idx>=0){lotState.nums.splice(idx,1); btn.classList.remove('picked')} else {if(lotState.nums.length>=4){toast('Maximum 4 numéros'); return;} lotState.nums.push(n); btn.classList.add('picked')} renderLotterySelection()}
+function toggleSymbol(sym,btn){const idx=lotState.symbols.indexOf(sym); if(idx>=0){lotState.symbols.splice(idx,1); btn.classList.remove('picked')} else {if(lotState.symbols.length>=2){toast('Maximum 2 symboles'); return;} lotState.symbols.push(sym); btn.classList.add('picked')} renderLotterySelection()}
+function renderLotterySelection(){const wrap=$('#selectionWrap'); const nums=lotState.nums.slice().sort((a,b)=>a-b).map(n=>`<span class="ball">${n}</span>`).join(''); const syms=lotState.symbols.map(s=>`<span class="ball sym">${s}</span>`).join(''); wrap.innerHTML=nums+syms; const count=lotState.nums.length+lotState.symbols.length; $('#lotHint').textContent=count+'/6 sélections'; $('#validateLottery').disabled=!(lotState.nums.length===4 && lotState.symbols.length===2)}
+$('#quickPick').addEventListener('click',()=>{lotState.nums=[]; lotState.symbols=[]; $$('#numGrid .numBtn').forEach(b=>b.classList.remove('picked')); $$('#symbolGrid .symbolBtn').forEach(b=>b.classList.remove('picked')); const pool=Array.from({length:49},(_,i)=>i+1); while(lotState.nums.length<4){const i=Math.floor(Math.random()*pool.length); const n=pool.splice(i,1)[0]; lotState.nums.push(n); $(`#numGrid .numBtn[data-num="${n}"]`).classList.add('picked')} const syms=[...SYMBOLS]; while(lotState.symbols.length<2){const i=Math.floor(Math.random()*syms.length); const s=syms.splice(i,1)[0]; lotState.symbols.push(s); $(`#symbolGrid .symbolBtn[data-sym="${s}"]`).classList.add('picked')} renderLotterySelection(); toast('Quick Pick généré')});
+$('#validateLottery').addEventListener('click',()=>{const matches=randomLotteryMatches(); const payout=LOTTERY_PAYOUT[matches]; $('#lotteryListView').classList.remove('hidden'); $('#lotteryPicker').classList.add('hidden'); if(matches===0){toast('🎫 Grille validée'); addHistory('🎰','Grille loterie validée',0); return;} if(payout==='Jackpot'){earn(5000,'Jackpot loterie','🎰'); showResult({emoji:'👑',title:'Jackpot !',sub:'Tu as obtenu 6 correspondances',amount:'+5 000 SPID',type:'lottery'}); return;} earn(payout,'Gain loterie','🎰'); showResult({emoji:'🎰',title:`${matches} correspondance${matches>1?'s':''} !`,sub:'Gain de la loterie',amount:'+'+payout+' SPID',type:'lottery'})});
+function randomLotteryMatches(){const r=Math.random(); if(r<.35) return 0; if(r<.60) return 1; if(r<.78) return 2; if(r<.90) return 3; if(r<.97) return 4; if(r<.995) return 5; return 6}
+function buildScratchGrid(){$('#scratchGrid').innerHTML=SCRATCH_TEMPLATES.map((c,i)=>`<div class="scratchCard" data-scratch="${i}"><div class="scratchTop">${c.cover}</div><div class="scratchBody"><div class="scratchTitle">${c.name}</div><div class="scratchPrize goldText">Ticket gratuit</div><div style="font-size:11px;color:var(--muted);margin-top:4px">3 symboles identiques</div></div></div>`).join(''); $$('#scratchGrid .scratchCard').forEach(c=>c.addEventListener('click',()=>openScratch(+c.dataset.scratch)))}
+function buildScratchLegend(){$('#scratchLegend').innerHTML=Object.entries(SCRATCH_REWARDS).map(([k,v])=>`<div class="listRow"><div style="font-size:22px">${k}</div><div style="flex:1;font-size:13px;font-weight:700">${labelScratch(k)}</div><div style="font-weight:900;color:var(--gold)">${v}</div></div>`).join('')}
+function labelScratch(k){return {'🍒':'Cerises','🍋':'Citrons','🍀':'Trèfles','⭐':'Étoiles','💎':'Diamants','👑':'Couronnes','🎟️':'Tickets grattage','🎫':'Tickets loterie'}[k]||k}
+function openScratch(idx){currentScratch=JSON.parse(JSON.stringify(SCRATCH_TEMPLATES[idx])); $('#scratchListView').classList.add('hidden'); $('#scratchGame').classList.remove('hidden'); $('#scratchTitle').textContent=currentScratch.name; const under=$('#scratchUnder'); under.innerHTML=currentScratch.cells.map(s=>`<div class="scratchCell"><div class="ico">${s}</div><div class="val">${SCRATCH_REWARDS[s]}</div></div>`).join(''); initScratchCanvas()} $('#scratchBack').addEventListener('click',()=>{$('#scratchListView').classList.remove('hidden'); $('#scratchGame').classList.add('hidden'); currentScratch=null; scratchCtx=null; scratchDone=false});
+function initScratchCanvas(){const canvas=$('#scratchCanvas'), wrap=$('#scratchWrap'); const cssW=Math.max(280,Math.round(wrap.clientWidth)); const cssH=Math.round(cssW*.62); canvas.style.width=cssW+'px'; canvas.style.height=cssH+'px'; canvas.width=cssW; canvas.height=cssH; scratchCtx=canvas.getContext('2d',{willReadFrequently:true}); scratchCtx.setTransform(1,0,0,1,0,0); const g=scratchCtx.createLinearGradient(0,0,cssW,cssH); g.addColorStop(0,'#6A3BD3'); g.addColorStop(.35,'#C24BFF'); g.addColorStop(.68,'#F6C84C'); g.addColorStop(1,'#8A5B00'); scratchCtx.globalCompositeOperation='source-over'; scratchCtx.fillStyle=g; scratchCtx.fillRect(0,0,cssW,cssH); scratchCtx.fillStyle='rgba(0,0,0,.38)'; scratchCtx.font='900 18px Inter'; scratchCtx.textAlign='center'; scratchCtx.fillText('✦ GRATTE ICI ✦',cssW/2,cssH/2); scratchCtx.font='600 12px Inter'; scratchCtx.fillText('SPIDWIN · '+currentScratch.name,cssW/2,cssH/2+24); setScratchProgress(0); scratchDone=false; canvas.onpointerdown=e=>{canvas.setPointerCapture(e.pointerId); scratchPointer=true; lastPoint=getCanvasPoint(e,canvas); scratchDraw(lastPoint,lastPoint)}; canvas.onpointermove=e=>{if(!scratchPointer||scratchDone) return; const pt=getCanvasPoint(e,canvas); scratchDraw(lastPoint,pt); lastPoint=pt}; const stop=e=>{scratchPointer=false; if(canvas.hasPointerCapture && canvas.hasPointerCapture(e.pointerId)) try{canvas.releasePointerCapture(e.pointerId)}catch(err){} checkScratch()}; canvas.onpointerup=stop; canvas.onpointercancel=stop}
+function getCanvasPoint(e,canvas){const rect=canvas.getBoundingClientRect(); return {x:(e.clientX-rect.left)*(canvas.width/rect.width), y:(e.clientY-rect.top)*(canvas.height/rect.height)}}
+function scratchDraw(from,to){if(!scratchCtx) return; scratchCtx.save(); scratchCtx.globalCompositeOperation='destination-out'; scratchCtx.lineCap='round'; scratchCtx.lineJoin='round'; scratchCtx.strokeStyle='rgba(0,0,0,1)'; scratchCtx.lineWidth=34; scratchCtx.beginPath(); scratchCtx.moveTo(from.x,from.y); scratchCtx.lineTo(to.x,to.y); scratchCtx.stroke(); scratchCtx.restore()}
+function setScratchProgress(v){scratchProgress=v; $('#scratchFill').style.width=Math.round(v*100)+'%'; $('#scratchPct').textContent=Math.round(v*100)+'%'}
+function checkScratch(){const canvas=$('#scratchCanvas'); if(!canvas||!scratchCtx||scratchDone) return; const img=scratchCtx.getImageData(0,0,canvas.width,canvas.height).data; let total=0, clear=0; for(let y=0;y<canvas.height;y+=18){for(let x=0;x<canvas.width;x+=18){total++; if(img[(y*canvas.width+x)*4+3] < 70) clear++}} const ratio=clear/Math.max(1,total); setScratchProgress(ratio); if(ratio>=.85) revealScratch()}
+function revealScratch(){if(scratchDone) return; scratchDone=true; const canvas=$('#scratchCanvas'); scratchCtx.clearRect(0,0,canvas.width,canvas.height); const counts={}; currentScratch.cells.forEach(s=>counts[s]=(counts[s]||0)+1); const winner=Object.entries(counts).find(([,v])=>v>=3)?.[0]; setScratchProgress(1); setTimeout(()=>{if(!winner){toast('Carte révélée'); addHistory('💎','Carte grattée',0); return;} const reward=SCRATCH_REWARDS[winner]; if(reward.includes('SPID')){const amount=parseInt(reward,10); earn(amount,'Grattage '+currentScratch.name,'💎'); showResult({emoji:winner,title:'Grattage gagnant !',sub:labelScratch(winner),amount:'+'+amount+' SPID',type:'spid'})} else if(reward==='Ticket grattage'){addHistory('🎟️','Ticket grattage offert',0); showResult({emoji:'🎟️',title:'Ticket grattage !',sub:'Tu as trouvé 3 tickets',amount:'1 ticket grattage',type:'scratch'})} else {addHistory('🎰','Ticket loterie offert',0); showResult({emoji:'🎰',title:'Ticket loterie !',sub:'Tu as trouvé 3 tickets loterie',amount:'1 ticket loterie',type:'lottery'})}},220)} $('#revealScratch').addEventListener('click',revealScratch);
+function buildMarkets(){$('#marketGrid').innerHTML=MARKETS.map(m=>{const st=marketState[m.key]||{}; return `<div class="mkt"><div style="font-size:11px;color:var(--gold2);font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">${m.cat}</div><div class="mktQ">${m.q}</div><div class="pickRow"><button class="pickBtn yes ${st.choice==='yes'?'sel':''}" data-m="${m.key}" data-c="yes">OUI <small>${m.yo}</small></button><button class="pickBtn no ${st.choice==='no'?'sel':''}" data-m="${m.key}" data-c="no">NON <small>${m.no}</small></button></div>${st.choice&&!st.confirmed?`<div class="amtRow">${MARKET_AMOUNTS.map(a=>`<button class="amt ${st.amount===a?'sel':''}" data-a="${a}" data-m="${m.key}">${a}</button>`).join('')}<button class="btnGold" style="padding:8px 14px" data-confirm="${m.key}">Confirmer</button></div>`:''}${st.confirmed?`<div style="font-size:12px;color:var(--green);margin-top:10px;font-weight:800">✅ Pari validé · ${st.amount} SPID</div>`:''}<div style="display:flex;justify-content:space-between;gap:10px;margin-top:12px;font-size:12px;color:var(--muted)"><div>Pool <strong style="color:var(--gold)">${m.pool}</strong></div><div>⏰ ${m.time}</div></div></div>`}).join(''); $$('#marketGrid [data-c]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.m; marketState[m]={choice:b.dataset.c,amount:(marketState[m]?.amount)||50,confirmed:false}; buildMarkets()})); $$('#marketGrid [data-a]').forEach(b=>b.addEventListener('click',()=>{marketState[b.dataset.m].amount=+b.dataset.a; buildMarkets()})); $$('#marketGrid [data-confirm]').forEach(b=>b.addEventListener('click',()=>{const m=marketState[b.dataset.confirm]; if(STATE.spids<m.amount){toast('Pas assez de SPID'); return;} earn(-m.amount,'Pari prédiction','📈'); m.confirmed=true; buildMarkets(); showResult({emoji:'📈',title:'Pari enregistré',sub:'Bonne chance !',amount:'-'+m.amount+' SPID',type:'spid'})}))}
+function buildTasks(){$('#taskList').innerHTML=TASKS.map(t=>`<div class="taskCard ${t.done?'done':''}" data-task="${t.id}"><div style="font-size:24px">${t.icon}</div><div style="flex:1"><div style="font-size:14px;font-weight:800">${t.name}</div><div style="font-size:11px;color:var(--muted)">${t.desc}</div></div>${t.done?'<div style="font-size:20px">✅</div>':`<div class="taskReward">+${t.reward}</div>`}</div>`).join(''); $$('#taskList .taskCard').forEach(c=>c.addEventListener('click',()=>doTask(c.dataset.task))); updateTaskUi()}
+function doTask(id){const t=TASKS.find(x=>x.id===id); if(!t||t.done) return; t.done=true; STATE.taskDone++; earn(t.reward,'Tâche : '+t.name,'✅'); buildTasks()} function updateTaskUi(){const pct=(STATE.taskDone/STATE.totalTasks)*100; $('#taskProg').textContent=STATE.taskDone+'/'+STATE.totalTasks; $('#taskBar').style.width=pct+'%'; $('#taskBonus').textContent=TASKS.filter(t=>!t.done).reduce((a,b)=>a+b.reward,0)}
+function buildRewards(){$('#rewardsGrid').innerHTML=REWARDS.map((r,i)=>`<div class="rewardCard" data-r="${i}"><div class="rewardTop">${r.icon}</div><div class="rewardBody"><div class="rewardName">${r.name}</div><div style="font-size:11px;color:var(--muted)">${r.type}</div><div class="rewardCost goldText">🪙 ${fmt(r.cost)}</div><button class="btnGold" style="width:100%;padding:10px 14px">Échanger</button></div></div>`).join(''); $$('#rewardsGrid .rewardCard').forEach(c=>c.addEventListener('click',()=>redeem(+c.dataset.r)))}
+function redeem(i){const r=REWARDS[i]; if(STATE.spids<r.cost){toast('Pas assez de SPID'); return;} earn(-r.cost,'Récompense : '+r.name,'🎁'); showResult({emoji:'🎁',title:'Récompense obtenue',sub:r.type,amount:'-'+r.cost+' SPID',type:'spid'})}
+const PROFILE_DEFAULTS={name:'Joueur_7842', level:'⚡ Niveau 7', title:'⚡ Niveau 7 · Chasseur d\'or', password:'', address:''}; let PROFILE=(()=>{try{return Object.assign({}, PROFILE_DEFAULTS, JSON.parse(localStorage.getItem('spidwin_profile')||'null')||{})}catch(e){return Object.assign({}, PROFILE_DEFAULTS)}})();
+function profileInitial(name){return (name||'J').trim().charAt(0).toUpperCase() || 'J'} function applyProfile(){const initial=profileInitial(PROFILE.name); ['#sidePlayerName','#accountPlayerName','#mobMenuName'].forEach(sel=>{const el=document.querySelector(sel); if(el) el.textContent=PROFILE.name}); [['#sidePlayerLevel',PROFILE.level],['#accountPlayerLevel',PROFILE.title]].forEach(([sel,val])=>{const el=document.querySelector(sel); if(el) el.textContent=val}); ['#sideAvatar','#mobAvatar','#accountAvatar'].forEach(sel=>{const el=document.querySelector(sel); if(el) el.textContent=initial})}
+function saveProfile(){localStorage.setItem('spidwin_profile', JSON.stringify(PROFILE)); applyProfile()} function openEditAccount(){openOverlay(`<div style="font-size:20px;font-weight:900;margin-bottom:6px">Modifier le compte</div><div style="font-size:13px;color:var(--muted);margin-bottom:14px">Tu peux modifier uniquement les informations personnelles du compte.</div><div class="accountEditGrid"><div><label for="editName">Nom utilisateur</label><input id="editName" maxlength="24" value="${PROFILE.name}"></div><div><label for="editPassword">Mot de passe</label><input id="editPassword" type="password" maxlength="50" value="${PROFILE.password || ''}" placeholder="Nouveau mot de passe"></div><div><label for="editAddress">Adresse de livraison</label><textarea id="editAddress" maxlength="250" placeholder="Ton adresse de livraison complète">${PROFILE.address || ''}</textarea></div></div><div class="accountEditActions"><button class="btnGold" id="saveAccountChanges">💾 Enregistrer</button><button class="btnGhost" id="cancelAccountChanges">Annuler</button></div>`); setTimeout(()=>{document.querySelector('#cancelAccountChanges')?.addEventListener('click', ()=>document.querySelector('#overlay').classList.remove('open')); document.querySelector('#saveAccountChanges')?.addEventListener('click', ()=>{PROFILE.name=(document.querySelector('#editName')?.value || '').trim() || PROFILE_DEFAULTS.name; PROFILE.password=(document.querySelector('#editPassword')?.value || '').trim(); PROFILE.address=(document.querySelector('#editAddress')?.value || '').trim(); saveProfile(); document.querySelector('#overlay').classList.remove('open'); toast('✅ Compte mis à jour')})},0)}
+function deleteAccount(){const ok=window.confirm("Supprimer le compte enregistré sur cet appareil ? Cette action efface aussi l'adresse et le mot de passe local."); if(!ok) return; PROFILE=Object.assign({}, PROFILE_DEFAULTS); localStorage.removeItem('spidwin_profile'); HISTORY=[]; renderHistory(); applyProfile(); document.querySelector('#overlay')?.classList.remove('open'); toast('🗑️ Compte supprimé')}
+document.querySelector('#editAccountBtn')?.addEventListener('click', openEditAccount); document.querySelector('#deleteAccountBtn')?.addEventListener('click', deleteAccount);
+const mobAvatarBtn=document.querySelector('#mobAvatar');
+const mobMenu=document.querySelector('#mobAccountMenu');
+function setMobMenuState(open){
+  if(!mobMenu) return;
+  mobMenu.classList.toggle('open', open);
+  mobMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
 }
-function getStartRoute() {
-  var h = (location.hash || '').replace('#','').trim();
-  return h || 'home';
-}
-window.addEventListener('popstate', function() {
-  goTo(getStartRoute());
-});
-
-// ══════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════
-var SPIDS = 1250;
-var currentScreen = 'home';
-var canSpin = true;
-var wheelSpinning = false;
-var wheelRot = 0;
-var tasksDone = 3;
-var totalTasks = 7;
-var lottState = {maxN:49, pick:6, sel:[], name:'', prize:'', desc:''};
-var scratchCtx = null, scratchPainting = false, scratchDone = false;
-var currentScratchCard = null;
-var marketChoices = {}; // key -> {choice, amount, confirmed}
-
-// Historique simple (pour la page Compte)
-var HISTORY = [
-  {ic:'🎡', a:'Roue du Destin', d:"Aujourd'hui 14h32", v:'+200', cls:'p'},
-  {ic:'🎰', a:'Loterie Méga Fortune', d:"Aujourd'hui 10h15", v:'+75', cls:'p'},
-  {ic:'💎', a:'Grattage Gold Rush', d:'Hier 20h45', v:'+500', cls:'p'},
-  {ic:'✅', a:'Tâche : Connexion', d:'Hier 09h00', v:'+50', cls:'p'},
-  {ic:'📈', a:'Pari Bitcoin', d:'25 fév 11h00', v:'-100', cls:'m'},
-  {ic:'🎁', a:'Récompense Netflix', d:'24 fév 18h00', v:'-1000', cls:'m'},
-];
-
-// ══════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════
-function goTo(screen) {
-  // hide all screens
-  var screens = document.querySelectorAll('.screen');
-  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
-
-  // deactivate nav
-  var navBtns = document.querySelectorAll('.sb-btn, .tb-btn');
-  for (var j = 0; j < navBtns.length; j++) navBtns[j].classList.remove('active');
-
-  // show target
-  var target = document.getElementById('screen-' + screen);
-  if (target) target.classList.add('active');
-
-  // activate sidebar btn
-  var sb = document.querySelector('.sb-btn[data-screen="' + screen + '"]');
-  if (sb) sb.classList.add('active');
-
-  // activate tab btn
-  var tb = document.querySelector('.tb-btn[data-screen="' + screen + '"]');
-  if (tb) tb.classList.add('active');
-
-  currentScreen = screen;
-
-  // close more popup
-  var mp = document.getElementById('morePopup');
-  if (mp) mp.style.display = 'none';
-
-  // scroll to top
-  window.scrollTo(0, 0);
-  var main = document.getElementById('main');
-  if (main) main.scrollTop = 0;
-
-  // page-specific refresh
-  if (screen === 'account') renderAccount();
-
-  updateBalances();
-}
-
-// Sidebar nav buttons
-document.querySelectorAll('.sb-btn[data-screen]').forEach(function(btn) {
-  btn.addEventListener('click', function() { routeTo(this.dataset.screen); });
-});
-
-// Tab bar buttons
-document.querySelectorAll('.tb-btn[data-screen]').forEach(function(btn) {
-  btn.addEventListener('click', function() { routeTo(this.dataset.screen); });
-});
-
-// More button
-document.getElementById('moreBtn').addEventListener('click', function(e) {
-  e.stopPropagation();
-  var mp = document.getElementById('morePopup');
-  mp.style.display = mp.style.display === 'block' ? 'none' : 'block';
-});
-document.querySelectorAll('.mp-item[data-screen]').forEach(function(item) {
-  item.addEventListener('click', function() { routeTo(this.dataset.screen); });
-});
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#morePopup') && !e.target.closest('#moreBtn')) {
-    document.getElementById('morePopup').style.display = 'none';
-  }
-});
-
-// data-goto buttons (hero etc)
-document.addEventListener('click', function(e) {
-  var el = e.target.closest('[data-goto]');
-  if (el) routeTo(el.dataset.goto);
-});
-
-// Profile buttons -> page Compte
-document.getElementById('sbProfile').addEventListener('click', function(){ routeTo('account'); });
-document.getElementById('mobAvatar').addEventListener('click', function(){ routeTo('account'); });
-
-// ══════════════════════════════════════════════════
-// BALANCES
-// ══════════════════════════════════════════════════
-function updateBalances() {
-  var f = SPIDS.toLocaleString('fr-FR');
-  var ids = ['sideBarBal','mobBal','homeStatSpids','rwdBal','acctBal'];
-  ids.forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = f;
-  });
-}
-
-function earn(amount, label) {
-  SPIDS += amount;
-  updateBalances();
-  if (amount > 0) toast('🪙 +' + amount + ' SPIDS · ' + label);
-  else toast('🪙 ' + amount + ' SPIDS · ' + label);
-  // log
-  HISTORY.unshift({
-    ic: amount > 0 ? '🪙' : '🧾',
-    a: label,
-    d: 'À l’instant',
-    v: (amount > 0 ? '+' : '') + amount,
-    cls: amount > 0 ? 'p' : 'm'
-  });
-  if (HISTORY.length > 30) HISTORY.pop();
-  if (currentScreen === 'account') renderAccountHistory();
-}
-
-// ══════════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════════
-var toastTimer = null;
-function toast(msg) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 3000);
-}
-
-// ══════════════════════════════════════════════════
-// RESULT MODAL
-// ══════════════════════════════════════════════════
-function showResult(emoji, title, sub, amount) {
-  document.getElementById('rmEmoji').textContent = emoji;
-  document.getElementById('rmTitle').textContent = title;
-  document.getElementById('rmSub').textContent = sub;
-  document.getElementById('rmAmount').textContent = amount;
-  document.getElementById('resultModal').classList.add('open');
-  spawnConfetti();
-}
-document.getElementById('rmClose').addEventListener('click', function() {
-  document.getElementById('resultModal').classList.remove('open');
-  document.querySelectorAll('.cf').forEach(function(c) { c.remove(); });
-});
-
-function spawnConfetti() {
-  var colors = ['#FFD700','#D4A017','#FFF','#FF6B35','#30D158','#F5C842'];
-  for (var i = 0; i < 80; i++) {
-    (function(i) {
-      setTimeout(function() {
-        var c = document.createElement('div');
-        c.className = 'cf';
-        var s = 5 + Math.random() * 7;
-        c.style.cssText = 'left:' + (10 + Math.random() * 80) + 'vw;top:-15px;width:' + s + 'px;height:' + s + 'px;background:' + colors[Math.floor(Math.random() * colors.length)] + ';' + (Math.random() > 0.5 ? 'border-radius:50%' : '') + ';animation:cfFall ' + (1.6 + Math.random() * 1.4) + 's ease-in forwards;animation-delay:' + (Math.random() * 0.3) + 's';
-        document.body.appendChild(c);
-      }, i * 18);
-    })(i);
-  }
-}
-
-// ══════════════════════════════════════════════════
-// PROFILE SHEET
-// ══════════════════════════════════════════════════
-function openProfile() {
-  document.getElementById('sheetBody').innerHTML = buildProfileHTML();
-  document.getElementById('overlay').classList.add('open');
-}
-document.getElementById('overlay').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
-});
-
-function buildProfileHTML() {
-  return '<div class="pf-ava">J</div>' +
-    '<div class="pf-name">Joueur_7842</div>' +
-    '<div class="pf-tag">⚡ Niveau 7 · Chasseur d\'Or</div>' +
-    '<div class="pf-stats">' +
-      '<div class="pfs-box"><div class="pfs-val">' + SPIDS.toLocaleString('fr-FR') + '</div><div class="pfs-lbl">SPIDS</div></div>' +
-      '<div class="pfs-box"><div class="pfs-val">47</div><div class="pfs-lbl">Parties</div></div>' +
-      '<div class="pfs-box"><div class="pfs-val">12</div><div class="pfs-lbl">Victoires</div></div>' +
-    '</div>' +
-    '<div class="pf-menu">' +
-      '<div class="pf-mi" onclick="showHistorySheet()"><div class="pf-mi-ic" style="background:rgba(255,215,0,.15)">📋</div> Historique<span class="pf-arr">›</span></div>' +
-      '<div class="pf-mi" onclick="toast(\'⚙️ Paramètres bientôt\')"><div class="pf-mi-ic" style="background:rgba(0,122,255,.15)">⚙️</div> Paramètres<span class="pf-arr">›</span></div>' +
-      '<div class="pf-mi" onclick="toast(\'🏆 Classement bientôt\')"><div class="pf-mi-ic" style="background:rgba(255,215,0,.15)">🏆</div> Classement<span class="pf-arr">›</span></div>' +
-    '</div>';
-}
-
-function showHistorySheet() {
-  var html = '<button onclick="openProfile()" style="background:none;border:none;color:var(--gold);font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:18px">‹ Retour</button>';
-  html += '<div style="font-size:20px;font-weight:900;margin-bottom:14px;letter-spacing:-.4px">Historique</div>';
-  HISTORY.slice(0, 12).forEach(function(h) {
-    html += '<div class="hist-item"><div class="hi-ic">' + h.ic + '</div><div class="hi-c"><div class="hi-a">' + h.a + '</div><div class="hi-d">' + h.d + '</div></div><div class="hi-v ' + h.cls + '">' + h.v + '</div></div>';
-  });
-  document.getElementById('sheetBody').innerHTML = html;
-}
-
-// Page Compte
-function renderAccount() {
-  renderAccountHistory();
-  updateBalances();
-}
-function renderAccountHistory() {
-  var el = document.getElementById('accountHistory');
-  if (!el) return;
-  el.innerHTML = HISTORY.slice(0, 10).map(function(h) {
-    return '<div class="hist-item"><div class="hi-ic">' + h.ic + '</div><div class="hi-c"><div class="hi-a">' + h.a + '</div><div class="hi-d">' + h.d + '</div></div><div class="hi-v ' + h.cls + '">' + h.v + '</div></div>';
-  }).join('');
-}
-document.getElementById('openSheetBtn').addEventListener('click', openProfile);
-document.getElementById('clearHistoryBtn').addEventListener('click', function(){
-  HISTORY = [];
-  toast('🧹 Historique effacé (demo)');
-  renderAccountHistory();
-});
-
-// ══════════════════════════════════════════════════
-// WHEEL
-// ══════════════════════════════════════════════════
-var wSegs = [
-  {label:'50 SPIDS',  val:50,  color:'#7A5200', tx:'#FFD700'},
-  {label:'100 SPIDS', val:100, color:'#C8900C', tx:'#000'},
-  {label:'25 SPIDS',  val:25,  color:'#4A3000', tx:'#FFD700'},
-  {label:'200 SPIDS', val:200, color:'#F0BC40', tx:'#000'},
-  {label:'Ticket 🎟', val:0,   color:'#4A1A82', tx:'#FFF'},
-  {label:'75 SPIDS',  val:75,  color:'#9A7200', tx:'#FFF'},
-  {label:'500 🏆',    val:500, color:'#1A0600', tx:'#FFD700'},
-  {label:'150 SPIDS', val:150, color:'#D4A017', tx:'#000'},
-];
-
-function buildPrizeList() {
-  var el = document.getElementById('prizeList');
-  if (!el) return;
-  el.innerHTML = wSegs.map(function(s) {
-    return '<div class="prize-row"><div class="pr-dot" style="background:' + s.color + ';border:1px solid ' + s.tx + '44"></div><div class="pr-name">' + s.label + '</div><div class="pr-val">' + (s.val > 0 ? '+' + s.val : '🎟️ Free') + '</div></div>';
-  }).join('');
-}
-
-function buildStreakDays() {
-  var el = document.getElementById('streakDays');
-  if (!el) return;
-  var labels = ['L','M','M','J','V','S','D'];
-  el.innerHTML = labels.map(function(d, i) {
-    var cls = i < 4 ? 'done' : (i === 4 ? 'today' : '');
-    return '<div class="sd-item ' + cls + '">' + (cls === 'done' ? '✓' : d) + '</div>';
-  }).join('');
-}
-
-function drawWheel(angle) {
-  var canvas = document.getElementById('wheelCanvas');
-  if (!canvas) return;
-  var sz = canvas.width;
-  var ctx = canvas.getContext('2d');
-  var cx = sz/2, cy = sz/2, r = sz/2 - 4;
-  var seg = (Math.PI * 2) / wSegs.length;
-  ctx.clearRect(0, 0, sz, sz);
-
-  // glow ring
-  var og = ctx.createRadialGradient(cx,cy,r-2,cx,cy,r+10);
-  og.addColorStop(0,'rgba(255,215,0,.5)');
-  og.addColorStop(1,'rgba(255,215,0,0)');
-  ctx.beginPath(); ctx.arc(cx,cy,r+8,0,Math.PI*2);
-  ctx.fillStyle = og; ctx.fill();
-
-  wSegs.forEach(function(s, i) {
-    var a1 = angle + i * seg - Math.PI/2;
-    var a2 = a1 + seg;
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,r,a1,a2); ctx.closePath();
-    ctx.fillStyle = s.color; ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2; ctx.stroke();
-    // text
-    ctx.save();
-    ctx.translate(cx,cy); ctx.rotate(a1 + seg/2);
-    ctx.textAlign = 'right'; ctx.fillStyle = s.tx;
-    ctx.font = 'bold ' + (s.label.length > 7 ? 10 : 12) + 'px Inter,sans-serif';
-    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 3;
-    ctx.fillText(s.label, r - 10, 4);
-    ctx.restore();
-  });
-
-  // border
-  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle = 'rgba(255,215,0,.7)'; ctx.lineWidth = 4; ctx.stroke();
-  // dividers
-  wSegs.forEach(function(_, i) {
-    var a = angle + i * seg - Math.PI/2;
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.lineTo(cx + Math.cos(a)*r, cy + Math.sin(a)*r);
-    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 1.5; ctx.stroke();
-  });
-}
-
-function spinWheel() {
-  if (!canSpin || wheelSpinning) return;
-  wheelSpinning = true;
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('wCenter').style.pointerEvents = 'none';
-  document.getElementById('spinMsg').textContent = '🐕 Spidy tourne la roue...';
-
-  var extra = 1800 + Math.random() * 1440;
-  var target = wheelRot + extra;
-  var dur = 4200;
-  var t0 = performance.now();
-  var from = wheelRot;
-
-  function ease(t) { return 1 - Math.pow(1 - t, 4); }
-
-  function frame(now) {
-    var p = Math.min((now - t0) / dur, 1);
-    wheelRot = from + (target - from) * ease(p);
-    drawWheel(wheelRot * Math.PI / 180);
-    if (p < 1) { requestAnimationFrame(frame); return; }
-
-    wheelSpinning = false;
-    canSpin = false;
-    var norm = ((wheelRot % 360) + 360) % 360;
-    var segDeg = 360 / wSegs.length;
-    var idx = Math.floor(((360 - norm) % 360) / segDeg) % wSegs.length;
-    var won = wSegs[idx];
-
-    setTimeout(function() {
-      if (won.val > 0) {
-        earn(won.val, 'Roue du Destin');
-        showResult('🎡', '+' + won.val + ' SPIDS !', "La roue t'a souri !", '+' + won.val + ' SPIDS');
-      } else {
-        toast('🎟️ Un ticket de grattage ajouté à ton compte !');
-        showResult('🎟️', 'Ticket Gratuit !', "Un ticket de grattage t'attend !", '1 Ticket Offert');
-      }
-      document.getElementById('spinBtn').textContent = '✅ Reviens demain !';
-      document.getElementById('spinMsg').textContent = 'Prochain spin demain';
-    }, 400);
-  }
-  requestAnimationFrame(frame);
-}
-document.getElementById('spinBtn').addEventListener('click', spinWheel);
-document.getElementById('wCenter').addEventListener('click', spinWheel);
-
-// ══════════════════════════════════════════════════
-// LOTTERY
-// ══════════════════════════════════════════════════
-var LOTTS = [
-  {id:'mega', name:'Méga Fortune', prize:'50 000 SPIDS', desc:'Tirage dans 4h 23min', maxN:49, pick:6, cls:'lot-c1', badge:'🌟 Jackpot'},
-  {id:'el',   name:'El Dorado',    prize:'20 000 SPIDS', desc:'Tirage dans 1h 10min', maxN:36, pick:5, cls:'lot-c2', badge:'🏆 Populaire'},
-  {id:'qw',   name:'Quick Win',    prize:'5 000 SPIDS',  desc:'Tirage dans 12min',   maxN:20, pick:4, cls:'lot-c3', badge:'⚡ Rapide'},
-];
-
-function buildLotteryGrid() {
-  var el = document.getElementById('lotteryGrid');
-  if (!el) return;
-  el.innerHTML = LOTTS.map(function(l) {
-    return '<div class="lot-card ' + l.cls + '" data-lotid="' + l.id + '">' +
-      '<div class="lot-badge">' + l.badge + '</div>' +
-      '<div class="lot-name">' + l.name + '</div>' +
-      '<div class="lot-prize">' + l.prize + '</div>' +
-      '<div class="lot-meta">' + l.desc + ' · ' + l.pick + '/' + l.maxN + '</div>' +
-      '<div class="lot-bg">' + l.pick + '</div>' +
-      '<div class="lot-arrow">›</div>' +
-      '</div>';
-  }).join('');
-  el.querySelectorAll('.lot-card').forEach(function(card) {
-    card.addEventListener('click', function() { openLottery(this.dataset.lotid); });
-  });
-}
-
-function openLottery(id) {
-  var l = LOTTS.find(function(x) { return x.id === id; });
-  lottState = {maxN:l.maxN, pick:l.pick, sel:[], name:l.name, prize:l.prize, desc:l.desc};
-  document.getElementById('pickerTitle').textContent = l.name;
-  document.getElementById('pickerSub').textContent = 'Sélectionne ' + l.pick + ' numéros parmi ' + l.maxN;
-  document.getElementById('pickerPrize').textContent = l.prize;
-  document.getElementById('pickerDesc').textContent = l.desc;
-  buildNumsGrid(l.maxN);
-  renderSelBalls();
-  document.getElementById('lotteryListView').classList.add('hidden');
-  document.getElementById('lotteryPicker').classList.add('show');
-}
-
-document.getElementById('lotBackBtn').addEventListener('click', function() {
-  document.getElementById('lotteryListView').classList.remove('hidden');
-  document.getElementById('lotteryPicker').classList.remove('show');
-});
-
-function buildNumsGrid(max) {
-  var g = document.getElementById('numsGrid');
-  g.innerHTML = '';
-  for (var i = 1; i <= max; i++) {
-    var b = document.createElement('button');
-    b.className = 'num-btn';
-    b.textContent = i;
-    b.dataset.num = i;
-    b.addEventListener('click', (function(n, btn) {
-      return function() { toggleNum(btn, n); };
-    })(i, b));
-    g.appendChild(b);
-  }
-}
-
-function toggleNum(btn, n) {
-  var idx = lottState.sel.indexOf(n);
-  if (idx >= 0) {
-    lottState.sel.splice(idx, 1);
-    btn.classList.remove('picked');
-  } else {
-    if (lottState.sel.length >= lottState.pick) {
-      toast('Maximum ' + lottState.pick + ' numéros ! Désélectionne-en un.');
-      return;
-    }
-    lottState.sel.push(n);
-    btn.classList.add('picked');
-  }
-  renderSelBalls();
-}
-
-function renderSelBalls() {
-  var wrap = document.getElementById('selBalls');
-  var sorted = lottState.sel.slice().sort(function(a,b){return a-b;});
-  wrap.innerHTML = sorted.map(function(n) {
-    return '<div class="sel-ball">' + n + '</div>';
-  }).join('');
-  var done = lottState.sel.length === lottState.pick;
-  document.getElementById('validateBtn').disabled = !done;
-  document.getElementById('vHint').textContent = lottState.sel.length + '/' + lottState.pick + ' numéros sélectionnés';
-}
-
-document.getElementById('quickPickBtn').addEventListener('click', function() {
-  lottState.sel = [];
-  document.querySelectorAll('.num-btn').forEach(function(b) { b.classList.remove('picked'); });
-  var pool = [];
-  for (var i = 1; i <= lottState.maxN; i++) pool.push(i);
-  while (lottState.sel.length < lottState.pick) {
-    var ri = Math.floor(Math.random() * pool.length);
-    var n = pool.splice(ri, 1)[0];
-    lottState.sel.push(n);
-    var btn = document.querySelector('.num-btn[data-num="' + n + '"]');
-    if (btn) btn.classList.add('picked');
-  }
-  renderSelBalls();
-  toast('🎲 Numéros générés aléatoirement !');
-});
-
-document.getElementById('validateBtn').addEventListener('click', function() {
-  if (lottState.sel.length < lottState.pick) return;
-  var win = Math.random() < 0.2;
-  document.getElementById('lotteryListView').classList.remove('hidden');
-  document.getElementById('lotteryPicker').classList.remove('show');
-  setTimeout(function() {
-    if (win) {
-      var amt = Math.floor(Math.random() * 4000) + 200;
-      earn(amt, 'Loterie ' + lottState.name);
-      showResult('🎰', 'JACKPOT !', 'Tu as gagné à ' + lottState.name + ' !', '+' + amt + ' SPIDS');
-    } else {
-      earn(5, 'Ticket soumis');
-      toast('🎫 Ticket validé ! Résultats dans ' + lottState.desc);
-    }
-  }, 200);
-});
-
-// ══════════════════════════════════════════════════
-// SCRATCH
-// ══════════════════════════════════════════════════
-// ⚠️ FIX IMPORTANT : les clés emoji doivent être entre guillemets sinon le JS casse.
-var SCRATCHES = [
-  {name:'Gold Rush',     prize:'10 000', icon:'💰', cls:'sg1', syms:['💰','💰','💰','💎','⭐','🔑','💰','💎','⭐'], win:'💰', prices:{"💰":"500","💎":"1000","⭐":"250","🔑":"100"}},
-  {name:'Spidy Jackpot', prize:'50 000', icon:'🐕', cls:'sg2', syms:['🐕','💎','🐕','⭐','🐕','🔑','💎','⭐','💰'], win:'🐕', prices:{"🐕":"5000","💎":"1000","⭐":"250","🔑":"100","💰":"500"}},
-  {name:'Diamant Noir',  prize:'5 000',  icon:'💎', cls:'sg3', syms:['💎','⭐','💎','🔑','💎','💰','⭐','🔑','💰'], win:'💎', prices:{"💎":"1000","⭐":"250","🔑":"100","💰":"500"}},
-  {name:'Lucky Star',    prize:'25 000', icon:'⭐', cls:'sg4', syms:['⭐','⭐','⭐','💰','🔑','💎','💰','🐕','⭐'], win:'⭐', prices:{"⭐":"250","💰":"500","🔑":"100","💎":"1000","🐕":"5000"}},
-];
-
-function buildScratchGrid() {
-  var el = document.getElementById('scratchGrid');
-  if (!el) return;
-  el.innerHTML = SCRATCHES.map(function(c, i) {
-    return '<div class="sc-tile" data-sci="' + i + '">' +
-      '<div class="sc-cover ' + c.cls + '">' + c.icon + '</div>' +
-      '<div class="sc-info">' +
-        '<div class="sc-name">' + c.name + '</div>' +
-        '<div class="sc-prize">' + c.prize + '</div>' +
-        '<div class="sc-sub">SPIDS max</div>' +
-        '<div class="sc-badge">GRATUIT</div>' +
-      '</div>' +
-      '</div>';
-  }).join('');
-  el.querySelectorAll('.sc-tile').forEach(function(tile) {
-    tile.addEventListener('click', function() { openScratch(parseInt(this.dataset.sci,10)); });
-  });
-}
-
-function openScratch(idx) {
-  currentScratchCard = SCRATCHES[idx];
-  scratchDone = false;
-  document.getElementById('scratchTitle').textContent = currentScratchCard.name;
-  document.getElementById('scratchListView').classList.add('hidden');
-  document.getElementById('scratchGame').classList.add('show');
-  buildScratchLegend();
-  setTimeout(function() { initScratchCanvas(); }, 60);
-}
-
-document.getElementById('scratchBackBtn').addEventListener('click', function() {
-  document.getElementById('scratchListView').classList.remove('hidden');
-  document.getElementById('scratchGame').classList.remove('show');
-  scratchCtx = null; scratchDone = false; scratchPainting = false;
-});
-
-function buildScratchLegend() {
-  var c = currentScratchCard;
-  var uniq = [];
-  c.syms.forEach(function(s) { if (uniq.indexOf(s) < 0) uniq.push(s); });
-  var el = document.getElementById('scratchLegend');
-  el.innerHTML = uniq.map(function(s) {
-    return '<div class="ssl-row">' +
-      '<div class="ssl-icon">' + s + '</div>' +
-      '<div class="ssl-name">' + (s === c.win ? '<strong>x3 = Jackpot !</strong>' : 'Symbole') + '</div>' +
-      '<div class="ssl-val">' + (c.prices[s] || '0') + ' SPIDS</div>' +
-      '</div>';
-  }).join('');
-}
-
-function initScratchCanvas() {
-  var c = currentScratchCard;
-  var wrap = document.getElementById('scratchWrap');
-  var canvas = document.getElementById('scratchCanvas');
-  var w = wrap.offsetWidth || 400;
-  var h = 240;
-  canvas.width = w; canvas.height = h;
-  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-  scratchCtx = canvas.getContext('2d');
-
-  // underlying
-  var under = document.getElementById('scratchUnder');
-  under.innerHTML = c.syms.map(function(s) {
-    return '<div class="su-cell"><div class="su-icon">' + s + '</div><div class="su-val">' + (c.prices[s]||'0') + '</div></div>';
-  }).join('');
-
-  // gold cover
-  var grd = scratchCtx.createLinearGradient(0,0,w,h);
-  grd.addColorStop(0,'#6A4A00');
-  grd.addColorStop(0.3,'#C8900C');
-  grd.addColorStop(0.5,'#F0BC40');
-  grd.addColorStop(0.7,'#C8900C');
-  grd.addColorStop(1,'#8A6000');
-  scratchCtx.fillStyle = grd;
-  scratchCtx.fillRect(0,0,w,h);
-
-  // texture
-  for (var i = 0; i < 600; i++) {
-    scratchCtx.fillStyle = 'rgba(0,0,0,.04)';
-    scratchCtx.beginPath();
-    scratchCtx.arc(Math.random()*w, Math.random()*h, .5+Math.random()*1.5, 0, Math.PI*2);
-    scratchCtx.fill();
-  }
-
-  scratchCtx.fillStyle = 'rgba(0,0,0,.4)';
-  scratchCtx.font = 'bold 17px Inter,sans-serif';
-  scratchCtx.textAlign = 'center';
-  scratchCtx.fillText('✦ GRATTE ICI ✦', w/2, h/2);
-  scratchCtx.font = '12px Inter,sans-serif';
-  scratchCtx.fillText('SPIDY · ' + c.name, w/2, h/2 + 22);
-
-  scratchPainting = false;
-
-  function down(e){ scratchPainting=true; doScratch(e,canvas); }
-  function move(e){ if(scratchPainting) doScratch(e,canvas); }
-  function up(){ scratchPainting=false; checkAutoReveal(canvas); }
-
-  canvas.onmousedown  = down;
-  canvas.onmousemove  = move;
-  canvas.onmouseup    = up;
-
-  canvas.ontouchstart = function(e){ e.preventDefault(); down(e.touches[0]); };
-  canvas.ontouchmove  = function(e){ e.preventDefault(); move(e.touches[0]); };
-  canvas.ontouchend   = function(){ up(); };
-}
-
-function doScratch(e, canvas) {
-  if (!scratchCtx || scratchDone) return;
-  var r = canvas.getBoundingClientRect();
-  var sx = canvas.width / r.width;
-  var sy = canvas.height / r.height;
-  var x = (e.clientX - r.left) * sx;
-  var y = (e.clientY - r.top) * sy;
-  scratchCtx.globalCompositeOperation = 'destination-out';
-  scratchCtx.beginPath();
-  scratchCtx.arc(x, y, 28, 0, Math.PI*2);
-  scratchCtx.fill();
-}
-
-function checkAutoReveal(canvas) {
-  if (scratchDone || !scratchCtx) return;
-  var d = scratchCtx.getImageData(0,0,canvas.width,canvas.height).data;
-  var t = 0;
-  for (var i = 3; i < d.length; i += 4) if (d[i] < 128) t++;
-  if (t / (canvas.width * canvas.height) > 0.48) revealScratch();
-}
-
-function revealScratch() {
-  if (scratchDone) return;
-  scratchDone = true;
-  if (scratchCtx) scratchCtx.clearRect(0,0,9999,9999);
-  var c = currentScratchCard;
-  var wins = c.syms.filter(function(s){return s===c.win;}).length;
-  setTimeout(function() {
-    if (wins >= 3) {
-      var amt = parseInt(c.prices[c.win],10) * wins;
-      earn(amt, 'Grattage ' + c.name);
-      showResult('💎', 'Tu as gagné !', '3 ' + c.win + ' — ' + c.name + ' !', '+' + amt + ' SPIDS');
-    } else {
-      earn(10, 'Participation grattage');
-      toast('😅 Pas de chance sur ' + c.name + ' · +10 SPIDS de participation');
-    }
-  }, 350);
-}
-document.getElementById('revealBtn').addEventListener('click', revealScratch);
-
-// ══════════════════════════════════════════════════
-// MARKET
-// ══════════════════════════════════════════════════
-var MARKETS = [
-  {key:'btc', cat:'🪙 Crypto',    q:'Bitcoin dépassera les 150 000$ avant fin 2025 ?', yo:'2.1x', no:'1.4x', pool:'12 500', time:'18j 4h'},
-  {key:'psg', cat:'⚽ Sport',     q:'Le PSG gagnera la Ligue des Champions 2025 ?',     yo:'3.5x', no:'1.2x', pool:'8 200',  time:'45j'},
-  {key:'apl', cat:'🤖 Tech',      q:'Apple lancera l\'iPhone 17 avec caméra 108MP ?',  yo:'1.8x', no:'1.6x', pool:'5 700',  time:'90j'},
-  {key:'fr',  cat:'🌍 Monde',     q:'La France gagnera +5 médailles or aux JO 2028 ?', yo:'2.2x', no:'1.5x', pool:'3 100',  time:'850j'},
-];
-var betAmounts = [25, 50, 100, 200];
-
-function buildMarketGrid() {
-  var el = document.getElementById('marketGrid');
-  if (!el) return;
-  el.innerHTML = MARKETS.map(function(m) {
-    var mc = marketChoices[m.key] || {};
-    var ysel = mc.choice === 'yes' ? 'selected' : '';
-    var nsel = mc.choice === 'no' ? 'selected' : '';
-    var showAmounts = mc.choice && !mc.confirmed;
-    var amtsHTML = betAmounts.map(function(a) {
-      return '<button class="amt-btn' + (mc.amount === a ? ' chosen' : '') + '" onclick="setAmt(\'' + m.key + '\',' + a + ')">' + a + '</button>';
-    }).join('');
-    var confirmHTML = mc.choice ? '<button class="confirm-btn" onclick="confirmBet(\'' + m.key + '\')">✓ Confirmer</button>' : '';
-
-    return '<div class="mkt-card" id="mc-' + m.key + '">' +
-      '<div class="mkt-cat">' + m.cat + '</div>' +
-      '<div class="mkt-q">' + m.q + '</div>' +
-      '<div class="mkt-btns">' +
-        '<button class="mkt-btn yes ' + ysel + '" onclick="chooseMarket(\'' + m.key + '\',\'yes\')">OUI <span class="mkt-odds">+' + m.yo + '</span></button>' +
-        '<button class="mkt-btn no ' + nsel + '" onclick="chooseMarket(\'' + m.key + '\',\'no\')">NON <span class="mkt-odds">+' + m.no + '</span></button>' +
-      '</div>' +
-      (showAmounts ? '<div class="mkt-amounts">' + amtsHTML + confirmHTML + '</div>' : '') +
-      (mc.confirmed ? '<div style="font-size:12px;color:var(--green);margin-top:8px;font-weight:700">✅ Pari enregistré · ' + mc.amount + ' SPIDS misés</div>' : '') +
-      '<div class="mkt-foot"><div class="mkt-foot">Pool : <strong>' + m.pool + ' SPIDS</strong></div><div>⏰ ' + m.time + '</div></div>' +
-      '</div>';
-  }).join('');
-}
-
-function chooseMarket(key, choice) {
-  if (marketChoices[key] && marketChoices[key].confirmed) return;
-  var prev = marketChoices[key] || {};
-  marketChoices[key] = {choice: choice, amount: prev.amount || 50, confirmed: false};
-  buildMarketGrid();
-}
-
-function setAmt(key, amt) {
-  if (!marketChoices[key]) return;
-  marketChoices[key].amount = amt;
-  buildMarketGrid();
-}
-
-function confirmBet(key) {
-  var mc = marketChoices[key];
-  if (!mc || !mc.choice) return;
-  var amt = mc.amount || 50;
-  if (SPIDS < amt) { toast('❌ Pas assez de SPIDS ! Il te faut ' + (amt - SPIDS) + ' de plus.'); return; }
-  earn(-amt, 'Pari prédiction');
-  marketChoices[key].confirmed = true;
-  buildMarketGrid();
-  showResult('📈', 'Pari enregistré !', 'Tu as misé ' + amt + ' SPIDS sur ' + (mc.choice === 'yes' ? 'OUI' : 'NON'), '-' + amt + ' SPIDS misés');
-}
-
-// ══════════════════════════════════════════════════
-// TASKS
-// ══════════════════════════════════════════════════
-var TASKS = [
-  {id:'t1',icon:'🌅',name:'Connexion du jour',     desc:'Connecte-toi quotidiennement', reward:50,  done:true},
-  {id:'t2',icon:'🎡',name:'Tourner la roue',        desc:'Effectue ton spin quotidien',   reward:30,  done:true},
-  {id:'t3',icon:'📲',name:'Partager SPIDY',         desc:'Partage le site avec un ami',   reward:100, done:true},
-  {id:'t4',icon:'🎰',name:'Jouer à la loterie',     desc:'Valide un ticket de loterie',   reward:75,  done:false},
-  {id:'t5',icon:'📈',name:'Faire une prédiction',   desc:'Place un pari sur un marché',   reward:150, done:false},
-  {id:'t6',icon:'🏆',name:'7 jours consécutifs',    desc:'Connexions 7j de suite',        reward:500, done:false, weekly:true},
-  {id:'t7',icon:'👥',name:'Inviter un ami',         desc:"Ton ami s'inscrit via ton lien", reward:500, done:false, weekly:true},
-];
-
-function buildTasksList() {
-  var el = document.getElementById('tasksList');
-  if (!el) return;
-  var daily = TASKS.filter(function(t){return !t.weekly;});
-  var weekly = TASKS.filter(function(t){return t.weekly;});
-  var html = '<div class="task-sec-lbl">Quotidiennes</div>';
-  daily.forEach(function(t) { html += taskCardHTML(t); });
-  html += '<div class="task-sec-lbl">Hebdomadaires</div>';
-  weekly.forEach(function(t) { html += taskCardHTML(t); });
-  el.innerHTML = html;
-
-  el.querySelectorAll('.task-card:not(.done)').forEach(function(card) {
-    card.addEventListener('click', function() { doTask(this.dataset.tid); });
-  });
-}
-
-function taskCardHTML(t) {
-  return '<div class="task-card' + (t.done?' done':'') + '" data-tid="' + t.id + '">' +
-    '<div class="tc-icon">' + t.icon + '</div>' +
-    '<div class="tc-info"><div class="tc-name">' + t.name + '</div><div class="tc-desc">' + t.desc + '</div></div>' +
-    (t.done ? '<div class="tc-done">✅</div>' : '<div class="tc-reward">🪙 +' + t.reward + '</div>') +
-    '</div>';
-}
-
-function doTask(tid) {
-  var t = TASKS.find(function(x){return x.id===tid;});
-  if (!t || t.done) return;
-  t.done = true;
-  tasksDone++;
-  earn(t.reward, 'Tâche : ' + t.name);
-  buildTasksList();
-  updateTaskProgress();
-  if (tasksDone === totalTasks) {
-    setTimeout(function() {
-      earn(100, 'Bonus toutes les tâches');
-      showResult('🏆','Toutes les tâches !',"Bonus débloqué pour avoir tout complété !",'+100 SPIDS BONUS');
-    }, 600);
-  }
-}
-
-function updateTaskProgress() {
-  var pct = (tasksDone / totalTasks) * 100;
-  var bar = document.getElementById('progBar');
-  var ring = document.getElementById('progRing');
-  var txt = document.getElementById('progText');
-  var spy = document.getElementById('taskCountSpidy');
-  if (bar) bar.style.width = pct + '%';
-  if (ring) ring.style.strokeDashoffset = 150.8 - (150.8 * pct / 100);
-  if (txt) txt.textContent = tasksDone + '/' + totalTasks;
-  if (spy) spy.textContent = tasksDone + '/' + totalTasks + ' tâches';
-}
-
-// ══════════════════════════════════════════════════
-// REWARDS
-// ══════════════════════════════════════════════════
-var REWARDS = [
-  {name:'Amazon',      type:'Carte cadeau 5€',    cost:500,  icon:'🛒',cls:'ri1'},
-  {name:'Netflix',     type:'1 mois gratuit',      cost:1000, icon:'🎬',cls:'ri2'},
-  {name:'Spotify',     type:'1 mois Premium',      cost:800,  icon:'🎵',cls:'ri3'},
-  {name:'Ticket VIP',  type:'Grattage Premium x5', cost:300,  icon:'💎',cls:'ri5'},
-  {name:'Cashback',    type:'10€ sur PayPal',       cost:2000, icon:'💳',cls:'ri1'},
-  {name:'Loterie VIP', type:'Ticket exclusif',      cost:250,  icon:'🌟',cls:'ri6'},
-];
-
-function buildRewardsGrid() {
-  var el = document.getElementById('rewardsGrid');
-  if (!el) return;
-  el.innerHTML = REWARDS.map(function(r,i) {
-    return '<div class="rwd-card" data-rwdi="' + i + '">' +
-      '<div class="rwd-img ' + r.cls + '">' + r.icon + '</div>' +
-      '<div class="rwd-body">' +
-        '<div class="rwd-name">' + r.name + '</div>' +
-        '<div class="rwd-type">' + r.type + '</div>' +
-        '<div class="rwd-price">🪙 ' + r.cost.toLocaleString('fr-FR') + '</div>' +
-        '<button class="rwd-btn">Échanger</button>' +
-      '</div>' +
-      '</div>';
-  }).join('');
-  el.querySelectorAll('.rwd-card').forEach(function(card) {
-    card.addEventListener('click', function() { redeemReward(parseInt(this.dataset.rwdi,10)); });
-  });
-}
-
-function redeemReward(idx) {
-  var r = REWARDS[idx];
-  if (SPIDS < r.cost) {
-    toast('❌ Pas assez de SPIDS ! Il te faut ' + (r.cost - SPIDS).toLocaleString('fr-FR') + ' de plus.');
-    return;
-  }
-  earn(-r.cost, 'Récompense : ' + r.name);
-  showResult('🎁','Récompense obtenue !', r.name + ' · ' + r.type, '-' + r.cost + ' SPIDS');
-  document.getElementById('rwdBal').textContent = SPIDS.toLocaleString('fr-FR');
-}
-
-// ══════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════
-buildPrizeList();
-buildStreakDays();
-buildLotteryGrid();
-buildScratchGrid();
-buildMarketGrid();
-buildTasksList();
-buildRewardsGrid();
-updateTaskProgress();
-updateBalances();
-drawWheel(0);
-
-// start route
-goTo(getStartRoute());
+function closeMobMenu(){setMobMenuState(false)}
+function toggleMobMenu(){setMobMenuState(!mobMenu?.classList.contains('open'))}
+mobAvatarBtn?.addEventListener('click', (e)=>{e.preventDefault(); e.stopPropagation(); toggleMobMenu()});
+mobAvatarBtn?.addEventListener('keydown', (e)=>{if(e.key==='Enter' || e.key===' '){e.preventDefault(); toggleMobMenu()}});
+document.querySelector('#mobMenuAccount')?.addEventListener('click', ()=>{closeMobMenu(); goto('account')});
+document.querySelector('#mobMenuEdit')?.addEventListener('click', ()=>{closeMobMenu(); goto('account'); setTimeout(openEditAccount,120)});
+document.querySelector('#mobMenuHistory')?.addEventListener('click', ()=>{closeMobMenu(); goto('account'); document.querySelector('#openHistory')?.click()});
+document.querySelector('#mobMenuDelete')?.addEventListener('click', ()=>{closeMobMenu(); deleteAccount()});
+document.addEventListener('click', (e)=>{if(mobMenu?.classList.contains('open') && !e.target.closest('#mobTopRight')) closeMobMenu()});
+document.addEventListener('keydown', (e)=>{if(e.key==='Escape') closeMobMenu()});
+buildWheelPrizeList(); buildLotteryList(); buildScratchGrid(); buildScratchLegend(); buildMarkets(); buildTasks(); buildRewards(); renderHistory(); updateBalances(); resizeWheel(); drawWheel(0); applyProfile(); setActive((location.hash||'#home').slice(1)||'home');
 </script>
 </body>
 </html>
